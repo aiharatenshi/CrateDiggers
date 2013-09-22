@@ -54,6 +54,10 @@ MonoBehaviour:
     dataGUID: cb3bf0ad5e92744d6856da9a7d5a3125
     managed: 0
     loadable: 0
+  - assetGUID: d00930c7549f96c4aaab47d8a34c54d3
+    dataGUID: 1b2817fbebaa10f4aba4711186ef37cc
+    managed: 0
+    loadable: 0
   spriteCollectionIndex:
   - name: DemoSpiderSpriteCollection
     spriteCollectionGUID: 1fe2f34d6bac2b440944f04ac87d9e8a
