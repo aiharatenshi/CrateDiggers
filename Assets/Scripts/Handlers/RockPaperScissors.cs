@@ -18,7 +18,7 @@ public class RockPaperScissors : MonoBehaviour {
     /// </summary>
     /// <param name="player1">Must be the player initiating the game</param>
     /// <param name="player2">Must be the player being challenged</param>
-    public void Play(NamedObject player1, NamedObject player2)
+    public void Play(WorldObject player1, WorldObject player2)
     {
         result gameResult = GetResult();
         if (gameResult == result.win)

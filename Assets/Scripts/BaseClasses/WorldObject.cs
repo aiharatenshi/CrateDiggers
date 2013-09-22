@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-abstract public class NamedObject : MonoBehaviour
+abstract public class WorldObject : MonoBehaviour
 {
 
     /// <summary>
@@ -9,21 +9,31 @@ abstract public class NamedObject : MonoBehaviour
     /// This class will require a textMesh somewhere in the prefab
     /// </summary>
 
-    public string objectName;
-    protected tk2dTextMesh textMesh;
+    public string objectName = "UnnamedObject";
+    public string shortName;
     protected bool isInteractive = false;
+    protected bool isCompetitor = true;
+    protected Material[] material;
     protected int score = 0;
+    protected Timer[] timer;
+
+    private enum objectState { }
 
     // Use this for initialization
     public virtual void Start()
     {
+        if (shortName == System.String.Empty)
+        {
+            shortName = objectName;
+        }
+        
         if (GetComponentInChildren<tk2dTextMesh>() == null)
         {
             Debug.LogError("NamedObject " + name + " needs a NameTextMesh in one of its children!");
         }
         else
         {
-            textMesh = GetComponentInChildren<tk2dTextMesh>();
+            //textMesh = GetComponentInChildren<tk2dTextMesh>();
         }
     }
 
@@ -37,10 +47,14 @@ abstract public class NamedObject : MonoBehaviour
     {
     }
 
+    /// <summary>
+    /// Called when a player enters interaction range of an object
+    /// </summary>
+    abstract public void ReceiveInteractionHandshake();
+
+    abstract public void InteractionClose();
+
     abstract public void OnInteract();
-    //{
-    //    Debug.Log(name + " interaction.");
-    //}
 
     abstract public void IncreaseScore();
 

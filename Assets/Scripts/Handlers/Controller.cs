@@ -8,10 +8,10 @@ public class Controller : MonoBehaviour {
     /// 
     /// </summary>
 
-    private Player player;
+    //private Player player;
 
 	void Start () {
-        player = GetComponent<Player>();
+        //player = GetComponent<Player>();
 	
 	}
 	

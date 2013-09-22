@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerBase : NamedObject
+public class PlayerBase : WorldObject
 {
 
     /// <summary>
@@ -10,7 +10,8 @@ public class PlayerBase : NamedObject
     /// </summary>
 
     public int moveSpeed = 1;
-    public NamedObject interactionTarget = null;
+    public WorldObject interactionTarget = null;
+    public WorldArea currentArea = null;
     private RockPaperScissors rpsGame = null;
 
     // Use this for initialization
@@ -41,23 +42,36 @@ public class PlayerBase : NamedObject
 
     public virtual void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.transform.parent.GetComponentInChildren<NamedObject>())
+        // Interaction test
+        if (other.gameObject.transform.parent.GetComponentInChildren<WorldObject>())
         {
-            interactionTarget = other.gameObject.transform.parent.GetComponentInChildren<NamedObject>();
+            interactionTarget = other.gameObject.transform.parent.GetComponentInChildren<WorldObject>();
+            interactionTarget.ReceiveInteractionHandshake();
         }
-        else
+
+        if (other.gameObject.transform.parent.GetComponentInChildren<WorldArea>())
         {
-            interactionTarget = null;
+            Debug.Log("Entered area");
+            currentArea = other.gameObject.transform.parent.GetComponentInChildren<WorldArea>();
         }
+
     }
 
-    public virtual void OnTriggerStay(Collider other) { }
+    public virtual void OnTriggerStay(Collider other) 
+    {
+
+    }
 
     public virtual void OnTriggerExit(Collider other)
     {
         if (interactionTarget != null)
         {
+            interactionTarget.InteractionClose();
             interactionTarget = null;
+        }
+        if (other.gameObject.transform.parent.GetComponentInChildren<WorldArea>())
+        {
+            currentArea = null;
         }
 
 
@@ -83,7 +97,7 @@ public class PlayerBase : NamedObject
     /// This method should be called when the player pressed "use"
     /// </summary>
     /// <param name="target">Requires a valid NamedObject otherwise does nothing</param>
-    public virtual void Interact(NamedObject target)
+    public virtual void Interact(WorldObject target)
     {
         if (!InteractionPossible())
         {
@@ -126,6 +140,16 @@ public class PlayerBase : NamedObject
     }
 
     public virtual void HandleInput(KeyCode key) { }
+
+    public override void ReceiveInteractionHandshake() 
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void InteractionClose()
+    {
+        throw new System.NotImplementedException();
+    }
 
     public override void OnInteract()
     {
