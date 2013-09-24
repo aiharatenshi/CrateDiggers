@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WorldArea : MonoBehaviour {
+public class WorldAreaScript : MonoBehaviour {
 
     public string areaName;
 

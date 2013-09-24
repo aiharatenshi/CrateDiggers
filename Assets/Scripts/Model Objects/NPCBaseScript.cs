@@ -6,7 +6,7 @@ abstract public class NPCBaseScript : WorldObjectScript {
     public float dialogueDisplayLength;
     private DialogueBox dialogueBox;
 
-    public virtual void Start()
+    public override void Start()
     {
         base.Start();
         dialogueBox = GetComponentInChildren<DialogueBox>();

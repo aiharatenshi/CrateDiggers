@@ -1,24 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RockPaperScissors : MonoBehaviour {
+public class RockPaperScissors : MonoBehaviour
+{
 
     private enum RPS { rock, paper, scissors }
     public enum result { win, lose, draw, error }
 
-	void Start () {
+    void Start()
+    {
 
-	}
+    }
 
-	void Update () {
-	
-	}
+    void Update()
+    {
+
+    }
     /// <summary>
     /// Initiate a game of rock-paper-scissors. Should only be called bu the challenging player.
     /// </summary>
     /// <param name="player1">Must be the player initiating the game</param>
     /// <param name="player2">Must be the player being challenged</param>
-    public void Play(WorldObject player1, WorldObject player2)
+    public void Play(WorldObjectScript player1, WorldObjectScript player2)
     {
         result gameResult = GetResult();
         if (gameResult == result.win)
@@ -52,50 +55,35 @@ public class RockPaperScissors : MonoBehaviour {
         switch (player1choice)
         {
             case (int)RPS.rock:
-                switch (player2choice)
                 {
-                    case (int)RPS.rock:
-                        return result.draw;
-                        break;
-                    case (int)RPS.paper:
-                        return result.lose;
-                        break;
-                    case (int)RPS.scissors:
-                        return result.win;
-                        break;
+                    switch (player2choice)
+                    {
+                        case (int)RPS.rock: return result.draw;
+                        case (int)RPS.paper: return result.lose;
+                        case (int)RPS.scissors: return result.win;
+                    }
+                    return result.draw;
                 }
-                return result.draw;
-                break;
             case (int)RPS.scissors:
-                switch (player2choice)
                 {
-                    case (int)RPS.rock:
-                        return result.lose;
-                        break;
-                    case (int)RPS.paper:
-                        return result.win;
-                        break;
-                    case (int)RPS.scissors:
-                        return result.draw;
-                        break;
+                    switch (player2choice)
+                    {
+                        case (int)RPS.rock: return result.lose;
+                        case (int)RPS.paper: return result.win;
+                        case (int)RPS.scissors: return result.draw;
+                    }
+                    return result.draw;
                 }
-                return result.draw;
-                break;
             case (int)RPS.paper:
-                switch (player2choice)
                 {
-                    case (int)RPS.rock:
-                        return result.win;
-                        break;
-                    case (int)RPS.paper:
-                        return result.draw;
-                        break;
-                    case (int)RPS.scissors:
-                        return result.lose;
-                        break;
+                    switch (player2choice)
+                    {
+                        case (int)RPS.rock: return result.win;
+                        case (int)RPS.paper: return result.draw;
+                        case (int)RPS.scissors: return result.lose;
+                    }
+                    return result.draw;
                 }
-                return result.draw;
-                break;
         }
         return result.error;
     }

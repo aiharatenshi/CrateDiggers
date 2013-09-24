@@ -15,14 +15,14 @@ public class PlayerBaseScript : WorldObjectScript
     private RockPaperScissors rpsGame = null;
 
     // Use this for initialization
-    public virtual void Start()
+    new public virtual void Start()
     {
         base.Start();
         rpsGame = GameObject.FindGameObjectWithTag("CompetitiveGame").GetComponent<RockPaperScissors>();
     }
 
     // Update is called once per frame
-    public virtual void Update()
+    new public virtual void Update()
     {
         base.Update();
         HandleInput();

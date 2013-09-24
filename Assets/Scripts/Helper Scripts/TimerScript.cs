@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Timer : MonoBehaviour {
-
-    /// <summary>
-    /// Basic timer. Counts down.
-    /// 
-    /// </summary>
-
+/// <summary>
+/// Basic timer. Counts down.
+/// </summary>
+public class Timer : MonoBehaviour
+{
     //private float startTime;
     private float timerLength;
     private float timeRemaining;
@@ -31,8 +29,9 @@ public class Timer : MonoBehaviour {
         isActive = false;
     }
 
-	// Update is called once per frame
-	public void Update () {
+    // Update is called once per frame
+    public void Update()
+    {
         timeRemaining -= Time.deltaTime;
 
         if (timeRemaining > 0)
@@ -43,5 +42,5 @@ public class Timer : MonoBehaviour {
         {
             EndTimer();
         }
-	}
+    }
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TextMeshBase : MonoBehaviour {
+public class TextMeshBaseScript : MonoBehaviour {
 
     /// <summary>
     /// This is a framework for tk2d text meshes attached to other objects.

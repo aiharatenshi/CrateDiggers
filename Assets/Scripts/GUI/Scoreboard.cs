@@ -9,11 +9,11 @@ public class Scoreboard : MonoBehaviour {
     /// </summary>
 
     private tk2dTextMesh textMesh;
-    private WorldObject[] player;
+    private WorldObjectScript[] player;
 
 	// Use this for initialization
 	void Start () {
-        player = FindObjectsOfType(typeof(WorldObject)) as WorldObject[];
+        player = FindObjectsOfType(typeof(WorldObjectScript)) as WorldObjectScript[];
         textMesh = (tk2dTextMesh)gameObject.GetComponent<tk2dTextMesh>();
         textMesh.text = "0";
 	}

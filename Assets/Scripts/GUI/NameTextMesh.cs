@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NameTextMesh : TextMeshBase {
+public class NameTextMesh : TextMeshBaseScript {
 
     /// <summary>
     /// This is a texh mesh script intended for use on "nametags" that display WorldObject names.

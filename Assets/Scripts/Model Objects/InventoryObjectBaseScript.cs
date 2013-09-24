@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InventoryObjectBase : MonoBehaviour {
+public class InventoryObjectBaseScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

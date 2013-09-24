@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AreaName : TextMeshBase {
+public class AreaName : TextMeshBaseScript {
 
-    public Player player;
+    public PlayerScript player;
 
 	// Use this for initialization
 	public override void Start () {
         base.Start();
-        player = (Player)FindObjectOfType(typeof(Player));
+        player = (PlayerScript)FindObjectOfType(typeof(PlayerScript));
 	}
 	
 	// Update is called once per frame

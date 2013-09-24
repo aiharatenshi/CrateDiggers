@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DialogueBox : TextMeshBase {
+public class DialogueBox : TextMeshBaseScript {
 
     private Timer timer;
     private float displayLength;
