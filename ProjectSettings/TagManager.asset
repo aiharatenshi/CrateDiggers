@@ -3,8 +3,20 @@
 --- !u!78 &1
 TagManager:
   tags:
+<<<<<<< HEAD
   - FrameWorld
   - CompWorld
+=======
+  - NameTextMesh
+  - CompetitiveGame
+  - InteractionTrigger
+  - WorldArea
+  - 
+  - 
+  - 
+  - 
+  - 
+>>>>>>> origin/aaron
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
@@ -14,8 +26,13 @@ TagManager:
   Builtin Layer 5: 
   Builtin Layer 6: 
   Builtin Layer 7: 
+<<<<<<< HEAD
   User Layer 8: FrameWorld
   User Layer 9: CompWorld
+=======
+  User Layer 8: NameTextMesh
+  User Layer 9: 
+>>>>>>> origin/aaron
   User Layer 10: 
   User Layer 11: 
   User Layer 12: 
