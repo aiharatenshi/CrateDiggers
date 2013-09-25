@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NPCBoringScript : NPCBaseScript {
+public class NPCBoringScript : NPCBaseScript
+{
 
     public float movement = 0f;
 
@@ -27,7 +28,7 @@ public class NPCBoringScript : NPCBaseScript {
 
         if (true)
         {
-            
+
         }
     }
 
@@ -35,7 +36,7 @@ public class NPCBoringScript : NPCBaseScript {
     {
         //renderer.material = renderer.materials[1];
         renderer.material.color = Color.green;
-        Talk("Hi, my name is " + objectName + ".");
+        Say("Hi, my name is " + objectName + ".");
     }
 
     public override void InteractionClose()

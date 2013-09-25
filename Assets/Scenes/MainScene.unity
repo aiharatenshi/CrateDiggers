@@ -107,6 +107,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textMesh: {fileID: 0}
   startActive: 0
+  defaultDisplayTime: 2
+  alwaysDisplay: 0
+  displayLength: 0
 --- !u!114 &15423242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -393,6 +396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec3379fe5828540b058897736329a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
   objectName: Vladmir the Boring von Boredom
   shortName: Vlad
   dialogueDisplayLength: 1
@@ -424,6 +428,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5ad74d0422773704992200415955b23f, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   isActive: 0
 --- !u!4 &144595570
@@ -702,6 +707,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8ec3379fe5828540b058897736329a9, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   objectName: Susan
   shortName: 
@@ -1087,6 +1093,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textMesh: {fileID: 0}
   startActive: 0
+  defaultDisplayTime: 2
+  alwaysDisplay: 0
+  displayLength: 0
 --- !u!114 &604685598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1204,6 +1213,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textMesh: {fileID: 0}
   startActive: 0
+  defaultDisplayTime: 2
+  alwaysDisplay: 0
+  displayLength: 0
 --- !u!114 &615608627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1435,6 +1447,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textMesh: {fileID: 0}
   startActive: 0
+  defaultDisplayTime: 2
+  alwaysDisplay: 0
+  displayLength: 0
 --- !u!114 &728961021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1822,6 +1837,92 @@ Prefab:
   m_RootGameObject: {fileID: 116686531}
   m_IsPrefabParent: 0
   m_IsExploded: 1
+--- !u!1 &1043857618
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100002, guid: a88a50ebda7d6544d90e8bc7330dcda5, type: 2}
+  m_PrefabInternal: {fileID: 405844689}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1043857619}
+  - 33: {fileID: 1043857623}
+  - 65: {fileID: 1043857622}
+  - 23: {fileID: 1043857621}
+  - 54: {fileID: 1043857620}
+  m_Layer: 0
+  m_Name: InteractionTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1043857619
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400002, guid: a88a50ebda7d6544d90e8bc7330dcda5, type: 2}
+  m_PrefabInternal: {fileID: 405844689}
+  m_GameObject: {fileID: 1043857618}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 20}
+  m_Children: []
+  m_Father: {fileID: 1502553660}
+--- !u!54 &1043857620
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 5400000, guid: a88a50ebda7d6544d90e8bc7330dcda5,
+    type: 2}
+  m_PrefabInternal: {fileID: 405844689}
+  m_GameObject: {fileID: 1043857618}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: .0500000007
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!23 &1043857621
+Renderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 2300000, guid: a88a50ebda7d6544d90e8bc7330dcda5,
+    type: 2}
+  m_PrefabInternal: {fileID: 405844689}
+  m_GameObject: {fileID: 1043857618}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+--- !u!65 &1043857622
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 6500002, guid: a88a50ebda7d6544d90e8bc7330dcda5,
+    type: 2}
+  m_PrefabInternal: {fileID: 405844689}
+  m_GameObject: {fileID: 1043857618}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &1043857623
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 3300002, guid: a88a50ebda7d6544d90e8bc7330dcda5,
+    type: 2}
+  m_PrefabInternal: {fileID: 405844689}
+  m_GameObject: {fileID: 1043857618}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1092198908
 GameObject:
   m_ObjectHideFlags: 0
@@ -1864,6 +1965,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1869a40543e40d04087f1bba940e7cee, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   objectName: Player
   shortName: 
@@ -1943,6 +2045,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textMesh: {fileID: 0}
   startActive: 0
+  defaultDisplayTime: 2
+  alwaysDisplay: 0
+  displayLength: 0
 --- !u!114 &1096771191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2143,6 +2248,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textMesh: {fileID: 0}
   startActive: 0
+  defaultDisplayTime: 2
+  alwaysDisplay: 0
+  displayLength: 0
 --- !u!1 &1285165607
 GameObject:
   m_ObjectHideFlags: 0
@@ -2188,6 +2296,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textMesh: {fileID: 0}
   startActive: 0
+  defaultDisplayTime: 2
+  alwaysDisplay: 0
+  displayLength: 0
 --- !u!114 &1285165610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2505,6 +2616,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textMesh: {fileID: 0}
   startActive: 0
+  defaultDisplayTime: 2
+  alwaysDisplay: 0
+  displayLength: 0
 --- !u!114 &1424215862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2632,6 +2746,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textMesh: {fileID: 0}
   startActive: 0
+  defaultDisplayTime: 2
+  alwaysDisplay: 0
+  displayLength: 0
 --- !u!114 &1484259836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2717,7 +2834,7 @@ GameObject:
   - 114: {fileID: 1502553661}
   m_Layer: 0
   m_Name: WorldArea
-  m_TagString: Untagged
+  m_TagString: WorldArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2733,7 +2850,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 50, y: 50, z: 50}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &1502553659
 MeshFilter:
@@ -2751,8 +2868,9 @@ Transform:
   m_GameObject: {fileID: 1502553656}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 42.5902557, y: 19.8757477, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_LocalScale: {x: 50, y: 50, z: 1}
+  m_Children:
+  - {fileID: 1043857619}
   m_Father: {fileID: 0}
 --- !u!114 &1502553661
 MonoBehaviour:
@@ -2765,6 +2883,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 088d97f32255e7b4c9c7b322bdd96bba, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   areaName: Area1
 --- !u!1 &1520425793
@@ -2811,6 +2930,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8ec3379fe5828540b058897736329a9, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   objectName: Betty
   shortName: 
@@ -3024,6 +3144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad74d0422773704992200415955b23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
   isActive: 0
 --- !u!1001 &1550129645
 Prefab:
@@ -3114,6 +3235,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textMesh: {fileID: 0}
   startActive: 0
+  defaultDisplayTime: 2
+  alwaysDisplay: 0
+  displayLength: 0
 --- !u!114 &1574803104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3278,6 +3402,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textMesh: {fileID: 0}
   startActive: 0
+  defaultDisplayTime: 2
+  alwaysDisplay: 0
+  displayLength: 0
 --- !u!114 &1647823460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3494,6 +3621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad74d0422773704992200415955b23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
   isActive: 0
 --- !u!1 &1714959734
 GameObject:
@@ -3538,6 +3666,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textMesh: {fileID: 0}
   startActive: 1
+  defaultDisplayTime: 2
+  alwaysDisplay: 0
+  displayLength: 0
+  player: {fileID: 0}
 --- !u!114 &1714959737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3798,6 +3930,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad74d0422773704992200415955b23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
   isActive: 0
 --- !u!1 &1808253402
 GameObject:
@@ -3837,6 +3970,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5ad74d0422773704992200415955b23f, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   isActive: 0
 --- !u!1 &1828451802
@@ -3883,6 +4017,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8ec3379fe5828540b058897736329a9, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   objectName: Helga
   shortName: 
@@ -3958,6 +4093,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8ec3379fe5828540b058897736329a9, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   objectName: John
   shortName: 

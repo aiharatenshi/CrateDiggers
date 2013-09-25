@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class PlayerBaseScript : WorldObjectScript
 {
@@ -10,35 +11,54 @@ public class PlayerBaseScript : WorldObjectScript
     /// </summary>
 
     public int moveSpeed = 1;
+    public int jumpMagnitude = 10;
     public WorldObjectScript interactionTarget = null;
     public WorldAreaScript currentArea = null;
     private RockPaperScissors rpsGame = null;
+    public bool physicsInput = true;
+    public bool touchingGround = true;
+    public RockPaperScissors.RPS choice = RockPaperScissors.RPS.rock;
 
     // Use this for initialization
-    new public virtual void Start()
+    public override void Start()
     {
         base.Start();
         rpsGame = GameObject.FindGameObjectWithTag("CompetitiveGame").GetComponent<RockPaperScissors>();
     }
 
     // Update is called once per frame
-    new public virtual void Update()
+    public override void Update()
     {
         base.Update();
         HandleInput();
     }
 
-    public virtual void OnCollisionEnter(Collision collision) { }
-
-    public virtual void OnCollisionStay(Collision collision)
+    public virtual void FixedUpdate()
     {
-        foreach (ContactPoint contact in collision.contacts)
+        if (physicsInput)
         {
-            Debug.DrawRay(contact.point, contact.normal, Color.white);
+            HandlePhysicsInput();
         }
     }
 
-    public virtual void OnCollisionExit(Collision collision) { }
+    public virtual void OnCollisionEnter(Collision collision)
+    {
+        touchingGround = true;
+    }
+
+    public virtual void OnCollisionStay(Collision collision)
+    {
+        touchingGround = true;
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            Debug.DrawRay(contact.point, contact.normal, Color.red);
+        }
+    }
+
+    public virtual void OnCollisionExit(Collision collision)
+    {
+        touchingGround = false;
+    }
 
     public virtual void OnTriggerEnter(Collider other)
     {
@@ -57,7 +77,7 @@ public class PlayerBaseScript : WorldObjectScript
 
     }
 
-    public virtual void OnTriggerStay(Collider other) 
+    public virtual void OnTriggerStay(Collider other)
     {
 
     }
@@ -69,7 +89,7 @@ public class PlayerBaseScript : WorldObjectScript
             interactionTarget.InteractionClose();
             interactionTarget = null;
         }
-        if (other.gameObject.transform.parent.GetComponentInChildren<WorldAreaScript>())
+        if (other.gameObject.transform.parent.GetComponent<WorldAreaScript>())
         {
             currentArea = null;
         }
@@ -113,35 +133,86 @@ public class PlayerBaseScript : WorldObjectScript
 
     public virtual void HandleInput()
     {
-        if (Input.GetKey("up"))
+        if (!physicsInput)
         {
-            transform.Translate(new Vector3(0, moveSpeed, 0) * Time.deltaTime);
-        }
+            if (Input.GetKey("up"))
+            {
+                transform.Translate(new Vector3(0, moveSpeed, 0) * Time.deltaTime);
+            }
 
-        if (Input.GetKey("down"))
-        {
-            transform.Translate(new Vector3(0, -moveSpeed, 0) * Time.deltaTime);
-        }
+            if (Input.GetKey("down"))
+            {
+                transform.Translate(new Vector3(0, -moveSpeed, 0) * Time.deltaTime);
+            }
 
-        if (Input.GetKey("left"))
-        {
-            transform.Translate(new Vector3(-moveSpeed, 0, 0) * Time.deltaTime);
-        }
+            if (Input.GetKey("left"))
+            {
+                transform.Translate(new Vector3(-moveSpeed, 0, 0) * Time.deltaTime);
+            }
 
-        if (Input.GetKey("right"))
-        {
-            transform.Translate(new Vector3(moveSpeed, 0, 0) * Time.deltaTime);
+            if (Input.GetKey("right"))
+            {
+                transform.Translate(new Vector3(moveSpeed, 0, 0) * Time.deltaTime);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
             Interact(interactionTarget);
         }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            RotateRPSChoice();
+            GetComponentInChildren<PlayerRPSChoice>().UpdateText(Enum.GetName(typeof(RockPaperScissors.RPS), choice));
+        }
+    }
+
+    private void RotateRPSChoice()
+    {
+        switch (choice)
+        {
+            case RockPaperScissors.RPS.rock:
+                choice = RockPaperScissors.RPS.paper;
+                break;
+            case RockPaperScissors.RPS.paper:
+                choice = RockPaperScissors.RPS.scissors;
+                break;
+            case RockPaperScissors.RPS.scissors:
+                choice = RockPaperScissors.RPS.rock;
+                break;
+        }
+    }
+
+    public virtual void HandlePhysicsInput()
+    {
+        if (Input.GetKey("up"))
+        {
+            if (touchingGround)
+            {
+                rigidbody.AddForce(Vector3.up * jumpMagnitude, ForceMode.Impulse);
+            }
+        }
+
+        if (Input.GetKey("down"))
+        {
+            //rigidbody.AddForce(Vector3.down * moveSpeed);
+        }
+
+        if (Input.GetKey("left"))
+        {
+            rigidbody.AddForce(Vector3.left * moveSpeed);
+        }
+
+        if (Input.GetKey("right"))
+        {
+            rigidbody.AddForce(Vector3.right * moveSpeed);
+        }
     }
 
     public virtual void HandleInput(KeyCode key) { }
 
-    public override void ReceiveInteractionHandshake() 
+    public override void ReceiveInteractionHandshake()
     {
         throw new System.NotImplementedException();
     }

@@ -3,13 +3,10 @@ using System.Collections;
 
 public class DialogueBox : TextMeshBaseScript {
 
-    private Timer timer;
-    private float displayLength;
-
-	// Use this for initialization
+    // Use this for initialization
 	public override void Start () {
         base.Start();
-        timer = GetComponentInChildren<Timer>();
+        timer = GetComponentInChildren<TimerScript>();
 	}
 	
 	// Update is called once per frame
@@ -23,11 +20,6 @@ public class DialogueBox : TextMeshBaseScript {
             renderer.enabled = false;
         }
 	}
-
-    public void SetDisplayLength(float length)
-    {
-        displayLength = length;
-    }
 
     public void UpdateMessage(string msg)
     {

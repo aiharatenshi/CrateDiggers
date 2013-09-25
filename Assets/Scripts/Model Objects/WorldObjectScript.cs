@@ -15,7 +15,7 @@ abstract public class WorldObjectScript : MonoBehaviour
     protected bool isCompetitor = true;
     protected Material[] material;
     protected int score = 0;
-    protected Timer[] timer;
+    protected TimerScript[] timer;
 
     private enum objectState { }
 
@@ -26,7 +26,7 @@ abstract public class WorldObjectScript : MonoBehaviour
         {
             shortName = objectName;
         }
-        
+
         if (GetComponentInChildren<tk2dTextMesh>() == null)
         {
             Debug.LogError("NamedObject " + name + " needs a NameTextMesh in one of its children!");
