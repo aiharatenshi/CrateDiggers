@@ -12,20 +12,30 @@ public class PlayerBaseScript : WorldObjectScript
     /// Contains basic controller movement and interaction.
     /// </summary>
 
-    public int moveSpeed = 1;
-    public int jumpMagnitude = 10;
+    public int moveSpeed = 100;
+    public int jumpMagnitude = 20;
+    public int moveSpeedAir;
+    private int moveSpeedDefault;
     public WorldObjectScript interactionTarget = null;
     public WorldAreaScript currentArea = null;
-    private RockPaperScissors rpsGame = null;
+    private static RockPaperScissors rpsGame = null;
     public bool physicsInput = true;
     public bool touchingGround = true;
-    public RockPaperScissors.RPS choice = RockPaperScissors.RPS.rock;
+    public int playChance = 10;
+    public static Vector3 aimDirection;
+    public Camera cam;
+    public GunBaseScript gun;
+    public ProjectileBaseScript ammo;
 
     // Use this for initialization
     public override void Start()
     {
         base.Start();
         rpsGame = GameObject.FindGameObjectWithTag("CompetitiveGame").GetComponent<RockPaperScissors>();
+        moveSpeedAir = moveSpeed / 2;
+        moveSpeedDefault = moveSpeed;
+        gun = GetComponentInChildren<GunBaseScript>();
+        ammo = gun.projectileType;
     }
 
     // Update is called once per frame
@@ -33,6 +43,22 @@ public class PlayerBaseScript : WorldObjectScript
     {
         base.Update();
         HandleInput();
+
+        if (UnityEngine.Random.Range(0, playChance) == 0)
+        {
+            WorldObjectScript[] players = FindObjectsOfType(typeof(WorldObjectScript)) as WorldObjectScript[];
+            int a = UnityEngine.Random.Range(0, players.Length);
+            int b = UnityEngine.Random.Range(0, players.Length);
+            if (a != b && players[a].currentBet > 0 && players[b].currentBet > 0)
+            {
+                rpsGame.Play(players[a], players[b]);
+            }
+        }
+
+        aimDirection = cam.ScreenToWorldPoint(Input.mousePosition) - gameObject.transform.position;
+        Debug.DrawRay(gameObject.transform.position, aimDirection, Color.red);
+        gun.transform.rotation = Quaternion.Euler(aimDirection);
+
     }
 
     public virtual void FixedUpdate()
@@ -65,13 +91,13 @@ public class PlayerBaseScript : WorldObjectScript
     public virtual void OnTriggerEnter(Collider other)
     {
         // Interaction test
-        if (other.gameObject.transform.parent.GetComponentInChildren<WorldObjectScript>())
+        if (other.gameObject.CompareTag("InteractiveObject"))
         {
             interactionTarget = other.gameObject.transform.parent.GetComponentInChildren<WorldObjectScript>();
             interactionTarget.ReceiveInteractionHandshake();
         }
 
-        if (other.gameObject.transform.parent.GetComponentInChildren<WorldAreaScript>())
+        if (other.gameObject.CompareTag("WorldArea"))
         {
             Debug.Log("Entered area");
             currentArea = other.gameObject.transform.parent.GetComponentInChildren<WorldAreaScript>();
@@ -91,12 +117,10 @@ public class PlayerBaseScript : WorldObjectScript
             interactionTarget.InteractionClose();
             interactionTarget = null;
         }
-        if (other.gameObject.transform.parent.GetComponent<WorldAreaScript>())
+        if (other.gameObject.CompareTag("WorldArea"))
         {
             currentArea = null;
         }
-
-
     }
 
     /// <summary>
@@ -163,6 +187,16 @@ public class PlayerBaseScript : WorldObjectScript
             Interact(interactionTarget);
         }
 
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            IncreaseBet();
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            gun.Shoot();
+        }
+
         if (Input.GetKeyDown(KeyCode.F))
         {
             RotateRPSChoice();
@@ -188,6 +222,14 @@ public class PlayerBaseScript : WorldObjectScript
 
     public virtual void HandlePhysicsInput()
     {
+        if (!touchingGround)
+        {
+            moveSpeed = moveSpeedAir;
+        }
+        else
+        {
+            moveSpeed = moveSpeedDefault;
+        }
         if (Input.GetKey("up"))
         {
             if (touchingGround)
@@ -229,8 +271,4 @@ public class PlayerBaseScript : WorldObjectScript
         throw new System.NotImplementedException();
     }
 
-    override public void IncreaseScore()
-    {
-        score++;
-    }
 }

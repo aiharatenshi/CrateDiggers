@@ -5,7 +5,7 @@ public class RockPaperScissors : MonoBehaviour
 {
 
     public enum RPS { rock, paper, scissors }
-    public enum result { win, lose, draw, error }
+    public enum result { p1win, p2win, draw, error }
 
     void Start()
     {
@@ -21,23 +21,31 @@ public class RockPaperScissors : MonoBehaviour
     /// </summary>
     /// <param name="player1">Must be the player initiating the game</param>
     /// <param name="player2">Must be the player being challenged</param>
-    public void Play(WorldObjectScript _player1, WorldObjectScript _player2)
+    public void Play(WorldObjectScript player1, WorldObjectScript player2)
     {
-        PlayerScript player1 = (PlayerScript)_player1;
-        NPCBaseScript player2 = (NPCBaseScript)_player2;
+        if (player1.currentBet == 0 || player2.currentBet == 0)
+        {
+            return;
+        }
+
+        int stakes = player1.currentBet + player2.currentBet;
+        
         result gameResult = GetResult(player1.choice, player2.MakeRandomRPSChoice());
         switch (gameResult)
         {
-            case result.win:
-                player1.IncreaseScore();
-                Debug.Log("You won!");
+            case result.p1win:
+                player1.Win(stakes);
+                player2.Lose();  
+
+                //Debug.Log("You won!");
                 break;
-            case result.lose:
-                player2.IncreaseScore();
-                Debug.Log("You lost!");
+            case result.p2win:
+                player2.Win(stakes);
+                player1.Lose();
+                //Debug.Log("You lost!");
                 break;
             case result.draw:
-                Debug.Log("Draw game!");
+                //Debug.Log("Draw game!");
                 break;
             case result.error:
                 Debug.LogError("RockPaperScissors did something wrong!");
@@ -59,18 +67,18 @@ public class RockPaperScissors : MonoBehaviour
                     case RPS.rock:
                         return result.draw;
                     case RPS.paper:
-                        return result.lose;
+                        return result.p2win;
                     case RPS.scissors:
-                        return result.win;
+                        return result.p1win;
                 }
                 return result.draw;
             case RPS.scissors:
                 switch (player2choice)
                 {
                     case RPS.rock:
-                        return result.lose;
+                        return result.p2win;
                     case RPS.paper:
-                        return result.win;
+                        return result.p1win;
                     case RPS.scissors:
                         return result.draw;
                 }
@@ -79,11 +87,11 @@ public class RockPaperScissors : MonoBehaviour
                 switch (player2choice)
                 {
                     case RPS.rock:
-                        return result.win;
+                        return result.p1win;
                     case RPS.paper:
                         return result.draw;
                     case RPS.scissors:
-                        return result.lose;
+                        return result.p2win;
                 }
                 return result.draw;
         }

@@ -49,6 +49,7 @@ public class TextMeshBaseScript : MonoBehaviour
     {
         textMesh.text = text;
         timer.StartTimer(defaultDisplayTime);
+        textMesh.maxChars = text.Length;
     }
 
     public void CheckActive()

@@ -1138,3 +1138,32 @@ MonoBehaviour:
     loadable: 0
     assetName: 
     version: 3
+  - name: PlayerSprites
+    spriteCollectionGUID: b29f7869ff57fbf40928b4fbc2ebcef3
+    spriteCollectionDataGUID: 0655874e476a23a4a999c8ac777df3ef
+    spriteNames:
+    - player_1.fw
+    spriteTextureGUIDs:
+    - b7d055b8babebe94ebe376e85635ebb1
+    spriteTextureTimeStamps:
+    - 1380208230.84886
+    managedSpriteCollection: 0
+    loadable: 0
+    assetName: 
+    version: 3
+  - name: BackgroundSprites
+    spriteCollectionGUID: 0980eb8c0edd6ba4fb5d64f718f2e329
+    spriteCollectionDataGUID: af6786fea5a779644a9fcc256f3f9654
+    spriteNames:
+    - 
+    - background
+    spriteTextureGUIDs:
+    - 
+    - 2f5f4185ea513454f8ac56c58f36e425
+    spriteTextureTimeStamps:
+    - 0
+    - 1380208520.19741
+    managedSpriteCollection: 0
+    loadable: 0
+    assetName: 
+    version: 3

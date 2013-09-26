@@ -1,49 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 
 [RequireComponent(typeof(Rigidbody))]
 
 abstract public class NPCBaseScript : WorldObjectScript
 {
 
-    public float dialogueDisplayLength;
-    private DialogueBox dialogueBox;
+    public int betChance = 50;
 
     public override void Start()
     {
         base.Start();
-        dialogueBox = GetComponentInChildren<DialogueBox>();
-        dialogueBox.Start();
-        dialogueBox.SetDisplayLength(dialogueDisplayLength);
     }
 
-    public virtual void Say(string text)
+    override public void Update()
     {
-        dialogueBox.UpdateText(text);
-    }
-
-    override public void IncreaseScore()
-    {
-        score++;
-    }
-
-    public virtual RockPaperScissors.RPS MakeRandomRPSChoice()
-    {
-        int choice = UnityEngine.Random.Range(0, 3);
-        switch (choice)
+        base.Update();
+        if (UnityEngine.Random.Range(0, betChance) == 0 && dollarBillz > 0)
         {
-            case 0:
-                Say(Enum.GetName(typeof(RockPaperScissors.RPS), RockPaperScissors.RPS.rock));
-                return RockPaperScissors.RPS.rock;
-            case 1:
-                Say(Enum.GetName(typeof(RockPaperScissors.RPS), RockPaperScissors.RPS.paper));
-                return RockPaperScissors.RPS.paper;
-            case 2:
-                Say(Enum.GetName(typeof(RockPaperScissors.RPS), RockPaperScissors.RPS.scissors));
-                return RockPaperScissors.RPS.scissors;
+            IncreaseBet();
         }
-        return RockPaperScissors.RPS.scissors;
     }
-
 }

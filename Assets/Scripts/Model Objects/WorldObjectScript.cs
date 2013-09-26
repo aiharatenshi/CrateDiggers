@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 [RequireComponent(typeof(Rigidbody))]
 
@@ -13,7 +14,7 @@ abstract public class WorldObjectScript : MonoBehaviour
     /// tk2dTextMesh
     /// </summary>
 
-    public string objectName = "UnnamedObject";
+    public string objectName;
     public string shortName;
     protected bool isInteractive = false;
     protected bool isCompetitor = true;
@@ -21,6 +22,13 @@ abstract public class WorldObjectScript : MonoBehaviour
     protected Material[] material;
     protected int score = 0;
     protected TimerScript[] timer;
+    public int dollarBillz = 1000;
+    public int currentBet = 0;
+    public float dialogueDisplayLength;
+    protected DialogueBox dialogueBox;
+    public RockPaperScissors.RPS choice = RockPaperScissors.RPS.rock;
+    protected int health = 4;
+    public bool godMode = false;
 
     private enum objectState { }
 
@@ -31,6 +39,10 @@ abstract public class WorldObjectScript : MonoBehaviour
         {
             Debug.LogWarning("Rigidbody was missing on <" + gameObject.name + ">");
             gameObject.AddComponent("Rigidbody");
+        }
+        if (objectName == System.String.Empty)
+        {
+            objectName = gameObject.name;
         }
         if (shortName == System.String.Empty)
         {
@@ -45,13 +57,21 @@ abstract public class WorldObjectScript : MonoBehaviour
         {
             //textMesh = GetComponentInChildren<tk2dTextMesh>();
         }
+
+        dialogueBox = GetComponentInChildren<DialogueBox>();
+        dialogueBox.Start();
+        dialogueBox.SetDisplayLength(dialogueDisplayLength);
+
         rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
     }
 
     // Update is called once per frame
     public virtual void Update()
     {
-
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     public virtual void OnGUI()
@@ -67,10 +87,62 @@ abstract public class WorldObjectScript : MonoBehaviour
 
     abstract public void OnInteract();
 
-    abstract public void IncreaseScore();
+    public void Win(int winnings)
+    {
+        score++;
+        currentBet = 0;
+        dollarBillz += winnings;
+    }
 
     public int GetScore()
     {
         return score;
     }
+
+    public void IncreaseBet()
+    {
+        dollarBillz -= 100;
+        currentBet += 100;
+    }
+
+    public void Lose()
+    {
+        currentBet = 0;
+        if (dollarBillz == 0)
+        {
+            dollarBillz = 100;
+        }
+    }
+
+    public virtual void Say(string text)
+    {
+        dialogueBox.UpdateText(text);
+    }
+
+    public virtual RockPaperScissors.RPS MakeRandomRPSChoice()
+    {
+        int choice = UnityEngine.Random.Range(0, 3);
+        switch (choice)
+        {
+            case 0:
+                Say(shortName + ": " + Enum.GetName(typeof(RockPaperScissors.RPS), RockPaperScissors.RPS.rock));
+                return RockPaperScissors.RPS.rock;
+            case 1:
+                Say(shortName + ": " + Enum.GetName(typeof(RockPaperScissors.RPS), RockPaperScissors.RPS.paper));
+                return RockPaperScissors.RPS.paper;
+            case 2:
+                Say(shortName + ": " + Enum.GetName(typeof(RockPaperScissors.RPS), RockPaperScissors.RPS.scissors));
+                return RockPaperScissors.RPS.scissors;
+        }
+        return RockPaperScissors.RPS.scissors;
+    }
+
+    public virtual void TakeDamage(int amount)
+    {
+        if (!godMode)
+        {
+           health -= amount;   
+        }
+    }
+
 }
