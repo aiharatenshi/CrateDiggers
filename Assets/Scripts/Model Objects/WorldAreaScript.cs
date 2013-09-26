@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent (typeof(Rigidbody))]
+
 public class WorldAreaScript : MonoBehaviour
 {
 
@@ -8,6 +10,7 @@ public class WorldAreaScript : MonoBehaviour
 
     public void Start()
     {
+
     }
 
     public void Update()

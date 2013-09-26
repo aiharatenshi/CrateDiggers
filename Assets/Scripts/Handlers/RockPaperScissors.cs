@@ -25,7 +25,7 @@ public class RockPaperScissors : MonoBehaviour
     {
         PlayerScript player1 = (PlayerScript)_player1;
         NPCBaseScript player2 = (NPCBaseScript)_player2;
-        result gameResult = GetResult(player1.choice, player2.MakeRPSChoice());
+        result gameResult = GetResult(player1.choice, player2.MakeRandomRPSChoice());
         switch (gameResult)
         {
             case result.win:

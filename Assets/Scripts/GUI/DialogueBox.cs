@@ -25,5 +25,6 @@ public class DialogueBox : TextMeshBaseScript {
     {
         textMesh.text = msg;
         timer.StartTimer(displayLength);
+        textMesh.maxChars = msg.Length;
     }
 }

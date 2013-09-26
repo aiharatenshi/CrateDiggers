@@ -2,6 +2,8 @@
 using System.Collections;
 using System;
 
+[RequireComponent(typeof(Rigidbody))]
+
 abstract public class NPCBaseScript : WorldObjectScript
 {
 
@@ -26,9 +28,9 @@ abstract public class NPCBaseScript : WorldObjectScript
         score++;
     }
 
-    public virtual RockPaperScissors.RPS MakeRPSChoice()
+    public virtual RockPaperScissors.RPS MakeRandomRPSChoice()
     {
-        int choice = UnityEngine.Random.Range(0, 2);
+        int choice = UnityEngine.Random.Range(0, 3);
         switch (choice)
         {
             case 0:

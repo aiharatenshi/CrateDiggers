@@ -2,6 +2,8 @@
 using System.Collections;
 using System;
 
+[RequireComponent (typeof(Rigidbody))]
+
 public class PlayerBaseScript : WorldObjectScript
 {
 

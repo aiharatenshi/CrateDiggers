@@ -2201,8 +2201,10 @@ MonoBehaviour:
     regionH: 70
     flipped: 0
     complexGeometry: 0
-    colliderType: 0
-    colliderVertices: []
+    colliderType: 2
+    colliderVertices:
+    - {x: 0, y: 0, z: 0}
+    - {x: 1.75, y: 1.75, z: 10}
     colliderIndicesFwd: 
     colliderIndicesBack: 
     colliderConvex: 0
@@ -5527,7 +5529,7 @@ MonoBehaviour:
   loadable: 0
   invOrthoSize: 2
   halfTargetHeight: 10
-  buildKey: 621915280
+  buildKey: 285385509
   dataGuid: 9bdcda528b289409d8d42f489e15f2c1
   managedSpriteCollection: 0
   hasPlatformData: 0

@@ -12,7 +12,7 @@ public class TextMeshBaseScript : MonoBehaviour
 
     protected TimerScript timer;
     public tk2dTextMesh textMesh;
-    protected WorldObjectScript parentObject;
+    public WorldObjectScript parentObject;
     public bool startActive = true;
     public int defaultDisplayTime = 2;
     public bool alwaysDisplay = false;
