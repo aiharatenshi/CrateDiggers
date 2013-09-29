@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-[RequireComponent (typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody))]
 
 public class PlayerBaseScript : WorldObjectScript
 {
@@ -25,7 +25,12 @@ public class PlayerBaseScript : WorldObjectScript
     public static Vector3 aimDirection;
     public Camera cam;
     public GunBaseScript gun;
+    public MeleeWeaponBaseScript meleeWeapon;
     public ProjectileBaseScript ammo;
+    public AudioClip jumpClip;
+    public AudioClip deathClip;
+    public AudioClip landClip;
+    public AudioClip walkClip;
 
     // Use this for initialization
     public override void Start()
@@ -35,6 +40,7 @@ public class PlayerBaseScript : WorldObjectScript
         moveSpeedAir = moveSpeed / 2;
         moveSpeedDefault = moveSpeed;
         gun = GetComponentInChildren<GunBaseScript>();
+        meleeWeapon = GetComponentInChildren<MeleeWeaponBaseScript>();
         ammo = gun.projectileType;
     }
 
@@ -57,7 +63,6 @@ public class PlayerBaseScript : WorldObjectScript
 
         aimDirection = cam.ScreenToWorldPoint(Input.mousePosition) - gameObject.transform.position;
         Debug.DrawRay(gameObject.transform.position, aimDirection, Color.red);
-        gun.transform.rotation = Quaternion.Euler(aimDirection);
 
     }
 
@@ -91,6 +96,8 @@ public class PlayerBaseScript : WorldObjectScript
     public virtual void OnTriggerEnter(Collider other)
     {
         // Interaction test
+        // NOTE: Use tags for these kinds of checks. This won't return null pointer errors of you mess up.
+        // REMEMBER TO SET THE TAGS.
         if (other.gameObject.CompareTag("InteractiveObject"))
         {
             interactionTarget = other.gameObject.transform.parent.GetComponentInChildren<WorldObjectScript>();
@@ -192,9 +199,13 @@ public class PlayerBaseScript : WorldObjectScript
             IncreaseBet();
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             gun.Shoot();
+        }
+        if (Input.GetMouseButton(1))
+        {
+            meleeWeapon.Shoot();
         }
 
         if (Input.GetKeyDown(KeyCode.F))
@@ -235,6 +246,8 @@ public class PlayerBaseScript : WorldObjectScript
             if (touchingGround)
             {
                 rigidbody.AddForce(Vector3.up * jumpMagnitude, ForceMode.Impulse);
+                audio.clip = jumpClip;
+                audio.Play();
             }
         }
 
@@ -246,11 +259,15 @@ public class PlayerBaseScript : WorldObjectScript
         if (Input.GetKey("left"))
         {
             rigidbody.AddForce(Vector3.left * moveSpeed);
+            audio.clip = walkClip;
+            audio.Play();
         }
 
         if (Input.GetKey("right"))
         {
             rigidbody.AddForce(Vector3.right * moveSpeed);
+            audio.clip = walkClip;
+            audio.Play();
         }
     }
 

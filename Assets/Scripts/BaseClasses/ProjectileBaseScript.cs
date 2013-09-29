@@ -3,7 +3,8 @@ using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
 
-abstract public class ProjectileBaseScript : MonoBehaviour {
+abstract public class ProjectileBaseScript : MonoBehaviour
+{
 
     public float projectileSpeed;
     public int damage;
@@ -12,23 +13,23 @@ abstract public class ProjectileBaseScript : MonoBehaviour {
     protected Vector3 direction;
     private float spawnTime;
 
-	public virtual void Start () {
+    public virtual void Start()
+    {
         spawnTime = Time.time;
         direction = PlayerScript.aimDirection;
-        direction.Normalize();
         rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
-        //direction.Normalize();
-        //direction *= projectileSpeed;
-        //rigidbody.AddForce(direction, ForceMode.Impulse);
-	}
-	
-	public virtual void Update () {
+    }
+
+    public virtual void Update()
+    {
         if (Time.time - spawnTime > lifetime || transform.position.z < -20)
         {
             Destroy(gameObject);
         }
+        direction.Normalize();
+        direction.z = 0;
         transform.Translate(projectileSpeed * direction * Time.deltaTime);
-	}
+    }
 
     public void FixedUpdate()
     {
@@ -36,12 +37,7 @@ abstract public class ProjectileBaseScript : MonoBehaviour {
 
     public void OnCollisionEnter(Collision collision)
     {
-        //if (collision.gameObject.GetComponent<WorldObjectScript>() )
-        //{
-        //    WorldObjectScript target = (WorldObjectScript)collision.gameObject.GetComponent<WorldObjectScript>();
-        //    target.TakeDamage(damage);
-        //    Destroy(gameObject);
-        //}
+        Destroy(gameObject);
     }
 
     public void OnTriggerEnter(Collider other)
