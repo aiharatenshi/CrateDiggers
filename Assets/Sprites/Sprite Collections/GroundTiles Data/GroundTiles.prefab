@@ -75,8 +75,8 @@ MonoBehaviour:
     complexGeometry: 0
     colliderType: 2
     colliderVertices:
-    - {x: 0, y: -.5, z: 0}
-    - {x: 1, y: .5, z: .100000001}
+    - {x: .474999994, y: -.5, z: 0}
+    - {x: .524999976, y: .5, z: .100000001}
     colliderIndicesFwd: 
     colliderIndicesBack: 
     colliderConvex: 0
@@ -195,8 +195,8 @@ MonoBehaviour:
     complexGeometry: 0
     colliderType: 2
     colliderVertices:
-    - {x: 0, y: -.5, z: 0}
-    - {x: 1, y: .5, z: .100000001}
+    - {x: -.474999964, y: -.5, z: 0}
+    - {x: .525000036, y: .5, z: .100000001}
     colliderIndicesFwd: 
     colliderIndicesBack: 
     colliderConvex: 0
@@ -853,7 +853,7 @@ MonoBehaviour:
   loadable: 0
   invOrthoSize: 2
   halfTargetHeight: 10
-  buildKey: 1220066916
+  buildKey: 1789548536
   dataGuid: 5fbea3b2a22632949aa45c4701411431
   managedSpriteCollection: 0
   hasPlatformData: 0

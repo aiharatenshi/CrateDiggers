@@ -34,11 +34,12 @@ abstract public class GunBaseScript : MonoBehaviour
 
     }
 
-    public void Shoot()
+    public void Shoot(Vector3 dir)
     {
         if (!fireRateTimer.isActive)
         {
-            Instantiate(projectileType, transform.position, transform.rotation);
+            ProjectileBaseScript projectile = (ProjectileBaseScript)Instantiate(projectileType, transform.position, transform.rotation);
+            projectile.SetDirection(dir);
             audio.Play();
             fireRateTimer.StartTimer(fireRate);
         }

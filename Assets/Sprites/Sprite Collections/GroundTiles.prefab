@@ -115,7 +115,7 @@ MonoBehaviour:
     regionH: 40
     regionId: 0
     colliderType: 3
-    boxColliderMin: {x: 0, y: 20}
+    boxColliderMin: {x: 19, y: 20}
     boxColliderMax: {x: 40, y: 40}
     polyColliderIslands: []
     polyColliderCap: 1
@@ -236,7 +236,7 @@ MonoBehaviour:
     regionId: 3
     colliderType: 3
     boxColliderMin: {x: 0, y: 20}
-    boxColliderMax: {x: 40, y: 40}
+    boxColliderMax: {x: 21, y: 40}
     polyColliderIslands: []
     polyColliderCap: 1
     colliderConvex: 0

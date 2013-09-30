@@ -67,7 +67,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textMesh: {fileID: 0}
+  parentObject: {fileID: 0}
   startActive: 0
+  defaultDisplayTime: 2
+  alwaysDisplay: 0
+  displayLength: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1

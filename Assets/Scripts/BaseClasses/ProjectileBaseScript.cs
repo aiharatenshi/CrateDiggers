@@ -16,8 +16,12 @@ abstract public class ProjectileBaseScript : MonoBehaviour
     public virtual void Start()
     {
         spawnTime = Time.time;
-        direction = PlayerScript.aimDirection;
         rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+    }
+
+    public virtual void SetDirection(Vector3 dir)
+    {
+        direction = dir;
     }
 
     public virtual void Update()

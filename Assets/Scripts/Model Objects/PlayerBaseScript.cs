@@ -10,19 +10,23 @@ public class PlayerBaseScript : WorldObjectScript
     /// <summary>
     /// Base abstract class for player objects.
     /// Contains basic controller movement and interaction.
+    /// 
+    /// NOTE: Don't set default values for movement until we find something
+    /// we actually like.
     /// </summary>
 
-    public int moveSpeed = 100;
-    public int jumpMagnitude = 20;
+    public int moveSpeed;
+    public int jumpMagnitude;
     public int moveSpeedAir;
-    private int moveSpeedDefault;
+    private int moveSpeedDefault; // This should be private, but needs to be public to test movespeeds during play
+    public int maxVelocity;
     public WorldObjectScript interactionTarget = null;
     public WorldAreaScript currentArea = null;
     private static RockPaperScissors rpsGame = null;
     public bool physicsInput = true;
     public bool touchingGround = true;
     public int playChance = 10;
-    public static Vector3 aimDirection;
+    public Vector3 aimDirection;
     public Camera cam;
     public GunBaseScript gun;
     public MeleeWeaponBaseScript meleeWeapon;
@@ -31,13 +35,17 @@ public class PlayerBaseScript : WorldObjectScript
     public AudioClip deathClip;
     public AudioClip landClip;
     public AudioClip walkClip;
+    private bool flagForRespawn;
+    /// <summary>
+    /// If false overrides whatever value moveSpeedAir is set to
+    /// </summary>
+    public bool AirControl;
 
     // Use this for initialization
     public override void Start()
     {
         base.Start();
         rpsGame = GameObject.FindGameObjectWithTag("CompetitiveGame").GetComponent<RockPaperScissors>();
-        moveSpeedAir = moveSpeed / 2;
         moveSpeedDefault = moveSpeed;
         gun = GetComponentInChildren<GunBaseScript>();
         meleeWeapon = GetComponentInChildren<MeleeWeaponBaseScript>();
@@ -64,13 +72,31 @@ public class PlayerBaseScript : WorldObjectScript
         aimDirection = cam.ScreenToWorldPoint(Input.mousePosition) - gameObject.transform.position;
         Debug.DrawRay(gameObject.transform.position, aimDirection, Color.red);
 
+        if (!AirControl)
+        {
+            moveSpeedAir = 0;
+        }
+
     }
 
     public virtual void FixedUpdate()
     {
+        Debug.Log(rigidbody.velocity.magnitude);
         if (physicsInput)
         {
             HandlePhysicsInput();
+        }
+        if (flagForRespawn)
+        {
+            Respawn();
+        }
+        if (rigidbody.velocity.sqrMagnitude > maxVelocity * maxVelocity)  // TODO: This shouldn't cap x and y velocity dependently. Need to rewrite later.
+        {
+            float yVel = rigidbody.velocity.y;
+            Vector3 maxedVelocity = new Vector3(rigidbody.velocity.x, rigidbody.velocity.y, 0);
+            maxedVelocity.Normalize();
+            maxedVelocity.Set(maxedVelocity.x * maxVelocity, maxedVelocity.y * maxVelocity, 0);
+            rigidbody.velocity = maxedVelocity;
         }
     }
 
@@ -90,7 +116,11 @@ public class PlayerBaseScript : WorldObjectScript
 
     public virtual void OnCollisionExit(Collision collision)
     {
-        touchingGround = false;
+        if (collision.gameObject.CompareTag("Environment"))
+        {
+            touchingGround = false;
+        }
+
     }
 
     public virtual void OnTriggerEnter(Collider other)
@@ -127,6 +157,10 @@ public class PlayerBaseScript : WorldObjectScript
         if (other.gameObject.CompareTag("WorldArea"))
         {
             currentArea = null;
+        }
+        if (other.gameObject.CompareTag("OutOfBounds"))
+        {
+            flagForRespawn = true;
         }
     }
 
@@ -201,7 +235,7 @@ public class PlayerBaseScript : WorldObjectScript
 
         if (Input.GetMouseButton(0))
         {
-            gun.Shoot();
+            gun.Shoot(aimDirection);
         }
         if (Input.GetMouseButton(1))
         {
@@ -241,7 +275,7 @@ public class PlayerBaseScript : WorldObjectScript
         {
             moveSpeed = moveSpeedDefault;
         }
-        if (Input.GetKey("up"))
+        if (Input.GetKeyDown("up"))
         {
             if (touchingGround)
             {
@@ -269,6 +303,19 @@ public class PlayerBaseScript : WorldObjectScript
             audio.clip = walkClip;
             audio.Play();
         }
+
+        if (touchingGround) // Allow player to stop instantly if touching ground
+        {
+            if (Input.GetKeyUp("left") && !Input.GetKeyDown("right"))
+            {
+                rigidbody.velocity.Set(0, rigidbody.velocity.y, 0);
+            }
+            if (Input.GetKeyUp("right")&& !Input.GetKeyDown("left"))
+            {
+                rigidbody.velocity.Set(0, rigidbody.velocity.y, 0);
+            }
+        }
+
     }
 
     public virtual void HandleInput(KeyCode key) { }
@@ -286,6 +333,14 @@ public class PlayerBaseScript : WorldObjectScript
     public override void OnInteract()
     {
         throw new System.NotImplementedException();
+    }
+
+    public void Respawn()
+    {
+        transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
+        flagForRespawn = false;
+        audio.clip = deathClip;
+        audio.Play();
     }
 
 }

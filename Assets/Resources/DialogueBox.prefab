@@ -26,7 +26,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 3.04998779, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -67,7 +67,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textMesh: {fileID: 0}
+  parentObject: {fileID: 0}
   startActive: 0
+  defaultDisplayTime: 2
+  alwaysDisplay: 0
+  displayLength: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -97,7 +101,7 @@ MonoBehaviour:
   data:
     version: 1
     font: {fileID: 11400000, guid: 1b2817fbebaa10f4aba4711186ef37cc, type: 2}
-    text: New TextMesh
+    text: Dialogue Box
     color: {r: 1, g: 1, b: 1, a: 1}
     color2: {r: 1, g: 1, b: 1, a: 1}
     useGradient: 0
@@ -108,8 +112,8 @@ MonoBehaviour:
     kerning: 0
     maxChars: 16
     inlineStyling: 0
-    formatting: 0
-    wordWrapWidth: 0
+    formatting: 1
+    wordWrapWidth: 500
     spacing: 0
     lineSpacing: 0
 --- !u!1001 &100100000

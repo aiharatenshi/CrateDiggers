@@ -80,6 +80,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileType: {fileID: 11400000, guid: 319b43aa42b96ca47a69823ab17aeffa, type: 2}
   sound: {fileID: 0}
+  fireRate: 0
+  spread: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
