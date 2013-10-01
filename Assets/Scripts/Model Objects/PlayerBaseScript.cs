@@ -14,11 +14,15 @@ public class PlayerBaseScript : WorldObjectScript
     /// NOTE: Don't set default values for movement until we find something
     /// we actually like.
     /// </summary>
-
+    
+    [Range(0.1f, 15.0f)]
     public int moveSpeed;
+    [Range(1.0f, 50.0f)]
     public int jumpMagnitude;
+    [Range(0.1f, 15.0f)]
     public int moveSpeedAir;
     private int moveSpeedDefault; // This should be private, but needs to be public to test movespeeds during play
+    [Range(0.0f, 30.0f)]
     public int maxVelocity;
     public WorldObjectScript interactionTarget = null;
     public WorldAreaScript currentArea = null;
@@ -77,11 +81,18 @@ public class PlayerBaseScript : WorldObjectScript
             moveSpeedAir = 0;
         }
 
+        switch (health)
+        {
+            case 0:
+                flagForRespawn = true;
+                break;
+        }
+
     }
 
     public virtual void FixedUpdate()
     {
-        Debug.Log(rigidbody.velocity.magnitude);
+        //Debug.Log(rigidbody.velocity.magnitude);
         if (physicsInput)
         {
             HandlePhysicsInput();
@@ -90,14 +101,14 @@ public class PlayerBaseScript : WorldObjectScript
         {
             Respawn();
         }
-        if (rigidbody.velocity.sqrMagnitude > maxVelocity * maxVelocity)  // TODO: This shouldn't cap x and y velocity dependently. Need to rewrite later.
-        {
-            float yVel = rigidbody.velocity.y;
-            Vector3 maxedVelocity = new Vector3(rigidbody.velocity.x, rigidbody.velocity.y, 0);
-            maxedVelocity.Normalize();
-            maxedVelocity.Set(maxedVelocity.x * maxVelocity, maxedVelocity.y * maxVelocity, 0);
-            rigidbody.velocity = maxedVelocity;
-        }
+        //if (rigidbody.velocity.sqrMagnitude > maxVelocity * maxVelocity)  // TODO: This shouldn't cap x and y velocity dependently. Need to rewrite later.
+        //{
+        //    float yVel = rigidbody.velocity.y;
+        //    Vector3 maxedVelocity = new Vector3(rigidbody.velocity.x, rigidbody.velocity.y, 0);
+        //    maxedVelocity.Normalize();
+        //    maxedVelocity.Set(maxedVelocity.x * maxVelocity, maxedVelocity.y * maxVelocity, 0);
+        //    rigidbody.velocity = maxedVelocity;
+        //}
     }
 
     public virtual void OnCollisionEnter(Collision collision)
@@ -292,14 +303,20 @@ public class PlayerBaseScript : WorldObjectScript
 
         if (Input.GetKey("left"))
         {
-            rigidbody.AddForce(Vector3.left * moveSpeed);
+            if (rigidbody.velocity.x > -maxVelocity)
+            {
+                rigidbody.AddForce(Vector3.left * moveSpeed, ForceMode.VelocityChange);   
+            }
             audio.clip = walkClip;
             audio.Play();
         }
 
         if (Input.GetKey("right"))
         {
-            rigidbody.AddForce(Vector3.right * moveSpeed);
+            if (rigidbody.velocity.x < maxVelocity)
+            {
+                rigidbody.AddForce(Vector3.right * moveSpeed, ForceMode.VelocityChange); 
+            }
             audio.clip = walkClip;
             audio.Play();
         }

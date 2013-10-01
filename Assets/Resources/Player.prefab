@@ -1,25 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &100000
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 400000}
-  - 33: {fileID: 3300000}
-  - 23: {fileID: 2300000}
-  - 114: {fileID: 11400000}
-  - 114: {fileID: 11400004}
-  - 114: {fileID: 11400002}
-  m_Layer: 0
-  m_Name: TextMesh0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &100002
 GameObject:
   m_ObjectHideFlags: 0
@@ -54,7 +34,7 @@ GameObject:
   - 114: {fileID: 11400012}
   - 114: {fileID: 11400010}
   m_Layer: 0
-  m_Name: TextMesh
+  m_Name: RPSChoice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -159,17 +139,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &400000
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 400008}
 --- !u!4 &400002
 Transform:
   m_ObjectHideFlags: 1
@@ -210,7 +179,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100008}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22.507782, y: 8.86553574, z: 0}
+  m_LocalPosition: {x: 56.0585785, y: 23.6795387, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400006}
@@ -218,7 +187,6 @@ Transform:
   - {fileID: 400002}
   - {fileID: 400004}
   - {fileID: 400014}
-  - {fileID: 400000}
   - {fileID: 400012}
   m_Father: {fileID: 0}
 --- !u!4 &400010
@@ -250,28 +218,10 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100014}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.0341529846, y: .832036972, z: 0}
+  m_LocalPosition: {x: -.0341529846, y: .143852234, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400008}
---- !u!23 &2300000
-Renderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 2100000, guid: 08fda997f12670c45bd6e7842151aea7, type: 2}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
 --- !u!23 &2300002
 Renderer:
   m_ObjectHideFlags: 1
@@ -398,13 +348,6 @@ Renderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
---- !u!33 &3300000
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Mesh: {fileID: 0}
 --- !u!33 &3300002
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -462,8 +405,8 @@ Rigidbody:
   m_GameObject: {fileID: 100008}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: .99000001
-  m_AngularDrag: .0500000007
+  m_Drag: 1
+  m_AngularDrag: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -491,7 +434,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 20}
+  m_Size: {x: 1, y: 2, z: 20}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &6500004
 BoxCollider:
@@ -691,79 +634,6 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 994457055a9434b4aa7b65ad37262d67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _font: {fileID: 0}
-  _text: 
-  _color: {r: 1, g: 1, b: 1, a: 1}
-  _color2: {r: 1, g: 1, b: 1, a: 1}
-  _useGradient: 0
-  _textureGradient: 0
-  _anchor: 6
-  _scale: {x: 1, y: 1, z: 1}
-  _kerning: 0
-  _maxChars: 16
-  _inlineStyling: 0
-  _formatting: 0
-  _wordWrapWidth: 0
-  spacing: 0
-  lineSpacing: 0
-  data:
-    version: 1
-    font: {fileID: 11400000, guid: 1b2817fbebaa10f4aba4711186ef37cc, type: 2}
-    text: New TextMesh
-    color: {r: 1, g: 1, b: 1, a: 1}
-    color2: {r: 1, g: 1, b: 1, a: 1}
-    useGradient: 0
-    textureGradient: 0
-    anchor: 6
-    renderLayer: 0
-    scale: {x: 1, y: 1, z: 1}
-    kerning: 0
-    maxChars: 16
-    inlineStyling: 0
-    formatting: 0
-    wordWrapWidth: 0
-    spacing: 0
-    lineSpacing: 0
---- !u!114 &11400002
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8458e8bb29228d34cb34508d5a9b062a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textMesh: {fileID: 0}
-  parentObject: {fileID: 0}
-  startActive: 1
-  defaultDisplayTime: 2
-  alwaysDisplay: 0
-  displayLength: 0
---- !u!114 &11400004
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6010c575f19a00e4492e40ee41e27ef4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isActive: 0
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -808,7 +678,7 @@ MonoBehaviour:
   data:
     version: 1
     font: {fileID: 11400000, guid: 1b2817fbebaa10f4aba4711186ef37cc, type: 2}
-    text: New TextMesh
+    text: RPSChoice
     color: {r: 1, g: 1, b: 1, a: 1}
     color2: {r: 1, g: 1, b: 1, a: 1}
     useGradient: 0
@@ -930,17 +800,18 @@ MonoBehaviour:
   currentBet: 0
   dialogueDisplayLength: 0
   choice: 0
+  health: 4
   godMode: 0
-  moveSpeed: 100
-  jumpMagnitude: 14
-  moveSpeedAir: 0
-  moveSpeedDefault: 0
-  maxVelocity: 0
+  moveSpeed: 252
+  jumpMagnitude: 27
+  moveSpeedAir: 23
+  maxVelocity: 50
   interactionTarget: {fileID: 0}
   currentArea: {fileID: 0}
   physicsInput: 1
   touchingGround: 1
   playChance: 10
+  aimDirection: {x: 0, y: 0, z: 0}
   cam: {fileID: 0}
   gun: {fileID: 0}
   meleeWeapon: {fileID: 0}
@@ -949,7 +820,7 @@ MonoBehaviour:
   deathClip: {fileID: 8300000, guid: 8ed2e1da7a8a2784a9da7e403d8a93f6, type: 3}
   landClip: {fileID: 8300000, guid: b92a646112c503b4d9029fbd7af54c7c, type: 3}
   walkClip: {fileID: 8300000, guid: d6694aa90a1299b46995dc6be29f78d0, type: 3}
-  AirControl: 0
+  AirControl: 1
 --- !u!114 &11400020
 MonoBehaviour:
   m_ObjectHideFlags: 1

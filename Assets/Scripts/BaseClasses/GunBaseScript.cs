@@ -9,11 +9,13 @@ abstract public class GunBaseScript : MonoBehaviour
 
     public ProjectileBaseScript projectileType;
     public AudioClip sound;
+    [Range(0.05f, 2.0f)]
     public float fireRate;
     private TimerScript fireRateTimer;
     public float spread;
 
-    // Use this for initialization
+    // TODO: Reload mechanics.
+
     public virtual void Start()
     {
         if (gameObject.GetComponent<AudioSource>() == null)
@@ -28,7 +30,6 @@ abstract public class GunBaseScript : MonoBehaviour
         audio.clip = sound;
     }
 
-    // Update is called once per frame
     public virtual void Update()
     {
 

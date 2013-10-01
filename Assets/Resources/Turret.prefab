@@ -30,6 +30,7 @@ GameObject:
   - 33: {fileID: 3300002}
   - 135: {fileID: 13500000}
   - 23: {fileID: 2300002}
+  - 114: {fileID: 11400002}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -44,7 +45,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.0881500244, y: 1.35163116, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400002}
@@ -55,7 +56,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 55.4797974, y: 37.2783012, z: 0}
+  m_LocalPosition: {x: 23.7277222, y: 43.4785805, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400000}
@@ -134,9 +135,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileType: {fileID: 11400000, guid: 319b43aa42b96ca47a69823ab17aeffa, type: 2}
-  sound: {fileID: 0}
-  fireRate: 0
+  sound: {fileID: 8300000, guid: 9ff577fbc3784c5498c86c267ef7e6bf, type: 3}
+  fireRate: 2
   spread: 0
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab9417d604221134eb0956b9a28aa23c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 1
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -144,7 +157,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: .5

@@ -27,7 +27,8 @@ abstract public class WorldObjectScript : MonoBehaviour
     public float dialogueDisplayLength;
     protected DialogueBox dialogueBox;
     public RockPaperScissors.RPS choice = RockPaperScissors.RPS.rock;
-    protected int health = 4;
+    [Range(1.0f, 100.0f)]
+    public int health = 4;
     public bool godMode = false;
 
     private enum objectState { }
@@ -70,7 +71,7 @@ abstract public class WorldObjectScript : MonoBehaviour
     {
         if (health <= 0)
         {
-            Destroy(gameObject);
+            // TODO: Define death behaviors.
         }
     }
 

@@ -6,6 +6,7 @@ public class TurretBaseScript : MonoBehaviour {
     private GunBaseScript gun;
     private PlayerBaseScript target;
     private Vector3 aimDirection;
+    public float moveSpeed;
 
 	// Use this for initialization
 	void Start () {
@@ -14,8 +15,17 @@ public class TurretBaseScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        target = (PlayerBaseScript)FindObjectOfType(typeof(PlayerBaseScript));
-        aimDirection = target.transform.position - gameObject.transform.position;
-        gun.Shoot(aimDirection);
+        if (target == null)
+        {
+            target = (PlayerBaseScript)FindObjectOfType(typeof(PlayerBaseScript));
+        }
+        else
+        {
+            aimDirection = target.transform.position - gameObject.transform.position;
+            gun.Shoot(aimDirection);
+            aimDirection.Normalize();
+            aimDirection.z = 0;
+            transform.Translate(moveSpeed * aimDirection * Time.deltaTime);
+        }
 	}
 }
