@@ -1,21 +1,52 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(TimerScript))]
+
 public class RockPaperScissors : MonoBehaviour
 {
 
     public enum RPS { rock, paper, scissors }
     public enum result { p1win, p2win, draw, error }
 
+    private TimerScript playTimer;
+    public float playPollingDelay = 1; // In seconds
+
     void Start()
     {
+        if (gameObject.GetComponent<TimerScript>() == null)
+        {
+            gameObject.AddComponent("TimerScript");
+        }
 
+        playTimer = gameObject.GetComponent<TimerScript>();
     }
 
     void Update()
     {
-
+        if (!playTimer.isActive)
+        {
+            GetRandomPlayerPair();
+            playTimer.StartTimer(playPollingDelay);
+        }
     }
+
+    void GetRandomPlayerPair()
+    {
+        WorldObjectScript[] players = FindObjectsOfType(typeof(WorldObjectScript)) as WorldObjectScript[];
+        int a = UnityEngine.Random.Range(0, players.Length);
+        int b = UnityEngine.Random.Range(0, players.Length);
+        while (a == b)
+        {
+            a = UnityEngine.Random.Range(0, players.Length);
+            b = UnityEngine.Random.Range(0, players.Length);
+        }
+        if (players[a].currentBet > 0 && players[b].currentBet > 0)
+        {
+            Play(players[a], players[b]);
+        }
+    }
+
     /// <summary>
     /// Initiate a game of rock-paper-scissors. Should only be called bu the challenging player.
     /// </summary>
@@ -29,13 +60,13 @@ public class RockPaperScissors : MonoBehaviour
         }
 
         int stakes = player1.currentBet + player2.currentBet;
-        
+
         result gameResult = GetResult(player1.choice, player2.MakeRandomRPSChoice());
         switch (gameResult)
         {
             case result.p1win:
                 player1.Win(stakes);
-                player2.Lose();  
+                player2.Lose();
 
                 //Debug.Log("You won!");
                 break;

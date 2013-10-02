@@ -13,9 +13,9 @@ GameObject:
   - 23: {fileID: 2300000}
   - 114: {fileID: 11400000}
   - 54: {fileID: 5400000}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PhysicsProjectileTest
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -84,7 +84,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileSpeed: 37.4000015
   damage: 1
-  lifetime: 20
+  lifetime: 5
   physicsProjectile: 1
 --- !u!135 &13500000
 SphereCollider:

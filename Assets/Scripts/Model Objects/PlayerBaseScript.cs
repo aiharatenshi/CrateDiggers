@@ -29,7 +29,6 @@ public class PlayerBaseScript : WorldObjectScript
     private static RockPaperScissors rpsGame = null;
     public bool physicsInput = true;
     public bool touchingGround = true;
-    public int playChance = 10;
     public Vector3 aimDirection;
     public Camera cam;
     public GunBaseScript gun;
@@ -49,11 +48,16 @@ public class PlayerBaseScript : WorldObjectScript
     public override void Start()
     {
         base.Start();
-        rpsGame = GameObject.FindGameObjectWithTag("CompetitiveGame").GetComponent<RockPaperScissors>();
+        if (GameObject.FindGameObjectWithTag("CompetitiveGame"))
+        {
+            rpsGame = GameObject.FindGameObjectWithTag("CompetitiveGame").GetComponent<RockPaperScissors>();
+        }
         moveSpeedDefault = moveSpeed;
         gun = GetComponentInChildren<GunBaseScript>();
         meleeWeapon = GetComponentInChildren<MeleeWeaponBaseScript>();
         ammo = gun.projectileType;
+
+        gameObject.tag = "Player";
     }
 
     // Update is called once per frame
@@ -61,17 +65,6 @@ public class PlayerBaseScript : WorldObjectScript
     {
         base.Update();
         HandleInput();
-
-        if (UnityEngine.Random.Range(0, playChance) == 0)
-        {
-            WorldObjectScript[] players = FindObjectsOfType(typeof(WorldObjectScript)) as WorldObjectScript[];
-            int a = UnityEngine.Random.Range(0, players.Length);
-            int b = UnityEngine.Random.Range(0, players.Length);
-            if (a != b && players[a].currentBet > 0 && players[b].currentBet > 0)
-            {
-                rpsGame.Play(players[a], players[b]);
-            }
-        }
 
         aimDirection = cam.ScreenToWorldPoint(Input.mousePosition) - gameObject.transform.position;
         Debug.DrawRay(gameObject.transform.position, aimDirection, Color.red);
@@ -113,6 +106,7 @@ public class PlayerBaseScript : WorldObjectScript
 
     public virtual void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("Player hit something");
         touchingGround = true;
     }
 
@@ -298,7 +292,6 @@ public class PlayerBaseScript : WorldObjectScript
 
         if (Input.GetKey("down"))
         {
-            //rigidbody.AddForce(Vector3.down * moveSpeed);
         }
 
         if (Input.GetKey("left"))
@@ -320,19 +313,6 @@ public class PlayerBaseScript : WorldObjectScript
             audio.clip = walkClip;
             audio.Play();
         }
-
-        if (touchingGround) // Allow player to stop instantly if touching ground
-        {
-            if (Input.GetKeyUp("left") && !Input.GetKeyDown("right"))
-            {
-                rigidbody.velocity.Set(0, rigidbody.velocity.y, 0);
-            }
-            if (Input.GetKeyUp("right")&& !Input.GetKeyDown("left"))
-            {
-                rigidbody.velocity.Set(0, rigidbody.velocity.y, 0);
-            }
-        }
-
     }
 
     public virtual void HandleInput(KeyCode key) { }

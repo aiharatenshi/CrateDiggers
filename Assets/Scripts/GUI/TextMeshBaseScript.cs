@@ -12,7 +12,7 @@ public class TextMeshBaseScript : MonoBehaviour
 
     protected TimerScript timer;
     public tk2dTextMesh textMesh;
-    public WorldObjectScript parentObject;
+    //public WorldObjectScript parentObject;
     public bool startActive = true;
     public int defaultDisplayTime = 2;
     public bool alwaysDisplay = false;
@@ -25,7 +25,7 @@ public class TextMeshBaseScript : MonoBehaviour
         {
             gameObject.AddComponent<TimerScript>();
         }
-        parentObject = (WorldObjectScript)transform.parent.gameObject.GetComponent<WorldObjectScript>();
+        //parentObject = (WorldObjectScript)transform.parent.parent.gameObject.GetComponent<WorldObjectScript>();
         textMesh = GetComponent<tk2dTextMesh>();
         timer = GetComponent<TimerScript>();
 

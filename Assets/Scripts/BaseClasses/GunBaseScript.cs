@@ -6,6 +6,11 @@ using System.Collections;
 
 abstract public class GunBaseScript : MonoBehaviour
 {
+    /// <summary>
+    /// Basic projectile weapon class. Fires attached ammo type @ firerate
+    /// in the direction the source obj is "aiming" (Vec3)
+    /// Plays sound on fire.
+    /// </summary>
 
     public ProjectileBaseScript projectileType;
     public AudioClip sound;
@@ -43,6 +48,16 @@ abstract public class GunBaseScript : MonoBehaviour
             projectile.SetDirection(dir);
             audio.Play();
             fireRateTimer.StartTimer(fireRate);
+ 
+            /* NOTE: Projectiles need to ignore the source object's "movement" collider AND its hitbox collider
+             * Player (instance) >> Weapons (empty container obj) >> Gun (this)
+             * Player (instance) >> Hitbox
+             * 
+             * Either this collider setup needs to be standard, or we need to include failsafes to check for different configs
+             * otherwise transform.parent calls can throw nullptr exceptions
+             */
+            Physics.IgnoreCollision(transform.parent.transform.parent.collider, projectile.collider, true);
+            Physics.IgnoreCollision(transform.parent.transform.parent.GetComponentInChildren<HitboxBaseScript>().collider, projectile.collider, true);
         }
     }
 }

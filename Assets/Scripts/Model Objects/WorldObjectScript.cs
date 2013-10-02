@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(TimerScript))]
 
 abstract public class WorldObjectScript : MonoBehaviour
 {
@@ -21,7 +22,7 @@ abstract public class WorldObjectScript : MonoBehaviour
     protected bool isMobile = true;
     protected Material[] material;
     protected int score = 0;
-    protected TimerScript[] timer;
+    protected TimerScript timer;
     public int dollarBillz = 1000;
     public int currentBet = 0;
     public float dialogueDisplayLength;
@@ -36,6 +37,13 @@ abstract public class WorldObjectScript : MonoBehaviour
     // Use this for initialization
     public virtual void Start()
     {
+        if (!GetComponent<TimerScript>())
+        {
+            gameObject.AddComponent("TimerScript");
+        }
+
+        timer = GetComponent<TimerScript>();
+        
         if (!GetComponent<Rigidbody>())
         {
             Debug.LogWarning("Rigidbody was missing on <" + gameObject.name + ">");
@@ -58,6 +66,8 @@ abstract public class WorldObjectScript : MonoBehaviour
         {
             //textMesh = GetComponentInChildren<tk2dTextMesh>();
         }
+
+        ChangeTextMeshText(GetComponentInChildren<NameTextMesh>() as TextMeshBaseScript, objectName);
 
         dialogueBox = GetComponentInChildren<DialogueBox>();
         dialogueBox.Start();
@@ -102,8 +112,11 @@ abstract public class WorldObjectScript : MonoBehaviour
 
     public void IncreaseBet()
     {
-        dollarBillz -= 100;
-        currentBet += 100;
+        if (dollarBillz > 0)
+        {
+            dollarBillz -= 100;
+            currentBet += 100; 
+        }
     }
 
     public void Lose()
@@ -146,4 +159,8 @@ abstract public class WorldObjectScript : MonoBehaviour
         }
     }
 
+    public void ChangeTextMeshText(TextMeshBaseScript textMesh, string newText)
+    {
+        textMesh.UpdateText(newText);
+    }
 }

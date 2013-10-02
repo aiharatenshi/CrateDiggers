@@ -5,7 +5,11 @@ using System.Collections;
 
 abstract public class ProjectileBaseScript : MonoBehaviour
 {
-
+    /// <summary>
+    /// Basic projectile class.
+    /// Defaults to Kinematic Rigidbody Trigger Collider.
+    /// Changes to Rigidbody Trigger Collider if flagged as physics projectile (e.g. arrow)
+    /// </summary>
     [Range(1.0f, 50.0f)]
     public float projectileSpeed;
     public int damage;
@@ -19,8 +23,13 @@ abstract public class ProjectileBaseScript : MonoBehaviour
     {
         spawnTime = Time.time;
         rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        rigidbody.isKinematic = true;
+        collider.isTrigger = true;
+        gameObject.layer = LayerMask.NameToLayer("Hitboxes");
+        gameObject.tag = "Projectile";
         if (physicsProjectile)
         {
+            rigidbody.isKinematic = false;
             direction.Normalize();
             direction.z = 0;
             rigidbody.AddForce(projectileSpeed * direction, ForceMode.VelocityChange);
@@ -34,13 +43,14 @@ abstract public class ProjectileBaseScript : MonoBehaviour
 
     public virtual void Update()
     {
-        if (Time.time - spawnTime > lifetime || transform.position.z < -20)
+        if (Time.time - spawnTime > lifetime)
         {
             Destroy(gameObject);
         }
 
         if (physicsProjectile)
         {
+            // Physics movement occurs @ init
         }
         else
         {
@@ -54,27 +64,16 @@ abstract public class ProjectileBaseScript : MonoBehaviour
     {
     }
 
-    public void OnCollisionEnter(Collision collision) // TODO: Need to fix collision handling (standardize method of referencing collider -- on obj or on child object?)
-    {
-        if (collision.gameObject.CompareTag("InteractiveObject") || collision.gameObject.CompareTag("Player"))
-        {
-            WorldObjectScript target = (WorldObjectScript)collision.gameObject.GetComponent<WorldObjectScript>();
-            target.TakeDamage(damage);
-            Destroy(gameObject);
-            Debug.Log("Hit");
-        }
-        //else
-        //{
-        //    Destroy(gameObject);
-        //}
-    }
-
     public void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("InteractiveObject") || other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Hitbox"))
         {
             WorldObjectScript target = (WorldObjectScript)other.transform.parent.GetComponent<WorldObjectScript>();
             target.TakeDamage(damage);
+            Destroy(gameObject);
+        }
+        if (other.gameObject.CompareTag("Projectile"))
+        {
             Destroy(gameObject);
         }
     }
