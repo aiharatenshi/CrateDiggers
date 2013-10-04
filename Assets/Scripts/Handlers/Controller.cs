@@ -1,22 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Controller : MonoBehaviour {
+public class Controller : MonoBehaviour
+{
 
     /// <summary>
     /// This is the controller class that should accompany each client
     /// 
     /// </summary>
 
-    //private Player player;
+    public Camera mainCamera;
 
-	void Start () {
-        //player = GetComponent<Player>();
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    void Start()
+    {
+
+    }
+
+    void Update()
+    {
         if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
             GameObject[] textMeshes;
@@ -37,9 +38,10 @@ public class Controller : MonoBehaviour {
                 textMesh.renderer.enabled = false;
             }
         }
-	}
+    }
 
-    void KeyDown(KeyCode key) {
+    void KeyDown(KeyCode key)
+    {
 
     }
 
@@ -49,8 +51,9 @@ public class Controller : MonoBehaviour {
     /// Basic input system. Using unity's Input class may be more useful, but this will grab
     /// keyCodes for us. Can use both.
     /// </summary>
-    
-    void OnGUI() {
+
+    void OnGUI()
+    {
         Event e = Event.current;
         if (e.isKey)
         {

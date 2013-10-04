@@ -37,15 +37,14 @@ abstract public class GunBaseScript : MonoBehaviour
 
     public virtual void Update()
     {
-
     }
 
-    public void Shoot(Vector3 dir)
+    public void Shoot(Vector3 direction)
     {
         if (!fireRateTimer.isActive)
         {
-            ProjectileBaseScript projectile = (ProjectileBaseScript)Instantiate(projectileType, transform.position, transform.rotation);
-            projectile.SetDirection(dir);
+            ProjectileBaseScript projectile = (ProjectileBaseScript)Instantiate(projectileType, transform.position, Quaternion.identity);
+            projectile.SetDirection(direction);
             audio.Play();
             fireRateTimer.StartTimer(fireRate);
  

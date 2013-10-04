@@ -58,6 +58,9 @@ public class PlayerBaseScript : WorldObjectScript
         ammo = gun.projectileType;
 
         gameObject.tag = "Player";
+
+        tk2dSprite sprite = GetComponentInChildren<tk2dSprite>();
+        sprite.collider.enabled = false;
     }
 
     // Update is called once per frame
@@ -226,6 +229,22 @@ public class PlayerBaseScript : WorldObjectScript
             {
                 transform.Translate(new Vector3(moveSpeed, 0, 0) * Time.deltaTime);
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            tk2dSprite sprite = GetComponentInChildren<tk2dSprite>();
+            sprite.color = new Color(1, 1, 1, 0.5f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.PageUp))
+        {
+            gameObject.layer = LayerMask.NameToLayer("Environment2");
+        }
+
+        if (Input.GetKeyDown(KeyCode.PageDown))
+        {
+            gameObject.layer = LayerMask.NameToLayer("Environment1");
         }
 
         if (Input.GetKeyDown(KeyCode.E))

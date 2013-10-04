@@ -10,7 +10,7 @@ public class HitboxBaseScript : MonoBehaviour {
         rigidbody.isKinematic = true;
         collider.isTrigger = true;
         gameObject.tag = "Hitbox";
-        gameObject.layer = LayerMask.NameToLayer("Hitboxes");
+        gameObject.layer = LayerMask.NameToLayer("Hitboxes1");
 	}
 	
 	// Update is called once per frame

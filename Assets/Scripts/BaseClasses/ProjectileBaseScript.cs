@@ -22,10 +22,10 @@ abstract public class ProjectileBaseScript : MonoBehaviour
     public virtual void Start()
     {
         spawnTime = Time.time;
-        rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
         rigidbody.isKinematic = true;
         collider.isTrigger = true;
-        gameObject.layer = LayerMask.NameToLayer("Hitboxes");
+        gameObject.layer = LayerMask.NameToLayer("Hitboxes1");
         gameObject.tag = "Projectile";
         if (physicsProjectile)
         {
@@ -39,6 +39,10 @@ abstract public class ProjectileBaseScript : MonoBehaviour
     public virtual void SetDirection(Vector3 dir)
     {
         direction = dir;
+        direction.Normalize();
+        direction.z = 0;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.eulerAngles = new Vector3(0, 0, angle);
     }
 
     public virtual void Update()
@@ -54,9 +58,7 @@ abstract public class ProjectileBaseScript : MonoBehaviour
         }
         else
         {
-            direction.Normalize();
-            direction.z = 0;
-            transform.Translate(projectileSpeed * direction * Time.deltaTime);
+            transform.Translate(new Vector3(1, 0, 0) * projectileSpeed * Time.deltaTime);
         }
     }
 
