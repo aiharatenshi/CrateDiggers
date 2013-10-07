@@ -16,6 +16,9 @@ public class PlayerBaseScript : WorldObjectScript
     /// NOTE: Don't set default values for movement until we find something
     /// we actually like.
     /// </summary>
+    /// 
+
+    private enum walk { left, right }
 
     [Range(0.1f, 15.0f)]
     public int moveSpeed;
@@ -23,7 +26,7 @@ public class PlayerBaseScript : WorldObjectScript
     public int jumpMagnitude;
     [Range(0.1f, 15.0f)]
     public int moveSpeedAir;
-    private int moveSpeedDefault; // This should be private, but needs to be public to test movespeeds during play
+    public int moveSpeedDefault; // This should be private, but needs to be public to test movespeeds during play
     [Range(0.0f, 30.0f)]
     public int maxVelocity;
     public WorldObjectScript interactionTarget = null;
@@ -41,22 +44,19 @@ public class PlayerBaseScript : WorldObjectScript
     public AudioClip walkClip;
     private bool flagForRespawn;
     public BallBaseScript ball;
-    private PossessionTimer possessionTimer;
+    public PossessionTimer possessionTimer;
+    public GamepadInfo gamepad;
+    //public int playerNumber;
 
-    /// <summary>
-    /// If false overrides whatever value moveSpeedAir is set to
-    /// </summary>
-    public bool AirControl;
-
-    // Use this for initialization
     public override void Start()
     {
         base.Start();
+
         if (GameObject.FindGameObjectWithTag("CompetitiveGame"))
         {
             rpsGame = GameObject.FindGameObjectWithTag("CompetitiveGame").GetComponent<RockPaperScissors>();
         }
-        if (!gameObject.GetComponent<PossessionTimer>())
+        if (gameObject.GetComponent<PossessionTimer>() == null)
         {
             gameObject.AddComponent("PossessionTimer");
         }
@@ -79,13 +79,13 @@ public class PlayerBaseScript : WorldObjectScript
         base.Update();
         HandleInput();
 
-        aimDirection = cam.ScreenToWorldPoint(Input.mousePosition) - gameObject.transform.position;
-        Debug.DrawRay(gameObject.transform.position, aimDirection, Color.red);
+        Vector3 joystickVector = new Vector3(0, 0, 0);
+        joystickVector.x = gamepad.leftStick.x;
+        joystickVector.y = gamepad.leftStick.y;
 
-        if (!AirControl)
-        {
-            moveSpeedAir = 0;
-        }
+        //aimDirection = cam.ScreenToWorldPoint(Input.mousePosition) - gameObject.transform.position;
+        aimDirection = joystickVector;
+        Debug.DrawRay(gameObject.transform.position, aimDirection, Color.red);
 
         switch (health)
         {
@@ -110,6 +110,7 @@ public class PlayerBaseScript : WorldObjectScript
         if (collision.gameObject.tag.StartsWith("Environment"))
         {
             touchingGround = true;
+            moveSpeed = moveSpeedDefault;
         }
 
         if (collision.gameObject.CompareTag("Ball"))
@@ -126,7 +127,7 @@ public class PlayerBaseScript : WorldObjectScript
 
     public virtual void OnCollisionStay(Collision collision)
     {
-        touchingGround = true;
+        //touchingGround = true;
         foreach (ContactPoint contact in collision.contacts)
         {
             Debug.DrawRay(contact.point, contact.normal, Color.red);
@@ -242,27 +243,11 @@ public class PlayerBaseScript : WorldObjectScript
             IncreaseBet();
         }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (ball == null)
-            {
-                abilitySlot.Shoot(aimDirection);
-            }
 
-            if (ball)
-            {
-                GetComponentInChildren<PassBall>().Pass(aimDirection, ball, this);
-                ball = null;
-            }
-        }
-
-        if (Input.GetMouseButton(0))
+        if (gamepad.trigger < 0)
         {
-
-        }
-        if (Input.GetMouseButton(1))
-        {
-            meleeWeapon.Shoot();
+            UseAbilitySlotOne();
+            Debug.Log("Shooting");
         }
 
         if (Input.GetKeyDown(KeyCode.F))
@@ -271,7 +256,7 @@ public class PlayerBaseScript : WorldObjectScript
             GetComponentInChildren<PlayerRPSChoice>().UpdateText(Enum.GetName(typeof(RockPaperScissors.RPS), choice));
         }
 
-        if (Input.GetKeyDown("down"))
+        if (gamepad.buttons[(int)CharacterConstants.buttons.y])
         {
             DropBall();
         }
@@ -295,43 +280,19 @@ public class PlayerBaseScript : WorldObjectScript
 
     public virtual void HandlePhysicsInput()
     {
-        if (!touchingGround)
+        if (gamepad.buttons[(int)CharacterConstants.buttons.a])
         {
-            moveSpeed = moveSpeedAir;
-        }
-        else
-        {
-            moveSpeed = moveSpeedDefault;
-        }
-        if (Input.GetKeyDown("up"))
-        {
-            if (touchingGround)
-            {
-                rigidbody.AddForce(Vector3.up * jumpMagnitude, ForceMode.Impulse);
-                touchingGround = false;
-                audio.clip = jumpClip;
-                audio.Play();
-            }
+            Jump();
         }
 
-        if (Input.GetKey("left"))
+        if (gamepad.leftStick.x < 0)
         {
-            if (rigidbody.velocity.x > -maxVelocity)
-            {
-                rigidbody.AddForce(Vector3.left * moveSpeed, ForceMode.VelocityChange);
-            }
-            audio.clip = walkClip;
-            audio.Play();
+            Walk(walk.left);
         }
 
-        if (Input.GetKey("right"))
+        if (gamepad.leftStick.x > 0)
         {
-            if (rigidbody.velocity.x < maxVelocity)
-            {
-                rigidbody.AddForce(Vector3.right * moveSpeed, ForceMode.VelocityChange);
-            }
-            audio.clip = walkClip;
-            audio.Play();
+            Walk(walk.right);
         }
     }
 
@@ -383,6 +344,62 @@ public class PlayerBaseScript : WorldObjectScript
     {
         base.TakeDamage(amount);
         DropBall();
+    }
+
+    private void UseAbilitySlotOne()
+    {
+        if (ball == null)
+        {
+            abilitySlot.Shoot(aimDirection);
+        }
+
+        if (ball)
+        {
+            GetComponentInChildren<PassBall>().Pass(aimDirection, ball, this);
+            ball = null;
+        }
+    }
+
+    private void Walk(walk leftOrRight)
+    {
+        if (leftOrRight == walk.left)
+        {
+            if (rigidbody.velocity.x > -maxVelocity)
+            {
+                rigidbody.AddForce(Vector3.left * moveSpeed, ForceMode.VelocityChange);
+            }
+
+        }
+        else if (leftOrRight == walk.right)
+        {
+            if (rigidbody.velocity.x < maxVelocity)
+            {
+                rigidbody.AddForce(Vector3.right * moveSpeed, ForceMode.VelocityChange);
+            }
+        }
+
+        audio.clip = walkClip;
+        audio.Play();
+    }
+
+    private void Jump()
+    {
+        if (touchingGround)
+        {
+            rigidbody.AddForce(Vector3.up * jumpMagnitude, ForceMode.Impulse);
+            moveSpeed = moveSpeedAir;
+            touchingGround = false;
+            audio.clip = jumpClip;
+            audio.Play();
+        }
+    }
+
+    public void SetGamepad(GamepadInfo _gamepad)
+    {
+        // TODO: Need some way of guaranteeing the same gamepadInfo is tied to the player every time. (I think I got it fixed)
+        //GamepadInfo[] gamepadInfo = FindObjectsOfType(typeof(GamepadInfo)) as GamepadInfo[];
+        //gamepad = gamepadInfo[playerNumber - 1];
+        gamepad = _gamepad;
     }
 
 }

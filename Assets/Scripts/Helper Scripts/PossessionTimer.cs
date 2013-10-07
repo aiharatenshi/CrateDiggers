@@ -7,13 +7,14 @@ public class PossessionTimer : MonoBehaviour
     /// Simple script counts up if its associated player
     /// has possession of the ball
     /// </summary>
-    private PlayerBaseScript player;
+    public PlayerBaseScript player;
     private float possessionTime;
 
     // Use this for initialization
     void Start()
     {
         possessionTime = 0;
+        player.possessionTimer = this;
     }
 
     // Update is called once per frame

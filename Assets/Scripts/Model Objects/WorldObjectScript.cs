@@ -37,14 +37,14 @@ abstract public class WorldObjectScript : MonoBehaviour
     // Use this for initialization
     public virtual void Start()
     {
-        if (!GetComponent<TimerScript>())
+        if (GetComponent<TimerScript>() == null)
         {
             gameObject.AddComponent("TimerScript");
         }
 
         timer = GetComponent<TimerScript>();
         
-        if (!GetComponent<Rigidbody>())
+        if (GetComponent<Rigidbody>() == null)
         {
             Debug.LogWarning("Rigidbody was missing on <" + gameObject.name + ">");
             gameObject.AddComponent("Rigidbody");
@@ -58,16 +58,13 @@ abstract public class WorldObjectScript : MonoBehaviour
             shortName = objectName;
         }
 
-        if (!GetComponentInChildren<tk2dTextMesh>())
+        if (GetComponentInChildren<tk2dTextMesh>() == null)
         {
             Debug.LogError("NamedObject " + name + " needs a NameTextMesh in one of its children!");
         }
-        else
-        {
-            //textMesh = GetComponentInChildren<tk2dTextMesh>();
-        }
 
-        ChangeTextMeshText(GetComponentInChildren<NameTextMesh>() as TextMeshBaseScript, objectName);
+        // TODO Something is broken with this. Causes cascading errors if called.
+        //ChangeTextMeshText(GetComponentInChildren<NameTextMesh>() as TextMeshBaseScript, objectName);
 
         dialogueBox = GetComponentInChildren<DialogueBox>();
         dialogueBox.Start();

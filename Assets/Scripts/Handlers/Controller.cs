@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(GamepadInputHandler))]
+
 public class Controller : MonoBehaviour
 {
 
@@ -10,10 +12,15 @@ public class Controller : MonoBehaviour
     /// </summary>
 
     public Camera mainCamera;
+    private GamepadInputHandler gamepadInputHandler;
 
     void Start()
     {
-
+        if (!GetComponent<GamepadInputHandler>())
+	     {
+		    gameObject.AddComponent("JoystickInfo");
+	     }
+        gamepadInputHandler = GetComponent<GamepadInputHandler>();
     }
 
     void Update()

@@ -18,6 +18,8 @@ namespace Constants
 
     public class CharacterConstants
     {
+        public enum buttons { a, b, x, y, LS, RS, back, start, LJoy, RJoy }
+        
         public enum type { Player };
 
         private static readonly IDictionary<type, string> prefabNames = new Dictionary<type, string>

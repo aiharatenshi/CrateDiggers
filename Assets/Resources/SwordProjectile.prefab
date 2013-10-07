@@ -97,6 +97,7 @@ MonoBehaviour:
   projectileSpeed: 0
   damage: 2
   lifetime: .100000001
+  physicsProjectile: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
