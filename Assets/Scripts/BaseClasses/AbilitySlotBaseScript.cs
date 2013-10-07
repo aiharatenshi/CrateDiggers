@@ -4,10 +4,10 @@ using System.Collections;
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(TimerScript))]
 
-abstract public class GunBaseScript : MonoBehaviour
+abstract public class AbilitySlotBaseScript : MonoBehaviour
 {
     /// <summary>
-    /// Basic projectile weapon class. Fires attached ammo type @ firerate
+    /// Basic projectile ability class. Fires attached ammo type @ firerate
     /// in the direction the source obj is "aiming" (Vec3)
     /// Plays sound on fire.
     /// </summary>
@@ -41,7 +41,7 @@ abstract public class GunBaseScript : MonoBehaviour
 
     public void Shoot(Vector3 direction)
     {
-        if (!fireRateTimer.isActive)
+        if (!fireRateTimer.IsTimerActive(0))
         {
             ProjectileBaseScript projectile = (ProjectileBaseScript)Instantiate(projectileType, transform.position, Quaternion.identity);
             projectile.SetDirection(direction);
@@ -49,7 +49,7 @@ abstract public class GunBaseScript : MonoBehaviour
             fireRateTimer.StartTimer(fireRate);
  
             /* NOTE: Projectiles need to ignore the source object's "movement" collider AND its hitbox collider
-             * Player (instance) >> Weapons (empty container obj) >> Gun (this)
+             * Player (instance) >> Abilities (empty container obj) >> Ability Slot (this)
              * Player (instance) >> Hitbox
              * 
              * Either this collider setup needs to be standard, or we need to include failsafes to check for different configs

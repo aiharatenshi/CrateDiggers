@@ -6,7 +6,7 @@ namespace Constants
 
     public class CompWorldConstants
     {
-        public enum worldStates { noMatchInProgress, matchInProgress };
+        public enum worldStates { noMatchInProgress, matchInProgress, intermission };
     }
 
     public class FrameWorldConstants

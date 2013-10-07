@@ -24,7 +24,7 @@ public class RockPaperScissors : MonoBehaviour
 
     void Update()
     {
-        if (!playTimer.isActive)
+        if (!playTimer.IsTimerActive(0))
         {
             GetRandomPlayerPair();
             playTimer.StartTimer(playPollingDelay);

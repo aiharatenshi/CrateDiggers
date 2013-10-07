@@ -36,7 +36,7 @@ abstract public class MeleeWeaponBaseScript : MonoBehaviour
 
     public void Shoot()
     {
-        if (!fireRateTimer.isActive)
+        if (!fireRateTimer.IsTimerActive(0))
         {
             Instantiate(projectileType, transform.position, transform.rotation);
             audio.Play();

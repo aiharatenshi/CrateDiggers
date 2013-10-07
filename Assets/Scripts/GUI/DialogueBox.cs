@@ -11,7 +11,7 @@ public class DialogueBox : TextMeshBaseScript {
 	
 	// Update is called once per frame
 	public override void Update () {
-        if (timer.isActive)
+        if (timer.IsTimerActive(0))
         {
             renderer.enabled = true;
         }

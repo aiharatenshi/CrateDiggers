@@ -4,7 +4,7 @@ using System.Collections;
 public class TurretBaseScript : WorldObjectScript
 {
 
-    private GunBaseScript gun;
+    private AbilitySlotBaseScript abilitySlot;
     private PlayerBaseScript target;
     public Vector3 aimDirection;
     public float moveSpeed;
@@ -12,7 +12,7 @@ public class TurretBaseScript : WorldObjectScript
     // Use this for initialization
     void Start()
     {
-        gun = GetComponentInChildren<GunBaseScript>();
+        abilitySlot = GetComponentInChildren<AbilitySlotBaseScript>();
     }
 
     // Update is called once per frame
@@ -26,7 +26,7 @@ public class TurretBaseScript : WorldObjectScript
         {
             aimDirection = target.transform.position - gameObject.transform.position;
             Debug.DrawRay(transform.position, aimDirection, Color.red);
-            gun.Shoot(aimDirection);
+            abilitySlot.Shoot(aimDirection);
             MoveTowardTarget();
         }
 

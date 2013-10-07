@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlasmaGun : GunBaseScript
+public class PlasmaGun : AbilitySlotBaseScript
 {
 
     void Start()

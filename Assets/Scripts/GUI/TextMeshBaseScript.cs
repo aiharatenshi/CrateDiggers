@@ -54,7 +54,7 @@ public class TextMeshBaseScript : MonoBehaviour
 
     public void CheckActive()
     {
-        if (timer.isActive)
+        if (timer.IsTimerActive(0))
         {
             renderer.enabled = true;
         }

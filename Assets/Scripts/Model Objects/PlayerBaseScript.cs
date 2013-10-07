@@ -1,20 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Constants;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(PossessionTimer))]
 
 public class PlayerBaseScript : WorldObjectScript
 {
 
     /// <summary>
-    /// Base abstract class for player objects.
+    /// Base class for player objects.
     /// Contains basic controller movement and interaction.
     /// 
     /// NOTE: Don't set default values for movement until we find something
     /// we actually like.
     /// </summary>
-    
+
     [Range(0.1f, 15.0f)]
     public int moveSpeed;
     [Range(1.0f, 50.0f)]
@@ -27,11 +29,10 @@ public class PlayerBaseScript : WorldObjectScript
     public WorldObjectScript interactionTarget = null;
     public WorldAreaScript currentArea = null;
     private static RockPaperScissors rpsGame = null;
-    public bool physicsInput = true;
     public bool touchingGround = true;
     public Vector3 aimDirection;
     public Camera cam;
-    public GunBaseScript gun;
+    public AbilitySlotBaseScript abilitySlot;
     public MeleeWeaponBaseScript meleeWeapon;
     public ProjectileBaseScript ammo;
     public AudioClip jumpClip;
@@ -39,6 +40,9 @@ public class PlayerBaseScript : WorldObjectScript
     public AudioClip landClip;
     public AudioClip walkClip;
     private bool flagForRespawn;
+    public BallBaseScript ball;
+    private PossessionTimer possessionTimer;
+
     /// <summary>
     /// If false overrides whatever value moveSpeedAir is set to
     /// </summary>
@@ -52,10 +56,16 @@ public class PlayerBaseScript : WorldObjectScript
         {
             rpsGame = GameObject.FindGameObjectWithTag("CompetitiveGame").GetComponent<RockPaperScissors>();
         }
+        if (!gameObject.GetComponent<PossessionTimer>())
+        {
+            gameObject.AddComponent("PossessionTimer");
+        }
         moveSpeedDefault = moveSpeed;
-        gun = GetComponentInChildren<GunBaseScript>();
+        abilitySlot = GetComponentInChildren<AbilitySlotBaseScript>();
         meleeWeapon = GetComponentInChildren<MeleeWeaponBaseScript>();
-        ammo = gun.projectileType;
+        possessionTimer = GetComponent<PossessionTimer>();
+        possessionTimer.SetPlayer(this);
+        ammo = abilitySlot.projectileType;
 
         gameObject.tag = "Player";
 
@@ -88,29 +98,30 @@ public class PlayerBaseScript : WorldObjectScript
 
     public virtual void FixedUpdate()
     {
-        //Debug.Log(rigidbody.velocity.magnitude);
-        if (physicsInput)
-        {
-            HandlePhysicsInput();
-        }
+        HandlePhysicsInput();
         if (flagForRespawn)
         {
             Respawn();
         }
-        //if (rigidbody.velocity.sqrMagnitude > maxVelocity * maxVelocity)  // TODO: This shouldn't cap x and y velocity dependently. Need to rewrite later.
-        //{
-        //    float yVel = rigidbody.velocity.y;
-        //    Vector3 maxedVelocity = new Vector3(rigidbody.velocity.x, rigidbody.velocity.y, 0);
-        //    maxedVelocity.Normalize();
-        //    maxedVelocity.Set(maxedVelocity.x * maxVelocity, maxedVelocity.y * maxVelocity, 0);
-        //    rigidbody.velocity = maxedVelocity;
-        //}
     }
 
     public virtual void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Player hit something");
-        touchingGround = true;
+        if (collision.gameObject.tag.StartsWith("Environment"))
+        {
+            touchingGround = true;
+        }
+
+        if (collision.gameObject.CompareTag("Ball"))
+        {
+            TempGameManager manager = (TempGameManager)FindObjectOfType(typeof(TempGameManager));
+            if (manager.GetState() == CompWorldConstants.worldStates.matchInProgress )
+            {
+                ball = collision.gameObject.GetComponent<BallBaseScript>();
+                ball.AttachToPlayer(this);
+            }
+
+        }
     }
 
     public virtual void OnCollisionStay(Collision collision)
@@ -124,10 +135,7 @@ public class PlayerBaseScript : WorldObjectScript
 
     public virtual void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Environment"))
-        {
-            touchingGround = false;
-        }
+
 
     }
 
@@ -208,29 +216,6 @@ public class PlayerBaseScript : WorldObjectScript
 
     public virtual void HandleInput()
     {
-        if (!physicsInput)
-        {
-            if (Input.GetKey("up"))
-            {
-                transform.Translate(new Vector3(0, moveSpeed, 0) * Time.deltaTime);
-            }
-
-            if (Input.GetKey("down"))
-            {
-                transform.Translate(new Vector3(0, -moveSpeed, 0) * Time.deltaTime);
-            }
-
-            if (Input.GetKey("left"))
-            {
-                transform.Translate(new Vector3(-moveSpeed, 0, 0) * Time.deltaTime);
-            }
-
-            if (Input.GetKey("right"))
-            {
-                transform.Translate(new Vector3(moveSpeed, 0, 0) * Time.deltaTime);
-            }
-        }
-
         if (Input.GetKeyDown(KeyCode.A))
         {
             tk2dSprite sprite = GetComponentInChildren<tk2dSprite>();
@@ -257,9 +242,23 @@ public class PlayerBaseScript : WorldObjectScript
             IncreaseBet();
         }
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (ball == null)
+            {
+                abilitySlot.Shoot(aimDirection);
+            }
+
+            if (ball)
+            {
+                GetComponentInChildren<PassBall>().Pass(aimDirection, ball, this);
+                ball = null;
+            }
+        }
+
         if (Input.GetMouseButton(0))
         {
-            gun.Shoot(aimDirection);
+
         }
         if (Input.GetMouseButton(1))
         {
@@ -270,6 +269,11 @@ public class PlayerBaseScript : WorldObjectScript
         {
             RotateRPSChoice();
             GetComponentInChildren<PlayerRPSChoice>().UpdateText(Enum.GetName(typeof(RockPaperScissors.RPS), choice));
+        }
+
+        if (Input.GetKeyDown("down"))
+        {
+            DropBall();
         }
     }
 
@@ -304,20 +308,17 @@ public class PlayerBaseScript : WorldObjectScript
             if (touchingGround)
             {
                 rigidbody.AddForce(Vector3.up * jumpMagnitude, ForceMode.Impulse);
+                touchingGround = false;
                 audio.clip = jumpClip;
                 audio.Play();
             }
-        }
-
-        if (Input.GetKey("down"))
-        {
         }
 
         if (Input.GetKey("left"))
         {
             if (rigidbody.velocity.x > -maxVelocity)
             {
-                rigidbody.AddForce(Vector3.left * moveSpeed, ForceMode.VelocityChange);   
+                rigidbody.AddForce(Vector3.left * moveSpeed, ForceMode.VelocityChange);
             }
             audio.clip = walkClip;
             audio.Play();
@@ -327,7 +328,7 @@ public class PlayerBaseScript : WorldObjectScript
         {
             if (rigidbody.velocity.x < maxVelocity)
             {
-                rigidbody.AddForce(Vector3.right * moveSpeed, ForceMode.VelocityChange); 
+                rigidbody.AddForce(Vector3.right * moveSpeed, ForceMode.VelocityChange);
             }
             audio.clip = walkClip;
             audio.Play();
@@ -357,6 +358,31 @@ public class PlayerBaseScript : WorldObjectScript
         flagForRespawn = false;
         audio.clip = deathClip;
         audio.Play();
+    }
+
+    public void DropBall()
+    {
+        if (ball)
+        {
+            ball.DetachFromPlayer();
+            ball = null;
+        }
+    }
+
+    public float GetPossessionTime()
+    {
+        return possessionTimer.GetPossessionTime();
+    }
+
+    public void ResetPossessionTime()
+    {
+        possessionTimer.Reset();
+    }
+
+    public override void TakeDamage(int amount)
+    {
+        base.TakeDamage(amount);
+        DropBall();
     }
 
 }

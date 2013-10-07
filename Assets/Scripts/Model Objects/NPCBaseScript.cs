@@ -16,7 +16,7 @@ abstract public class NPCBaseScript : WorldObjectScript
     override public void Update()
     {
         base.Update();
-        if (!timer.isActive)
+        if (!timer.IsTimerActive(0))
         {
             timer.StartTimer(bettingPollingPeriod);
             if (UnityEngine.Random.Range(0, betChance) == 0 && dollarBillz > 0)

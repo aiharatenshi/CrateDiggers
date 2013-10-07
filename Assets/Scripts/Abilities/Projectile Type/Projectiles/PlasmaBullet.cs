@@ -15,4 +15,5 @@ public class PlasmaBullet : ProjectileBaseScript
     {
         base.Update();
     }
+
 }

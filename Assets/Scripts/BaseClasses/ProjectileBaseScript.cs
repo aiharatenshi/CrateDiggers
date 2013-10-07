@@ -78,5 +78,10 @@ abstract public class ProjectileBaseScript : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        if (collider.gameObject.tag.StartsWith("Environment"))
+        {
+            Destroy(gameObject);
+        }
     }
 }
