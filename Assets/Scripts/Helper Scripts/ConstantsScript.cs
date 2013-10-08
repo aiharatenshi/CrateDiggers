@@ -12,8 +12,6 @@ namespace Constants
     public class FrameWorldConstants
     {
         public enum worldStates { noMatchInProgress, matchInProgress };
-
-        
     }
 
     public class CharacterConstants
@@ -34,5 +32,10 @@ namespace Constants
             {type.Player,"Player"}
         };
         public static IDictionary<type, string> GAMEOBJECT_NAMES { get { return gameobjectNames; } }
+    }
+
+    public class AbilityConstants
+    {
+        public enum properties { Knockback, OnFire, Frozen }
     }
 }

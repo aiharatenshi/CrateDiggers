@@ -72,6 +72,7 @@ abstract public class ProjectileBaseScript : MonoBehaviour
         {
             WorldObjectScript target = (WorldObjectScript)other.transform.parent.GetComponent<WorldObjectScript>();
             target.TakeDamage(damage);
+            //TODO: Apply ability properties to the target if required.
             Destroy(gameObject);
         }
         if (other.gameObject.CompareTag("Projectile"))

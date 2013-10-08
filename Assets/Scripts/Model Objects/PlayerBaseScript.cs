@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System;
 using Constants;
 
@@ -29,6 +29,7 @@ public class PlayerBaseScript : WorldObjectScript
     public int moveSpeedDefault; // This should be private, but needs to be public to test movespeeds during play
     [Range(0.0f, 30.0f)]
     public int maxVelocity;
+
     public WorldObjectScript interactionTarget = null;
     public WorldAreaScript currentArea = null;
     private static RockPaperScissors rpsGame = null;
@@ -47,6 +48,8 @@ public class PlayerBaseScript : WorldObjectScript
     public PossessionTimer possessionTimer;
     public GamepadInfo gamepad;
     //public int playerNumber;
+
+    public List<AbilityConstants.properties> charProperties;
 
     public override void Start()
     {
@@ -71,6 +74,8 @@ public class PlayerBaseScript : WorldObjectScript
 
         tk2dSprite sprite = GetComponentInChildren<tk2dSprite>();
         sprite.collider.enabled = false;
+
+        charProperties = new List<AbilityConstants.properties>();
     }
 
     // Update is called once per frame

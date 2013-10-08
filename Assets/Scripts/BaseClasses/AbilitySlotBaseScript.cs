@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
+using Constants;
 
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(TimerScript))]
@@ -18,6 +19,8 @@ abstract public class AbilitySlotBaseScript : MonoBehaviour
     public float fireRate;
     private TimerScript fireRateTimer;
     public float spread;
+    public List<AbilityConstants.properties> abilityProps;
+
 
     // TODO: Reload mechanics.
 
@@ -33,10 +36,13 @@ abstract public class AbilitySlotBaseScript : MonoBehaviour
         }
         fireRateTimer = GetComponent<TimerScript>();
         audio.clip = sound;
+
+        abilityProps = new List<AbilityConstants.properties>();
     }
 
     public virtual void Update()
     {
+
     }
 
     public void Shoot(Vector3 direction)
