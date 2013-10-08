@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class GamepadInfo : MonoBehaviour
@@ -22,9 +22,9 @@ public class GamepadInfo : MonoBehaviour
     public Vector2 rightStick;
     public float trigger;
     public Vector2 dpad;
-    public bool[] button = new bool[10]; // 0.A 1.B 2.X 3.Y 4.LS 5.RS 6.Back 7.Start 8.LB 9.RB
-    public bool[] buttonDown = new bool[10];
-    public bool[] buttonUp = new bool[10];
+    public bool[] button; // 0.A 1.B 2.X 3.Y 4.LS 5.RS 6.Back 7.Start 8.LB 9.RB
+    public bool[] buttonDown;
+    public bool[] buttonUp;
     public bool triggerReleased;
     public bool leftTrigger; // left trigger is > 0
     public bool rightTrigger; // right trigger is < 0
@@ -37,7 +37,10 @@ public class GamepadInfo : MonoBehaviour
 
     void Start()
     {
-        leftStick = new Vector2(0, 0);
+        button = new bool[10];
+		buttonDown = new bool[10];
+		buttonUp = new bool[10];
+		leftStick = new Vector2(0, 0);
         rightStick = new Vector2(0, 0);
         trigger = 0;
         dpad = new Vector2(0, 0);
@@ -58,17 +61,17 @@ public class GamepadInfo : MonoBehaviour
 
     void Update()
     {
-        GetTriggerStates();
+		GetTriggerStates();
     }
 
-    public void SetData(int _gamepadNumber, Vector2 _leftStick, Vector2 _rightStick, float _trigger, Vector2 _dpad, bool[] _buttons, bool[] _buttonDown, bool[] _buttonUp)
+    public void SetData(int _gamepadNumber, Vector2 _leftStick, Vector2 _rightStick, float _trigger, Vector2 _dpad, bool[] _button, bool[] _buttonDown, bool[] _buttonUp)
     {
         gamepadNumber = _gamepadNumber;
         leftStick = _leftStick;
         rightStick = _rightStick;
         dpad = _dpad;
         trigger = _trigger;
-        button = _buttons;
+        button = _button;
         buttonDown = _buttonDown;
         buttonUp = _buttonUp;
     }

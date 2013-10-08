@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Constants;
 
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(TimerScript))]
@@ -16,7 +17,7 @@ abstract public class AbilitySlotBaseScript : MonoBehaviour
 
     public AudioClip sound;
     public float cooldown;
-    protected TimerScript cooldownTimer;
+    public TimerScript cooldownTimer;
 
     public virtual void Start()
     {

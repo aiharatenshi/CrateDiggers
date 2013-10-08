@@ -4,7 +4,7 @@ using System.Collections;
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(TimerScript))]
 
-abstract public class MeleeWeaponBaseScript : MonoBehaviour
+abstract public class MeleeWeaponBaseScript : AbilitySlotBaseScript
 {
 
     // TODO: This needs to be completely revamped.

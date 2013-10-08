@@ -15,4 +15,14 @@ public class Sword : MeleeWeaponBaseScript
     {
         base.Update();
     }
+
+    public override void Use()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Use(Vector3 direction)
+    {
+        throw new System.NotImplementedException();
+    }
 }

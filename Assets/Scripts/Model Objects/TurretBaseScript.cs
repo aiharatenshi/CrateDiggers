@@ -26,7 +26,7 @@ public class TurretBaseScript : WorldObjectScript
         {
             aimDirection = target.transform.position - gameObject.transform.position;
             Debug.DrawRay(transform.position, aimDirection, Color.red);
-            abilitySlot.Shoot(aimDirection);
+            abilitySlot.Use(aimDirection);
             MoveTowardTarget();
         }
 

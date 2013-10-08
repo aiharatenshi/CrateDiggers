@@ -1,16 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Constants;
 
-public class PlasmaGun : AbilitySlotBaseScript
+public class PlasmaGun : ProjectileAbilityBaseScript
 {
 
-    void Start()
+    public override void Start()
     {
         base.Start();
+        cooldown = AbilityConstants.PlasmaGunCooldown;
     }
 
-    void Update()
+    public override void Use()
     {
+        throw new System.NotImplementedException();
+    }
 
+    public override void Use(Vector3 direction)
+    {
+        base.Use(direction);
     }
 }

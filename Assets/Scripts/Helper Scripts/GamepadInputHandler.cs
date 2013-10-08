@@ -40,7 +40,7 @@ public class GamepadInputHandler : MonoBehaviour
 
             // TODO: Instantiating prefabs with the dictionary is causing null ref. @ player.SetGamePad;
             //player = Instantiate(Resources.Load(CharacterConstants.PREFAB_NAMES[CharacterConstants.type.Player]), new Vector3(75, 25, 0), Quaternion.identity) as PlayerBaseScript;
-            player.SetGamepad(gamepadInfoPrefab);
+            player.SetGamepad(gamepadInfo[i]);
         }
 
     }

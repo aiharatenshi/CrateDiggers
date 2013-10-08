@@ -11,6 +11,7 @@ public class ProjectileAbilityBaseScript : AbilitySlotBaseScript
     /// </summary>
 
     public ProjectileBaseScript projectileType;
+    int cooldownTimerNumber;
 
     public override void Start()
     {
@@ -29,12 +30,12 @@ public class ProjectileAbilityBaseScript : AbilitySlotBaseScript
 
     public override void Use(Vector3 direction)
     {
-        if (!cooldownTimer.IsTimerActive(0))
+        if (!cooldownTimer.IsTimerActive(cooldownTimerNumber))
         {
             ProjectileBaseScript projectile = (ProjectileBaseScript)Instantiate(projectileType, transform.position, Quaternion.identity);
             projectile.SetDirection(direction);
             audio.Play();
-            cooldownTimer.StartTimer(cooldown);
+            cooldownTimerNumber = cooldownTimer.StartTimer(cooldown);
 
             /* NOTE: Projectiles need to ignore the source object's "movement" collider AND its hitbox collider
              * Player (instance) >> Abilities (empty container obj) >> Ability Slot (this)

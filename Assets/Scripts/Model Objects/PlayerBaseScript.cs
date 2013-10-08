@@ -36,8 +36,6 @@ public class PlayerBaseScript : WorldObjectScript
     public Vector3 aimDirection;
     public Camera cam;
     public AbilitySlotBaseScript[] abilitySlot = new AbilitySlotBaseScript[3];
-    public MeleeWeaponBaseScript meleeWeapon;
-    public ProjectileBaseScript ammo;
     public AudioClip jumpClip;
     public AudioClip deathClip;
     public AudioClip landClip;
@@ -62,10 +60,11 @@ public class PlayerBaseScript : WorldObjectScript
         }
         moveSpeedDefault = moveSpeed;
         abilitySlot = GetComponentsInChildren<AbilitySlotBaseScript>() as AbilitySlotBaseScript[];
-        meleeWeapon = GetComponentInChildren<MeleeWeaponBaseScript>();
+
         possessionTimer = GetComponent<PossessionTimer>();
         possessionTimer.SetPlayer(this);
-        ammo = abilitySlot[0].projectileType;
+
+        ProjectileAbilityBaseScript temp = abilitySlot[0] as ProjectileAbilityBaseScript;;
 
         //gameObject.tag = "Player";
 
@@ -77,6 +76,7 @@ public class PlayerBaseScript : WorldObjectScript
     public override void Update()
     {
         base.Update();
+        CheckDead();
 
         //aimDirection = cam.ScreenToWorldPoint(Input.mousePosition) - gameObject.transform.position;
         aimDirection = new Vector3(gamepad.leftStick.x, gamepad.leftStick.y, 0);
@@ -270,7 +270,7 @@ public class PlayerBaseScript : WorldObjectScript
 
     public virtual void HandleFixedInput()
     {
-        if (gamepad.buttonDown[(int)CharacterConstants.buttons.a])
+        if (gamepad.button[(int)CharacterConstants.buttons.a])
         {
             Jump();
         }

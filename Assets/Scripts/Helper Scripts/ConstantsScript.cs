@@ -35,4 +35,9 @@ namespace Constants
         };
         public static IDictionary<type, string> GAMEOBJECT_NAMES { get { return gameobjectNames; } }
     }
+
+    public class AbilityConstants
+    {
+        public static float PlasmaGunCooldown = 1.0f;
+    }
 }
