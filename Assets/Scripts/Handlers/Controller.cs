@@ -11,16 +11,25 @@ public class Controller : MonoBehaviour
     /// 
     /// </summary>
 
-    public Camera mainCamera;
+    private tk2dCamera mainCamera;
     private GamepadInputHandler gamepadInputHandler;
 
     void Start()
     {
-        if (!GetComponent<GamepadInputHandler>())
-	     {
-		    gameObject.AddComponent("JoystickInfo");
-	     }
+        if (GetComponent<GamepadInputHandler>() == null)
+        {
+            gameObject.AddComponent("JoystickInfo");
+        }
         gamepadInputHandler = GetComponent<GamepadInputHandler>();
+
+        if (GameObject.FindGameObjectWithTag("MainCamera").GetComponent<tk2dCamera>() != null)
+        {
+            mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<tk2dCamera>();
+        }
+        else
+        {
+            Debug.LogError("ERROR: No Main tk2dCamera found.");
+        }
     }
 
     void Update()

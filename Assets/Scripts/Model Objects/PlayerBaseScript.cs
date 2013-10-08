@@ -35,7 +35,7 @@ public class PlayerBaseScript : WorldObjectScript
     public bool touchingGround = true;
     public Vector3 aimDirection;
     public Camera cam;
-    public AbilitySlotBaseScript abilitySlot;
+    public AbilitySlotBaseScript[] abilitySlot = new AbilitySlotBaseScript[3];
     public MeleeWeaponBaseScript meleeWeapon;
     public ProjectileBaseScript ammo;
     public AudioClip jumpClip;
@@ -61,44 +61,34 @@ public class PlayerBaseScript : WorldObjectScript
             gameObject.AddComponent("PossessionTimer");
         }
         moveSpeedDefault = moveSpeed;
-        abilitySlot = GetComponentInChildren<AbilitySlotBaseScript>();
+        abilitySlot = GetComponentsInChildren<AbilitySlotBaseScript>() as AbilitySlotBaseScript[];
         meleeWeapon = GetComponentInChildren<MeleeWeaponBaseScript>();
         possessionTimer = GetComponent<PossessionTimer>();
         possessionTimer.SetPlayer(this);
-        ammo = abilitySlot.projectileType;
+        ammo = abilitySlot[0].projectileType;
 
-        gameObject.tag = "Player";
+        //gameObject.tag = "Player";
 
         tk2dSprite sprite = GetComponentInChildren<tk2dSprite>();
-        sprite.collider.enabled = false;
+        sprite.collider.enabled = false;    // Need to disable the sprite collider (we're not using the player sprite for collisions)
     }
 
     // Update is called once per frame
     public override void Update()
     {
         base.Update();
-        HandleInput();
-
-        Vector3 joystickVector = new Vector3(0, 0, 0);
-        joystickVector.x = gamepad.leftStick.x;
-        joystickVector.y = gamepad.leftStick.y;
 
         //aimDirection = cam.ScreenToWorldPoint(Input.mousePosition) - gameObject.transform.position;
-        aimDirection = joystickVector;
-        Debug.DrawRay(gameObject.transform.position, aimDirection, Color.red);
+        aimDirection = new Vector3(gamepad.leftStick.x, gamepad.leftStick.y, 0);
+        Debug.DrawRay(gameObject.transform.position, aimDirection * 5, Color.red);
 
-        switch (health)
-        {
-            case 0:
-                flagForRespawn = true;
-                break;
-        }
+        HandleInput();
 
     }
 
     public virtual void FixedUpdate()
     {
-        HandlePhysicsInput();
+        HandleFixedInput();
         if (flagForRespawn)
         {
             Respawn();
@@ -116,7 +106,7 @@ public class PlayerBaseScript : WorldObjectScript
         if (collision.gameObject.CompareTag("Ball"))
         {
             TempGameManager manager = (TempGameManager)FindObjectOfType(typeof(TempGameManager));
-            if (manager.GetState() == CompWorldConstants.worldStates.matchInProgress )
+            if (manager.GetState() == CompWorldConstants.worldStates.matchInProgress)
             {
                 ball = collision.gameObject.GetComponent<BallBaseScript>();
                 ball.AttachToPlayer(this);
@@ -127,7 +117,6 @@ public class PlayerBaseScript : WorldObjectScript
 
     public virtual void OnCollisionStay(Collision collision)
     {
-        //touchingGround = true;
         foreach (ContactPoint contact in collision.contacts)
         {
             Debug.DrawRay(contact.point, contact.normal, Color.red);
@@ -217,46 +206,47 @@ public class PlayerBaseScript : WorldObjectScript
 
     public virtual void HandleInput()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            tk2dSprite sprite = GetComponentInChildren<tk2dSprite>();
-            sprite.color = new Color(1, 1, 1, 0.5f);
-        }
+        
+        // We can change sprite transparencies as such:
+        //if (Input.GetKeyDown(KeyCode.A))
+        //{
+        //    tk2dSprite sprite = GetComponentInChildren<tk2dSprite>();
+        //    sprite.color = new Color(1, 1, 1, 0.5f);
+        //}
 
-        if (Input.GetKeyDown(KeyCode.PageUp))
-        {
-            gameObject.layer = LayerMask.NameToLayer("Environment2");
-        }
+        // We can change the gameobject.layer to play with collision layers
+        //if (Input.GetKeyDown(KeyCode.PageUp))
+        //{
+        //    gameObject.layer = LayerMask.NameToLayer("Environment2");
+        //}
 
-        if (Input.GetKeyDown(KeyCode.PageDown))
-        {
-            gameObject.layer = LayerMask.NameToLayer("Environment1");
-        }
+        //if (Input.GetKeyDown(KeyCode.PageDown))
+        //{
+        //    gameObject.layer = LayerMask.NameToLayer("Environment1");
+        //}
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (gamepad.buttonDown[(int)CharacterConstants.buttons.b])
         {
             Interact(interactionTarget);
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (gamepad.buttonDown[(int)CharacterConstants.buttons.RB])
         {
             IncreaseBet();
         }
 
-
-        if (gamepad.trigger < 0)
+        if (gamepad.rightTriggerDown)
         {
             UseAbilitySlotOne();
-            Debug.Log("Shooting");
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (gamepad.buttonDown[(int)CharacterConstants.buttons.x])
         {
             RotateRPSChoice();
             GetComponentInChildren<PlayerRPSChoice>().UpdateText(Enum.GetName(typeof(RockPaperScissors.RPS), choice));
         }
 
-        if (gamepad.buttons[(int)CharacterConstants.buttons.y])
+        if (gamepad.buttonDown[(int)CharacterConstants.buttons.y])
         {
             DropBall();
         }
@@ -278,9 +268,9 @@ public class PlayerBaseScript : WorldObjectScript
         }
     }
 
-    public virtual void HandlePhysicsInput()
+    public virtual void HandleFixedInput()
     {
-        if (gamepad.buttons[(int)CharacterConstants.buttons.a])
+        if (gamepad.buttonDown[(int)CharacterConstants.buttons.a])
         {
             Jump();
         }
@@ -350,7 +340,7 @@ public class PlayerBaseScript : WorldObjectScript
     {
         if (ball == null)
         {
-            abilitySlot.Shoot(aimDirection);
+            abilitySlot[0].Use(aimDirection);
         }
 
         if (ball)
@@ -360,8 +350,18 @@ public class PlayerBaseScript : WorldObjectScript
         }
     }
 
+    private void UseAbilitySlotTwo()
+    {
+    }
+
+    private void UseAbilitySlotThree()
+    {
+    }
+
     private void Walk(walk leftOrRight)
     {
+        // TODO: Modify walk speed by magnitude of joystick vector?
+        
         if (leftOrRight == walk.left)
         {
             if (rigidbody.velocity.x > -maxVelocity)
@@ -400,6 +400,16 @@ public class PlayerBaseScript : WorldObjectScript
         //GamepadInfo[] gamepadInfo = FindObjectsOfType(typeof(GamepadInfo)) as GamepadInfo[];
         //gamepad = gamepadInfo[playerNumber - 1];
         gamepad = _gamepad;
+    }
+
+    private void CheckDead()
+    {
+        switch (health)
+        {
+            case 0:
+                flagForRespawn = true;
+                break;
+        }
     }
 
 }

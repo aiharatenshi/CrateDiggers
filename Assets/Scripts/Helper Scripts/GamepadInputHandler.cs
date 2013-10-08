@@ -8,7 +8,13 @@ public class GamepadInputHandler : MonoBehaviour
     /// <summary>
     /// This class polls the connected gamepads and populates their GamepadInfo with
     /// the values of all their joysticks and buttons.
+    /// 
+    /// Essentially just mirrors the behavior of the InputManager, with the benefit of
+    /// the data for an entire gamepad being an object that you can reference by
+    /// gamepad rather than individual axis/button names.
     /// </summary>
+    
+    // TODO: Best way of setting this up for performance?
 
     private int NumberOfActiveControllers;
     private int controllerNumber;
@@ -27,11 +33,14 @@ public class GamepadInputHandler : MonoBehaviour
             gamepadInfoPrefab = Instantiate(gamepadInfoTemplate, new Vector3(0, 0, 0), Quaternion.identity) as GamepadInfo;
             gamepadInfo[i] = gamepadInfoPrefab;
 
+            
+            // TODO: Players shouldn't be instantiated here, but is convenient shortcut for setting their gamepads
             PlayerBaseScript player;
             player = Instantiate(playerTemplate, new Vector3(75, 25, 0), Quaternion.identity) as PlayerBaseScript;
+
+            // TODO: Instantiating prefabs with the dictionary is causing null ref. @ player.SetGamePad;
             //player = Instantiate(Resources.Load(CharacterConstants.PREFAB_NAMES[CharacterConstants.type.Player]), new Vector3(75, 25, 0), Quaternion.identity) as PlayerBaseScript;
-            //player.SetGamepad(gamepadInfoPrefab);
-            player.gamepad = gamepadInfo[i];
+            player.SetGamepad(gamepadInfoPrefab);
         }
 
     }
@@ -68,19 +77,43 @@ public class GamepadInputHandler : MonoBehaviour
             string LS = "LS_" + i.ToString();
             string RS = "RS_" + i.ToString();
 
-            bool[] buttons = new bool[10];
-            buttons[0] = Input.GetButton(a);
-            buttons[1] = Input.GetButton(b);
-            buttons[2] = Input.GetButton(x);
-            buttons[3] = Input.GetButton(y);
-            buttons[4] = Input.GetButton(LS);
-            buttons[5] = Input.GetButton(RS);
-            buttons[6] = Input.GetButton(back);
-            buttons[7] = Input.GetButton(start);
-            buttons[8] = Input.GetButton(LB);
-            buttons[9] = Input.GetButton(RB);
+            bool[] button = new bool[10];
+            button[0] = Input.GetButton(a);
+            button[1] = Input.GetButton(b);
+            button[2] = Input.GetButton(x);
+            button[3] = Input.GetButton(y);
+            button[4] = Input.GetButton(LS);
+            button[5] = Input.GetButton(RS);
+            button[6] = Input.GetButton(back);
+            button[7] = Input.GetButton(start);
+            button[8] = Input.GetButton(LB);
+            button[9] = Input.GetButton(RB);
 
-            gamepadInfo[i-1].SetData(i, new Vector2(Input.GetAxis(leftX), Input.GetAxis(leftY)), new Vector2(Input.GetAxis(rightX), Input.GetAxis(rightY)), Input.GetAxis(triggerAxis), new Vector2(Input.GetAxis(dpadX), Input.GetAxis(dpadY)), buttons);
+            bool[] buttonUp = new bool[10];
+            buttonUp[0] = Input.GetButtonUp(a);
+            buttonUp[1] = Input.GetButtonUp(b);
+            buttonUp[2] = Input.GetButtonUp(x);
+            buttonUp[3] = Input.GetButtonUp(y);
+            buttonUp[4] = Input.GetButtonUp(LS);
+            buttonUp[5] = Input.GetButtonUp(RS);
+            buttonUp[6] = Input.GetButtonUp(back);
+            buttonUp[7] = Input.GetButtonUp(start);
+            buttonUp[8] = Input.GetButtonUp(LB);
+            buttonUp[9] = Input.GetButtonUp(RB);
+
+            bool[] buttonDown = new bool[10];
+            buttonDown[0] = Input.GetButtonDown(a);
+            buttonDown[1] = Input.GetButtonDown(b);
+            buttonDown[2] = Input.GetButtonDown(x);
+            buttonDown[3] = Input.GetButtonDown(y);
+            buttonDown[4] = Input.GetButtonDown(LS);
+            buttonDown[5] = Input.GetButtonDown(RS);
+            buttonDown[6] = Input.GetButtonDown(back);
+            buttonDown[7] = Input.GetButtonDown(start);
+            buttonDown[8] = Input.GetButtonDown(LB);
+            buttonDown[9] = Input.GetButtonDown(RB);
+
+            gamepadInfo[i-1].SetData(i, new Vector2(Input.GetAxis(leftX), Input.GetAxis(leftY)), new Vector2(Input.GetAxis(rightX), Input.GetAxis(rightY)), Input.GetAxis(triggerAxis), new Vector2(Input.GetAxis(dpadX), Input.GetAxis(dpadY)), button, buttonUp, buttonDown);
         }
     }
 }

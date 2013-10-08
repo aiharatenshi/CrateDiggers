@@ -5,20 +5,20 @@ using System;
 public class PossessionTimeScoreboard : ScoreboardBaseScript
 {
 
-    public PlayerBaseScript[] player;
+    public PlayerBaseScript[] playerList;
 
     public override void Start()
     {
         base.Start();
-        player = FindObjectsOfType(typeof(PlayerBaseScript)) as PlayerBaseScript[];
+        playerList = FindObjectsOfType(typeof(PlayerBaseScript)) as PlayerBaseScript[];
     }
 
     public override void Update()
     {
-        string[] scoreboardText = new string[player.Length];
-        for (int i = 0; i < player.Length; i++)
+        string[] scoreboardText = new string[playerList.Length];
+        for (int i = 0; i < playerList.Length; i++)
         {
-            scoreboardText[i] = player[i].shortName + ": " + Math.Round((double)player[i].GetPossessionTime(), 1) + "s" + Environment.NewLine;
+            scoreboardText[i] = playerList[i].shortName + ": " + Math.Round((double)playerList[i].GetPossessionTime(), 1) + "s" + Environment.NewLine;
         }
         textMesh.text = "Times" + Environment.NewLine + string.Concat(scoreboardText);
         textMesh.maxChars = textMesh.text.Length;

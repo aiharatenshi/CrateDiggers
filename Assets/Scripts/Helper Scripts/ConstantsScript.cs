@@ -18,7 +18,7 @@ namespace Constants
 
     public class CharacterConstants
     {
-        public enum buttons { a, b, x, y, LS, RS, back, start, LJoy, RJoy }
+        public enum buttons { a, b, x, y, LB, RB, back, start, LJoy, RJoy }
         
         public enum type { Player };
 

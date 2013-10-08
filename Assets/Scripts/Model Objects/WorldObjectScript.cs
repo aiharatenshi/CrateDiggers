@@ -49,10 +49,12 @@ abstract public class WorldObjectScript : MonoBehaviour
             Debug.LogWarning("Rigidbody was missing on <" + gameObject.name + ">");
             gameObject.AddComponent("Rigidbody");
         }
+
         if (objectName == System.String.Empty)
         {
             objectName = gameObject.name;
         }
+
         if (shortName == System.String.Empty)
         {
             shortName = objectName;

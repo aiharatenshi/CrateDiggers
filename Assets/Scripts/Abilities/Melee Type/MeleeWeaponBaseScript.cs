@@ -7,6 +7,8 @@ using System.Collections;
 abstract public class MeleeWeaponBaseScript : MonoBehaviour
 {
 
+    // TODO: This needs to be completely revamped.
+
     public ProjectileBaseScript projectileType;
     public AudioClip sound;
     public float fireRate;
