@@ -1,22 +1,36 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PassBall : MonoBehaviour
+public class PassBall : AbilitySlotBaseScript
 {
     [Range(20.0f, 75.0f)]
     public float passForce;
 
-    void Start()
+    public override void Start()
     {
-
+        base.Start();
+        cooldown = 0;
     }
 
-    void Update()
+    public void Pass(Vector3 direction, BallBaseScript ball, CompetitorBaseScript player)
     {
-
+        ball.DetachFromPlayer();
+        direction.Normalize();
+        direction.z = 0;
+        ball.rigidbody.AddForce(passForce * direction, ForceMode.VelocityChange);
     }
 
-    public void Pass(Vector3 direction, BallBaseScript ball, PlayerBaseScript player)
+    public override void Use()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Use(Vector3 direction)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Use(Vector3 direction, BallBaseScript ball, CompetitorBaseScript player)
     {
         ball.DetachFromPlayer();
         direction.Normalize();

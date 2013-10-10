@@ -4,21 +4,21 @@ using System.Collections;
 public class Sword : MeleeWeaponBaseScript
 {
 
-    // Use this for initialization
-    void Start()
-    {
-        base.Start();
-    }
+    //// Use this for initialization
+    //void Start()
+    //{
+    //    base.Start();
+    //}
 
-    // Update is called once per frame
-    void Update()
-    {
-        base.Update();
-    }
+    //// Update is called once per frame
+    //void Update()
+    //{
+    //    base.Update();
+    //}
 
     public override void Use()
     {
-        throw new System.NotImplementedException();
+        base.Use();
     }
 
     public override void Use(Vector3 direction)

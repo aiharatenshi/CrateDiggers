@@ -9,7 +9,11 @@ abstract public class ProjectileBaseScript : MonoBehaviour
     /// Basic projectile class.
     /// Defaults to Kinematic Rigidbody Trigger Collider.
     /// Changes to Rigidbody Trigger Collider if flagged as physics projectile (e.g. arrow)
+    /// 
+    /// NOTES: Projectiles collide with colliders tagged "Hitbox", but only affect
+    /// objects with CompetitorModules (any child of CompetitorBaseScript)
     /// </summary>
+    
     [Range(1.0f, 50.0f)]
     public float projectileSpeed;
     public int damage;
@@ -70,8 +74,8 @@ abstract public class ProjectileBaseScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Hitbox"))
         {
-            WorldObjectScript target = (WorldObjectScript)other.transform.parent.GetComponent<WorldObjectScript>();
-            target.TakeDamage(damage);
+            CompetitorBaseScript target = (CompetitorBaseScript)other.transform.parent.GetComponent<CompetitorBaseScript>();
+            target.competitorModule.TakeDamage(damage);
             Destroy(gameObject);
         }
         if (other.gameObject.CompareTag("Projectile"))

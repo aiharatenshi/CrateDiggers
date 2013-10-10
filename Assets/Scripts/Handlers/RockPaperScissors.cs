@@ -10,6 +10,7 @@ public class RockPaperScissors : MonoBehaviour
     public enum result { p1win, p2win, draw, error }
 
     private TimerScript playTimer;
+    private int timerIndex;
     public float playPollingDelay = 1; // In seconds
 
     void Start()
@@ -24,16 +25,16 @@ public class RockPaperScissors : MonoBehaviour
 
     void Update()
     {
-        if (!playTimer.IsTimerActive(0))
+        if (!playTimer.IsTimerActive(timerIndex))
         {
             GetRandomPlayerPair();
-            playTimer.StartTimer(playPollingDelay);
+            timerIndex = playTimer.StartTimer(playPollingDelay);
         }
     }
 
     void GetRandomPlayerPair()
     {
-        WorldObjectScript[] players = FindObjectsOfType(typeof(WorldObjectScript)) as WorldObjectScript[];
+        CompetitorBaseScript[] players = FindObjectsOfType(typeof(CompetitorBaseScript)) as CompetitorBaseScript[];
         int a = UnityEngine.Random.Range(0, players.Length);
         int b = UnityEngine.Random.Range(0, players.Length);
         while (a == b)
@@ -41,7 +42,7 @@ public class RockPaperScissors : MonoBehaviour
             a = UnityEngine.Random.Range(0, players.Length);
             b = UnityEngine.Random.Range(0, players.Length);
         }
-        if (players[a].currentBet > 0 && players[b].currentBet > 0)
+        if (players[a].purse.currentBet > 0 && players[b].purse.currentBet > 0)
         {
             Play(players[a], players[b]);
         }
@@ -52,28 +53,23 @@ public class RockPaperScissors : MonoBehaviour
     /// </summary>
     /// <param name="player1">Must be the player initiating the game</param>
     /// <param name="player2">Must be the player being challenged</param>
-    public void Play(WorldObjectScript player1, WorldObjectScript player2)
+    public void Play(CompetitorBaseScript player1, CompetitorBaseScript player2)
     {
-        if (player1.currentBet == 0 || player2.currentBet == 0)
+        if (player1.purse.currentBet == 0 || player2.purse.currentBet == 0)
         {
             return;
         }
 
-        int stakes = player1.currentBet + player2.currentBet;
+        int stakes = player1.purse.currentBet + player2.purse.currentBet;
 
-        result gameResult = GetResult(player1.choice, player2.MakeRandomRPSChoice());
+        result gameResult = GetResult(player1.purse.choice, BettingManagerScript.MakeRandomRPSChoice());
         switch (gameResult)
         {
             case result.p1win:
-                player1.Win(stakes);
-                player2.Lose();
-
-                //Debug.Log("You won!");
+                BettingManagerScript.ResolveGame(player1, player2, stakes);
                 break;
             case result.p2win:
-                player2.Win(stakes);
-                player1.Lose();
-                //Debug.Log("You lost!");
+                BettingManagerScript.ResolveGame(player2, player1, stakes);
                 break;
             case result.draw:
                 //Debug.Log("Draw game!");

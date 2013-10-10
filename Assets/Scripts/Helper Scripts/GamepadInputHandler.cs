@@ -20,7 +20,7 @@ public class GamepadInputHandler : MonoBehaviour
     private int controllerNumber;
     public GamepadInfo[] gamepadInfo = new GamepadInfo[4];
     public GamepadInfo gamepadInfoTemplate;
-    public PlayerBaseScript playerTemplate;
+    public CompetitivePlayerBaseScript playerTemplate;
 
     void Start()
     {
@@ -35,8 +35,8 @@ public class GamepadInputHandler : MonoBehaviour
 
             
             // TODO: Players shouldn't be instantiated here, but is convenient shortcut for setting their gamepads
-            PlayerBaseScript player;
-            player = Instantiate(playerTemplate, new Vector3(75, 25, 0), Quaternion.identity) as PlayerBaseScript;
+            CompetitivePlayerBaseScript player;
+            player = Instantiate(playerTemplate, new Vector3(75, 25, 0), Quaternion.identity) as CompetitivePlayerBaseScript;
 
             // TODO: Instantiating prefabs with the dictionary is causing null ref. @ player.SetGamePad;
             //player = Instantiate(Resources.Load(CharacterConstants.PREFAB_NAMES[CharacterConstants.type.Player]), new Vector3(75, 25, 0), Quaternion.identity) as PlayerBaseScript;

@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TurretBaseScript : WorldObjectScript
+public class TurretBaseScript : CompetitorBaseScript
 {
 
+    // TODO: NameTextMesh setup.
+
     private AbilitySlotBaseScript abilitySlot;
-    private PlayerBaseScript target;
+    private CompetitivePlayerBaseScript target;
     public Vector3 aimDirection;
     public float moveSpeed;
 
@@ -20,7 +22,7 @@ public class TurretBaseScript : WorldObjectScript
     {
         if (target == null)
         {
-            target = (PlayerBaseScript)FindObjectOfType(typeof(PlayerBaseScript));
+            target = (CompetitivePlayerBaseScript)FindObjectOfType(typeof(CompetitivePlayerBaseScript));
         }
         else
         {
@@ -30,7 +32,7 @@ public class TurretBaseScript : WorldObjectScript
             MoveTowardTarget();
         }
 
-        switch (health)
+        switch (competitorModule.health)
         {
             case 0:
                 Destroy(gameObject);

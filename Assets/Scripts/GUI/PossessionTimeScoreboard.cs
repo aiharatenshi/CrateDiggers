@@ -5,20 +5,21 @@ using System;
 public class PossessionTimeScoreboard : ScoreboardBaseScript
 {
 
-    public PlayerBaseScript[] playerList;
+    public CompetitorBaseScript[] competitorList;
 
     public override void Start()
     {
         base.Start();
-        playerList = FindObjectsOfType(typeof(PlayerBaseScript)) as PlayerBaseScript[];
+        competitorList = FindObjectsOfType(typeof(CompetitorBaseScript)) as CompetitorBaseScript[];
     }
 
     public override void Update()
     {
-        string[] scoreboardText = new string[playerList.Length];
-        for (int i = 0; i < playerList.Length; i++)
+        string[] scoreboardText = new string[competitorList.Length];
+        for (int i = 0; i < competitorList.Length; i++)
         {
-            scoreboardText[i] = playerList[i].shortName + ": " + Math.Round((double)playerList[i].GetPossessionTime(), 1) + "s" + Environment.NewLine;
+            // BUG: Turrets are currently "competitors" -- causing null ref
+            scoreboardText[i] = competitorList[i].nameTextMesh.shortName + ": " + Math.Round((double)competitorList[i].competitorModule.GetPossessionTime(), 1) + "s" + Environment.NewLine;
         }
         textMesh.text = "Times" + Environment.NewLine + string.Concat(scoreboardText);
         textMesh.maxChars = textMesh.text.Length;

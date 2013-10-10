@@ -4,9 +4,8 @@ using System;
 using Constants;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(PossessionTimer))]
 
-public class PlayerBaseScript : WorldObjectScript
+public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
 {
 
     /// <summary>
@@ -15,11 +14,9 @@ public class PlayerBaseScript : WorldObjectScript
     /// 
     /// NOTE: Don't set default values for movement until we find something
     /// we actually like.
-    /// </summary>
-    /// 
+    /// </summary> 
 
-    private enum walk { left, right }
-
+    // Parameters
     [Range(0.1f, 15.0f)]
     public int moveSpeed;
     [Range(1.0f, 50.0f)]
@@ -29,44 +26,28 @@ public class PlayerBaseScript : WorldObjectScript
     public int moveSpeedDefault; // This should be private, but needs to be public to test movespeeds during play
     [Range(0.0f, 30.0f)]
     public int maxVelocity;
-    public WorldObjectScript interactionTarget = null;
-    public WorldAreaScript currentArea = null;
-    private static RockPaperScissors rpsGame = null;
-    public bool touchingGround = true;
-    public Vector3 aimDirection;
-    public Camera cam;
-    public AbilitySlotBaseScript[] abilitySlot = new AbilitySlotBaseScript[3];
+
+    // Audio
     public AudioClip jumpClip;
     public AudioClip deathClip;
     public AudioClip landClip;
     public AudioClip walkClip;
-    private bool flagForRespawn;
-    public BallBaseScript ball;
-    public PossessionTimer possessionTimer;
-    public GamepadInfo gamepad;
-    //public int playerNumber;
+
+    // Modules
+    public AbilitySlotBaseScript[] abilitySlot = new AbilitySlotBaseScript[3];
+
+    // Extras
+    private enum walk { left, right }
+    public bool touchingGround = true;
+    public Vector3 aimDirection;
+    private bool holdingBall;
+
 
     public override void Start()
     {
         base.Start();
-
-        if (GameObject.FindGameObjectWithTag("CompetitiveGame"))
-        {
-            rpsGame = GameObject.FindGameObjectWithTag("CompetitiveGame").GetComponent<RockPaperScissors>();
-        }
-        if (gameObject.GetComponent<PossessionTimer>() == null)
-        {
-            gameObject.AddComponent("PossessionTimer");
-        }
+        SetupDependencies();
         moveSpeedDefault = moveSpeed;
-        abilitySlot = GetComponentsInChildren<AbilitySlotBaseScript>() as AbilitySlotBaseScript[];
-
-        possessionTimer = GetComponent<PossessionTimer>();
-        possessionTimer.SetPlayer(this);
-
-        ProjectileAbilityBaseScript temp = abilitySlot[0] as ProjectileAbilityBaseScript;;
-
-        //gameObject.tag = "Player";
 
         tk2dSprite sprite = GetComponentInChildren<tk2dSprite>();
         sprite.collider.enabled = false;    // Need to disable the sprite collider (we're not using the player sprite for collisions)
@@ -76,20 +57,31 @@ public class PlayerBaseScript : WorldObjectScript
     public override void Update()
     {
         base.Update();
-        CheckDead();
 
-        //aimDirection = cam.ScreenToWorldPoint(Input.mousePosition) - gameObject.transform.position;
         aimDirection = new Vector3(gamepad.leftStick.x, gamepad.leftStick.y, 0);
         Debug.DrawRay(gameObject.transform.position, aimDirection * 5, Color.red);
 
         HandleInput();
 
+        if (competitorModule.ball)
+        {
+            holdingBall = true;
+        }
+        else
+        {
+            holdingBall = false;
+        }
+
+        if (competitorModule.flagForRespawn)
+        {
+            Respawn();
+        }
     }
 
     public virtual void FixedUpdate()
     {
         HandleFixedInput();
-        if (flagForRespawn)
+        if (competitorModule.flagForRespawn)
         {
             Respawn();
         }
@@ -108,8 +100,8 @@ public class PlayerBaseScript : WorldObjectScript
             TempGameManager manager = (TempGameManager)FindObjectOfType(typeof(TempGameManager));
             if (manager.GetState() == CompWorldConstants.worldStates.matchInProgress)
             {
-                ball = collision.gameObject.GetComponent<BallBaseScript>();
-                ball.AttachToPlayer(this);
+                competitorModule.ball = collision.gameObject.GetComponent<BallBaseScript>();
+                competitorModule.ball.AttachToPlayer(this);
             }
 
         }
@@ -136,7 +128,7 @@ public class PlayerBaseScript : WorldObjectScript
         // REMEMBER TO SET THE TAGS.
         if (other.gameObject.CompareTag("InteractiveObject"))
         {
-            interactionTarget = other.gameObject.transform.parent.GetComponentInChildren<WorldObjectScript>();
+            interactionTarget = other.gameObject.transform.parent.GetComponentInChildren<InteractiveObjectBaseScript>();
             interactionTarget.ReceiveInteractionHandshake();
         }
 
@@ -166,7 +158,7 @@ public class PlayerBaseScript : WorldObjectScript
         }
         if (other.gameObject.CompareTag("OutOfBounds"))
         {
-            flagForRespawn = true;
+            competitorModule.FlagForRespawn();
         }
     }
 
@@ -190,17 +182,19 @@ public class PlayerBaseScript : WorldObjectScript
     /// This method should be called when the player pressed "use"
     /// </summary>
     /// <param name="target">Requires a valid NamedObject otherwise does nothing</param>
-    public virtual void Interact(WorldObjectScript target)
+    public virtual void Interact(InteractiveObjectBaseScript target)
     {
+        // TODO: This needs to be updated
+        
         if (!InteractionPossible())
         {
             Debug.Log("Nothing to interact with!");
         }
         else
         {
-            Debug.Log("Interacting with " + target.objectName + ".");
+            //Debug.Log("Interacting with " + target.objectName + ".");
             target.OnInteract();
-            rpsGame.Play(gameObject.GetComponentInChildren<PlayerScript>(), target);
+            competitorModule.rpsGame.Play(gameObject.GetComponentInChildren<CompetitorBaseScript>(), (CompetitorBaseScript)target);
         }
     }
 
@@ -232,7 +226,7 @@ public class PlayerBaseScript : WorldObjectScript
 
         if (gamepad.buttonDown[(int)CharacterConstants.buttons.RB])
         {
-            IncreaseBet();
+            BettingManagerScript.IncreaseBet(purse);
         }
 
         if (gamepad.rightTriggerDown)
@@ -242,29 +236,13 @@ public class PlayerBaseScript : WorldObjectScript
 
         if (gamepad.buttonDown[(int)CharacterConstants.buttons.x])
         {
-            RotateRPSChoice();
-            GetComponentInChildren<PlayerRPSChoice>().UpdateText(Enum.GetName(typeof(RockPaperScissors.RPS), choice));
+            BettingManagerScript.RotateRPSChoice(purse.choice);
+            GetComponentInChildren<PlayerRPSChoice>().UpdateText(Enum.GetName(typeof(RockPaperScissors.RPS), purse.choice));
         }
 
         if (gamepad.buttonDown[(int)CharacterConstants.buttons.y])
         {
-            DropBall();
-        }
-    }
-
-    private void RotateRPSChoice()
-    {
-        switch (choice)
-        {
-            case RockPaperScissors.RPS.rock:
-                choice = RockPaperScissors.RPS.paper;
-                break;
-            case RockPaperScissors.RPS.paper:
-                choice = RockPaperScissors.RPS.scissors;
-                break;
-            case RockPaperScissors.RPS.scissors:
-                choice = RockPaperScissors.RPS.rock;
-                break;
+            competitorModule.DropBall();
         }
     }
 
@@ -306,47 +284,29 @@ public class PlayerBaseScript : WorldObjectScript
     public void Respawn()
     {
         transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
-        flagForRespawn = false;
+        competitorModule.flagForRespawn = false;
         audio.clip = deathClip;
         audio.Play();
     }
 
-    public void DropBall()
+    // TODO: Move to CompetitorModule?
+    public void TakeDamage(int amount)
     {
-        if (ball)
-        {
-            ball.DetachFromPlayer();
-            ball = null;
-        }
-    }
-
-    public float GetPossessionTime()
-    {
-        return possessionTimer.GetPossessionTime();
-    }
-
-    public void ResetPossessionTime()
-    {
-        possessionTimer.Reset();
-    }
-
-    public override void TakeDamage(int amount)
-    {
-        base.TakeDamage(amount);
-        DropBall();
+        competitorModule.TakeDamage(amount);
+        competitorModule.DropBall();
     }
 
     private void UseAbilitySlotOne()
     {
-        if (ball == null)
+        if (holdingBall == null)
         {
             abilitySlot[0].Use(aimDirection);
         }
 
-        if (ball)
+        if (holdingBall)
         {
-            GetComponentInChildren<PassBall>().Pass(aimDirection, ball, this);
-            ball = null;
+            GetComponentInChildren<PassBall>().Pass(aimDirection, competitorModule.ball, this);
+            competitorModule.ball = null;
         }
     }
 
@@ -402,14 +362,14 @@ public class PlayerBaseScript : WorldObjectScript
         gamepad = _gamepad;
     }
 
-    private void CheckDead()
+
+
+    protected override void SetupDependencies()
     {
-        switch (health)
-        {
-            case 0:
-                flagForRespawn = true;
-                break;
-        }
+        base.SetupDependencies();
+        abilitySlot = GetComponentsInChildren<AbilitySlotBaseScript>() as AbilitySlotBaseScript[];
+        ProjectileAbilityBaseScript temp = abilitySlot[0] as ProjectileAbilityBaseScript;
+        competitorModule.SetPlayer(this);
     }
 
 }
