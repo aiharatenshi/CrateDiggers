@@ -36,10 +36,7 @@ namespace Constants
 
     public class AbilityConstants
     {
-<<<<<<< HEAD
         public enum properties { Knockback, OnFire, Frozen }
-=======
         public static float PlasmaGunCooldown = 1.0f;
->>>>>>> Aaron
     }
 }

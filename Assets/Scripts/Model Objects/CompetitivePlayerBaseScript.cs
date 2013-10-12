@@ -31,24 +31,10 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
     [Range(0.0f, 30.0f)]
     public int maxVelocity;
 
-<<<<<<< Updated upstream
-<<<<<<< HEAD:Assets/Scripts/Model Objects/PlayerBaseScript.cs
-    public WorldObjectScript interactionTarget = null;
-    public WorldAreaScript currentArea = null;
-    private static RockPaperScissors rpsGame = null;
-    public bool touchingGround = true;
-    public Vector3 aimDirection;
-    public Camera cam;
-    public AbilitySlotBaseScript abilitySlot;
-    public MeleeWeaponBaseScript meleeWeapon;
-    public ProjectileBaseScript ammo;
-=======
-=======
     //TODO:ADD HEALTH AND DEATH CHECK INTO THIS CLASS
 
->>>>>>> Stashed changes
+
     // Audio
->>>>>>> Aaron:Assets/Scripts/Model Objects/CompetitivePlayerBaseScript.cs
     public AudioClip jumpClip;
     public AudioClip deathClip;
     public AudioClip landClip;
@@ -64,26 +50,18 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
     private bool holdingBall;
 
 
-<<<<<<< Updated upstream
     public List<AbilityConstants.properties> charProperties;
 
-    public override void Start()
-=======
     public void Start()
->>>>>>> Stashed changes
     {
         //base.Start();
         SetupDependencies();
         moveSpeedDefault = moveSpeed;
 
         tk2dSprite sprite = GetComponentInChildren<tk2dSprite>();
-<<<<<<< HEAD:Assets/Scripts/Model Objects/PlayerBaseScript.cs
-        sprite.collider.enabled = false;
 
         charProperties = new List<AbilityConstants.properties>();
-=======
         sprite.collider.enabled = false;    // Need to disable the sprite collider (we're not using the player sprite for collisions)
->>>>>>> Aaron:Assets/Scripts/Model Objects/CompetitivePlayerBaseScript.cs
     }
 
     // Update is called once per frame
