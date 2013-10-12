@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent(typeof(TimerScript))]
 
-public class TextMeshBaseScript : MonoBehaviour
+abstract public class TextMeshBaseScript : MonoBehaviour
 {
 
     /// <summary>
@@ -12,20 +12,23 @@ public class TextMeshBaseScript : MonoBehaviour
 
     protected TimerScript timer;
     public tk2dTextMesh textMesh;
-    //public WorldObjectScript parentObject;
+    private int timerIndex;
     public bool startActive = true;
     public int defaultDisplayTime = 2;
     public bool alwaysDisplay = false;
     public float displayLength;
 
-    // Use this for initialization
     public virtual void Start()
     {
         if (GetComponent<TimerScript>() == null)
         {
             gameObject.AddComponent<TimerScript>();
         }
-        //parentObject = (WorldObjectScript)transform.parent.parent.gameObject.GetComponent<WorldObjectScript>();
+
+        if (GetComponent<tk2dTextMesh>() == null)
+        {
+            gameObject.AddComponent<tk2dTextMesh>();
+        }
         textMesh = GetComponent<tk2dTextMesh>();
         timer = GetComponent<TimerScript>();
 
@@ -39,7 +42,6 @@ public class TextMeshBaseScript : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     public virtual void Update()
     {
         CheckActive();
@@ -48,13 +50,13 @@ public class TextMeshBaseScript : MonoBehaviour
     public virtual void UpdateText(string text)
     {
         textMesh.text = text;
-        timer.StartTimer(defaultDisplayTime);
+        timerIndex = timer.StartTimer(defaultDisplayTime);
         textMesh.maxChars = text.Length;
     }
 
     public void CheckActive()
     {
-        if (timer.IsTimerActive(0))
+        if (timer.IsTimerActive(timerIndex))
         {
             renderer.enabled = true;
         }

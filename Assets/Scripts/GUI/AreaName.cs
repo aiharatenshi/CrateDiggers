@@ -3,12 +3,12 @@ using System.Collections;
 
 public class AreaName : TextMeshBaseScript {
 
-    public PlayerBaseScript player;
+    public CompetitivePlayerBaseScript player;
 
 	// Use this for initialization
 	public override void Start () {
         base.Start();
-        player = (PlayerBaseScript)FindObjectOfType(typeof(PlayerBaseScript));
+        player = (CompetitivePlayerBaseScript)FindObjectOfType(typeof(CompetitivePlayerBaseScript));
 	}
 	
 	// Update is called once per frame

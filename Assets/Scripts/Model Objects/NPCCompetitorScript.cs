@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-abstract public class NPCBaseScript : WorldObjectScript
+abstract public class NPCCompetitorBaseScript : CompetitorBaseScript
 {
 
     public int betChance = 4; // 1/n chance of betting ever polling period
     public float bettingPollingPeriod = 1; // In seconds
-    private bool flagForRespawn;
 
     public override void Start()
     {
@@ -19,23 +18,16 @@ abstract public class NPCBaseScript : WorldObjectScript
         if (!timer.IsTimerActive(0))
         {
             timer.StartTimer(bettingPollingPeriod);
-            if (UnityEngine.Random.Range(0, betChance) == 0 && dollarBillz > 0)
+            if (UnityEngine.Random.Range(0, betChance) == 0 && purse.dollarBillz > 0)
             {
-                IncreaseBet();
+                BettingManagerScript.IncreaseBet(purse);
             }
-        }
-
-        switch (health)
-        {
-            case 0:
-                flagForRespawn = true;
-                break;
         }
     }
 
     public void FixedUpdate()
     {
-        if (flagForRespawn)
+        if (competitorModule.flagForRespawn)
         {
             Respawn();
         }
@@ -44,7 +36,7 @@ abstract public class NPCBaseScript : WorldObjectScript
     public void Respawn()
     {
         transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
-        flagForRespawn = false;
+        competitorModule.flagForRespawn = false;
         rigidbody.AddForce(Vector3.zero, ForceMode.VelocityChange);
     }
 
@@ -52,7 +44,7 @@ abstract public class NPCBaseScript : WorldObjectScript
     {
         if (other.gameObject.CompareTag("OutOfBounds"))
         {
-            flagForRespawn = true;
+            competitorModule.FlagForRespawn();
         }
     }
 }

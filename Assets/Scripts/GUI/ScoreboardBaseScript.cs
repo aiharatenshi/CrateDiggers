@@ -13,7 +13,7 @@ abstract public class ScoreboardBaseScript : MonoBehaviour
     /// </summary>
 
     protected tk2dTextMesh textMesh;
-    protected WorldObjectScript[] player;
+    protected CompetitorBaseScript[] player;
 
     // Use this for initialization
     public virtual void Start()
@@ -22,7 +22,7 @@ abstract public class ScoreboardBaseScript : MonoBehaviour
         {
             gameObject.AddComponent("tk2dTextMesh");
         }
-        player = FindObjectsOfType(typeof(WorldObjectScript)) as WorldObjectScript[];
+        player = FindObjectsOfType(typeof(CompetitorBaseScript)) as CompetitorBaseScript[];
         textMesh = gameObject.GetComponent<tk2dTextMesh>();
         textMesh.text = "0";
     }
@@ -35,7 +35,7 @@ abstract public class ScoreboardBaseScript : MonoBehaviour
         string[] scoreboardText = new string[player.Length];
         for (int i = 0; i < player.Length; i++)
         {
-            scoreboardText[i] = player[i].shortName + ": " + "" + Environment.NewLine;
+            scoreboardText[i] = player[i].nameTextMesh.shortName + ": " + "" + Environment.NewLine;
             textMesh.text = "Scores" + Environment.NewLine + string.Concat(scoreboardText);
         }
 

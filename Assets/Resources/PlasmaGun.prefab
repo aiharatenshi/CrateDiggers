@@ -78,10 +78,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ab69c35764e9c347b08090f4d4ead9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileType: {fileID: 11400000, guid: 319b43aa42b96ca47a69823ab17aeffa, type: 2}
   sound: {fileID: 0}
-  fireRate: 0
-  spread: 0
+  cooldown: 50
+  projectileType: {fileID: 11400000, guid: 319b43aa42b96ca47a69823ab17aeffa, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

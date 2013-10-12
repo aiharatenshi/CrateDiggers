@@ -4,7 +4,7 @@ using System.Collections;
 public class BallBaseScript : MonoBehaviour
 {
 
-    public PlayerBaseScript possessingPlayer;
+    public CompetitivePlayerBaseScript possessingPlayer;
 
     void Start()
     {
@@ -19,7 +19,7 @@ public class BallBaseScript : MonoBehaviour
         }
     }
 
-    public void AttachToPlayer(PlayerBaseScript player)
+    public void AttachToPlayer(CompetitivePlayerBaseScript player)
     {
         possessingPlayer = player;
         rigidbody.isKinematic = true;

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerScript : PlayerBaseScript
+public class PlayerScript : CompetitivePlayerBaseScript
 {
 
     /// <summary>

@@ -16,7 +16,7 @@ namespace Constants
 
     public class CharacterConstants
     {
-        public enum buttons { a, b, x, y, LS, RS, back, start, LJoy, RJoy }
+        public enum buttons { a, b, x, y, LB, RB, back, start, LJoy, RJoy }
         
         public enum type { Player };
 
@@ -36,6 +36,10 @@ namespace Constants
 
     public class AbilityConstants
     {
+<<<<<<< HEAD
         public enum properties { Knockback, OnFire, Frozen }
+=======
+        public static float PlasmaGunCooldown = 1.0f;
+>>>>>>> Aaron
     }
 }

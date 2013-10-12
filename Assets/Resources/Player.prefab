@@ -753,6 +753,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c12437260226f0f409b98f6698eb0b82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sound: {fileID: 8300000, guid: a795825461269804f8ba31405bf1426c, type: 3}
+  cooldown: 0
   projectileType: {fileID: 11400000, guid: feadfa4e96ef75546aeb12de34a7bd10, type: 2}
   sound: {fileID: 8300000, guid: a795825461269804f8ba31405bf1426c, type: 3}
   fireRate: 1
@@ -953,8 +955,8 @@ MonoBehaviour:
   choice: 0
   health: 4
   godMode: 0
-  moveSpeed: 5
-  jumpMagnitude: 27
+  moveSpeed: 6
+  jumpMagnitude: 37
   moveSpeedAir: 1
   moveSpeedDefault: 0
   maxVelocity: 15
@@ -963,7 +965,8 @@ MonoBehaviour:
   touchingGround: 1
   aimDirection: {x: 0, y: 0, z: 0}
   cam: {fileID: 0}
-  abilitySlot: {fileID: 0}
+  abilitySlot:
+  - {fileID: 0}
   meleeWeapon: {fileID: 0}
   ammo: {fileID: 0}
   jumpClip: {fileID: 8300000, guid: bc637349f5cd41c4a9c696569d7791f4, type: 3}
@@ -984,10 +987,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ab69c35764e9c347b08090f4d4ead9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileType: {fileID: 11400000, guid: 319b43aa42b96ca47a69823ab17aeffa, type: 2}
   sound: {fileID: 8300000, guid: 9ff577fbc3784c5498c86c267ef7e6bf, type: 3}
-  fireRate: .389999986
-  spread: 0
+  cooldown: 0
+  projectileType: {fileID: 11400000, guid: 319b43aa42b96ca47a69823ab17aeffa, type: 2}
 --- !u!114 &11400024
 MonoBehaviour:
   m_ObjectHideFlags: 1

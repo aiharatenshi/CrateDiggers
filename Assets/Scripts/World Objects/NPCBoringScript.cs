@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NPCBoringScript : NPCBaseScript
+public class NPCBoringScript : NPCCompetitorBaseScript
 {
 
     public float movement = 0f;
@@ -10,7 +10,7 @@ public class NPCBoringScript : NPCBaseScript
     public override void Start()
     {
         base.Start();
-        Debug.Log("I'm a boring NPC, and my name is " + objectName + "!");
+        Debug.Log("I'm a boring NPC, and my name is " + nameTextMesh.fullName + "!");
         isInteractive = true;
 
         // Component tests for integrity of prefab
@@ -36,7 +36,7 @@ public class NPCBoringScript : NPCBaseScript
     {
         //renderer.material = renderer.materials[1];
         renderer.material.color = Color.green;
-        Say("Hi, my name is " + objectName + ".");
+        Say("Hi, my name is " + nameTextMesh.fullName + ".");
     }
 
     public override void InteractionClose()

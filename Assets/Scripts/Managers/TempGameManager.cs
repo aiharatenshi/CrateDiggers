@@ -44,11 +44,11 @@ public class TempGameManager : ManagerScript
         roundTimerNumber = timer.StartTimer(roundTime);
         state = CompWorldConstants.worldStates.matchInProgress;
 
-        PlayerBaseScript[] playerList = FindObjectsOfType(typeof(PlayerBaseScript)) as PlayerBaseScript[];
+        CompetitivePlayerBaseScript[] playerList = FindObjectsOfType(typeof(CompetitivePlayerBaseScript)) as CompetitivePlayerBaseScript[];
 
-        foreach (PlayerBaseScript cPlayer in playerList)
+        foreach (CompetitivePlayerBaseScript cPlayer in playerList)
         {
-            cPlayer.ResetPossessionTime();
+            cPlayer.competitorModule.ResetPossessionTime();
         }
     }
 
@@ -63,11 +63,11 @@ public class TempGameManager : ManagerScript
         intermissionTimerNumber = timer.StartTimer(intermissionTime);
         state = CompWorldConstants.worldStates.intermission;
 
-        PlayerBaseScript[] playerList = FindObjectsOfType(typeof(PlayerBaseScript)) as PlayerBaseScript[];
+        CompetitivePlayerBaseScript[] playerList = FindObjectsOfType(typeof(CompetitivePlayerBaseScript)) as CompetitivePlayerBaseScript[];
 
-        foreach (PlayerBaseScript cPlayer in playerList)
+        foreach (CompetitivePlayerBaseScript cPlayer in playerList)
         {
-            cPlayer.DropBall();
+            cPlayer.competitorModule.DropBall();
         }
     }
 

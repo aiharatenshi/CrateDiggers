@@ -1,46 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(TimerScript))]
-
-abstract public class MeleeWeaponBaseScript : MonoBehaviour
+abstract public class MeleeWeaponBaseScript : AbilitySlotBaseScript
 {
 
+    // TODO: This needs to be completely revamped.
+
     public ProjectileBaseScript projectileType;
-    public AudioClip sound;
-    public float fireRate;
-    private TimerScript fireRateTimer;
-    public float spread;
 
     // Use this for initialization
-    public virtual void Start()
+    public override void Start()
     {
-        if (gameObject.GetComponent<AudioSource>() == null)
-        {
-            gameObject.AddComponent("AudioSource");
-        }
-        if (gameObject.GetComponent<TimerScript>() == null)
-        {
-            gameObject.AddComponent("TimerScript");
-        }
-        fireRateTimer = GetComponent<TimerScript>();
-        audio.clip = sound;
+        base.Start();
     }
 
     // Update is called once per frame
-    public virtual void Update()
+    public override void Update()
     {
 
     }
 
-    public void Shoot()
+    public override void Use()
     {
-        if (!fireRateTimer.IsTimerActive(0))
+        if (!cooldownTimer.IsTimerActive(0))
         {
             Instantiate(projectileType, transform.position, transform.rotation);
             audio.Play();
-            fireRateTimer.StartTimer(fireRate);
+            cooldownTimer.StartTimer(cooldown);
         }
     }
+
+    public override void Use(Vector3 direction) { }
 }
