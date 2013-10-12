@@ -8,7 +8,8 @@ public class PlasmaGun : ProjectileAbilityBaseScript
     public override void Start()
     {
         base.Start();
-        cooldown = AbilityConstants.PlasmaGunCooldown;
+        projectileType = (ProjectileBaseScript)Resources.Load(AbilityConstants.PREFAB_NAMES[AbilityConstants.type.PlasmaBullet], typeof(ProjectileBaseScript));
+        cooldown = AbilityConstants.PlasmaGunCooldown;    
     }
 
     public override void Use()

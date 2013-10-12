@@ -20,6 +20,14 @@ public class PossessionTimer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //if (player.competitorModule.ball)
+        //{
+        //    possessionTime += Time.deltaTime;
+        //}
+    }
+
+    public void IncreaseTime()
+    {
         if (player.competitorModule.ball)
         {
             possessionTime += Time.deltaTime;

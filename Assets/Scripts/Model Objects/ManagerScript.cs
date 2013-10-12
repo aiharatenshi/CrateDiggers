@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Constants;
 
 public class ManagerScript : MonoBehaviour {
     private List<GameObject> playerList;
@@ -8,6 +9,7 @@ public class ManagerScript : MonoBehaviour {
 
 	// Use this for initialization
 	public virtual void Start () {
+        Application.targetFrameRate = CompWorldConstants.foddyFrames;
         playerList = new List<GameObject>();
 
         if (tileMap == null) Debug.Log("ERROR: Tile Map is empty in " + this.gameObject.name);

@@ -198,6 +198,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &100022
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400022}
+  - 82: {fileID: 8200006}
+  - 114: {fileID: 11400032}
+  - 114: {fileID: 11400030}
+  m_Layer: 0
+  m_Name: Shield
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &400000
 Transform:
   m_ObjectHideFlags: 1
@@ -219,6 +237,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 400022}
   - {fileID: 400018}
   - {fileID: 400016}
   - {fileID: 400004}
@@ -288,7 +307,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100014}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 56.0585785, y: 23.6795387, z: 0}
+  m_LocalPosition: {x: 20.5914917, y: 53.8438683, z: -11.7302189}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400010}
@@ -329,6 +348,17 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400014}
+--- !u!4 &400022
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100022}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -.00566482544, y: .0662002563, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400002}
 --- !u!23 &2300000
 Renderer:
   m_ObjectHideFlags: 1
@@ -682,6 +712,64 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+--- !u!82 &8200006
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100022}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -698,6 +786,8 @@ MonoBehaviour:
   defaultDisplayTime: 2
   alwaysDisplay: 0
   displayLength: 0
+  fullName: 
+  shortName: 
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -755,10 +845,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sound: {fileID: 8300000, guid: a795825461269804f8ba31405bf1426c, type: 3}
   cooldown: 0
+  cooldownTimer: {fileID: 0}
   projectileType: {fileID: 11400000, guid: feadfa4e96ef75546aeb12de34a7bd10, type: 2}
-  sound: {fileID: 8300000, guid: a795825461269804f8ba31405bf1426c, type: 3}
-  fireRate: 1
-  spread: 0
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -947,35 +1035,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1acb334def57b446994a4c6a91067bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectName: Frank Lantz
-  shortName: Frank
-  dollarBillz: 1000
-  currentBet: 0
+  currentArea: {fileID: 0}
+  interactionTarget: {fileID: 0}
   dialogueDisplayLength: 0
-  choice: 0
-  health: 4
-  godMode: 0
+  competitorModule: {fileID: 0}
+  nameTextMesh: {fileID: 0}
+  purse: {fileID: 0}
+  gamepad: {fileID: 0}
   moveSpeed: 6
   jumpMagnitude: 37
   moveSpeedAir: 1
   moveSpeedDefault: 0
   maxVelocity: 15
-  interactionTarget: {fileID: 0}
-  currentArea: {fileID: 0}
-  touchingGround: 1
-  aimDirection: {x: 0, y: 0, z: 0}
-  cam: {fileID: 0}
-  abilitySlot:
-  - {fileID: 0}
-  meleeWeapon: {fileID: 0}
-  ammo: {fileID: 0}
   jumpClip: {fileID: 8300000, guid: bc637349f5cd41c4a9c696569d7791f4, type: 3}
   deathClip: {fileID: 8300000, guid: 8ed2e1da7a8a2784a9da7e403d8a93f6, type: 3}
   landClip: {fileID: 8300000, guid: b92a646112c503b4d9029fbd7af54c7c, type: 3}
   walkClip: {fileID: 8300000, guid: d6694aa90a1299b46995dc6be29f78d0, type: 3}
-  ball: {fileID: 0}
-  possessionTimer: {fileID: 0}
-  gamepad: {fileID: 0}
+  abilitySlot:
+  - {fileID: 0}
+  touchingGround: 1
+  aimDirection: {x: 0, y: 0, z: 0}
 --- !u!114 &11400022
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -989,6 +1068,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sound: {fileID: 8300000, guid: 9ff577fbc3784c5498c86c267ef7e6bf, type: 3}
   cooldown: 0
+  cooldownTimer: {fileID: 0}
   projectileType: {fileID: 11400000, guid: 319b43aa42b96ca47a69823ab17aeffa, type: 2}
 --- !u!114 &11400024
 MonoBehaviour:
@@ -1001,6 +1081,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f9a2c34b2f8c342bbe9aea7af4fba6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sound: {fileID: 0}
+  cooldown: 0
+  cooldownTimer: {fileID: 0}
   passForce: 41.7000008
 --- !u!114 &11400026
 MonoBehaviour:
@@ -1034,6 +1117,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+--- !u!114 &11400030
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b264c02140b37a47be647c585b08259, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sound: {fileID: 0}
+  cooldown: 0
+  cooldownTimer: {fileID: 0}
+--- !u!114 &11400032
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6010c575f19a00e4492e40ee41e27ef4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeRemaining:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  isActive: 00000000000000000000
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

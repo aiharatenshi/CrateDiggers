@@ -8,6 +8,7 @@ public class PlasmaBullet : ProjectileBaseScript
     void Start()
     {
         base.Start();
+        lifetime = Constants.AbilityConstants.PlasmaGunCooldown;
     }
 
     // Update is called once per frame

@@ -18,6 +18,7 @@ abstract public class AbilitySlotBaseScript : MonoBehaviour
     public AudioClip sound;
     public float cooldown;
     public TimerScript cooldownTimer;
+    protected int cooldownTimerNumber;
 
     public virtual void Start()
     {

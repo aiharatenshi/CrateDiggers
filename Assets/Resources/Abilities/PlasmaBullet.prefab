@@ -113,9 +113,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d79ce9211eb13a4b9412617e7901f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileSpeed: 38.5
-  damage: 1
   lifetime: .5
+  damage: 1
+  projectileSpeed: 38.5
   physicsProjectile: 0
 --- !u!135 &13500000
 SphereCollider:

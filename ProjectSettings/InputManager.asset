@@ -19,7 +19,7 @@ InputManager:
     invert: 0
     type: 2
     axis: 0
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: L_XAxis_2
     descriptiveName: 
@@ -35,7 +35,7 @@ InputManager:
     invert: 0
     type: 2
     axis: 0
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: L_XAxis_3
     descriptiveName: 
@@ -83,7 +83,7 @@ InputManager:
     invert: 1
     type: 2
     axis: 1
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: L_YAxis_2
     descriptiveName: 
@@ -99,7 +99,7 @@ InputManager:
     invert: 1
     type: 2
     axis: 1
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: L_YAxis_3
     descriptiveName: 
@@ -147,7 +147,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: A_2
     descriptiveName: 
@@ -163,7 +163,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: A_3
     descriptiveName: 
@@ -211,7 +211,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: B_2
     descriptiveName: 
@@ -227,7 +227,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: B_3
     descriptiveName: 
@@ -275,7 +275,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: X_2
     descriptiveName: 
@@ -291,7 +291,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: X_3
     descriptiveName: 
@@ -339,7 +339,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: Y_2
     descriptiveName: 
@@ -355,7 +355,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: Y_3
     descriptiveName: 
@@ -403,7 +403,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: LB_2
     descriptiveName: 
@@ -419,7 +419,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 1
+    joyNum: 4
   - serializedVersion: 3
     m_Name: LB_3
     descriptiveName: 
@@ -467,7 +467,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: RB_2
     descriptiveName: 
@@ -483,7 +483,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: RB_3
     descriptiveName: 
@@ -531,7 +531,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: Back_2
     descriptiveName: 
@@ -547,7 +547,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: Back_3
     descriptiveName: 
@@ -595,7 +595,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: Start_2
     descriptiveName: 
@@ -611,7 +611,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: Start_3
     descriptiveName: 
@@ -659,7 +659,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: LS_2
     descriptiveName: 
@@ -675,7 +675,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: LS_3
     descriptiveName: 
@@ -723,7 +723,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: RS_2
     descriptiveName: 
@@ -739,7 +739,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 1
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: RS_3
     descriptiveName: 
@@ -784,10 +784,10 @@ InputManager:
     dead: .300000012
     sensitivity: 1
     snap: 0
-    invert: 1
+    invert: 0
     type: 2
     axis: 4
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: R_YAxis_2
     descriptiveName: 
@@ -800,10 +800,10 @@ InputManager:
     dead: .300000012
     sensitivity: 1
     snap: 0
-    invert: 1
+    invert: 0
     type: 2
     axis: 4
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: R_YAxis_3
     descriptiveName: 
@@ -816,7 +816,7 @@ InputManager:
     dead: .300000012
     sensitivity: 1
     snap: 0
-    invert: 1
+    invert: 0
     type: 2
     axis: 4
     joyNum: 3
@@ -832,7 +832,7 @@ InputManager:
     dead: .300000012
     sensitivity: 1
     snap: 0
-    invert: 1
+    invert: 0
     type: 2
     axis: 4
     joyNum: 4
@@ -851,7 +851,7 @@ InputManager:
     invert: 0
     type: 2
     axis: 3
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: R_XAxis_2
     descriptiveName: 
@@ -867,7 +867,7 @@ InputManager:
     invert: 0
     type: 2
     axis: 3
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: R_XAxis_3
     descriptiveName: 
@@ -915,7 +915,7 @@ InputManager:
     invert: 0
     type: 2
     axis: 5
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: DPad_XAxis_2
     descriptiveName: 
@@ -931,7 +931,7 @@ InputManager:
     invert: 0
     type: 2
     axis: 5
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: DPad_XAxis_3
     descriptiveName: 
@@ -979,7 +979,7 @@ InputManager:
     invert: 0
     type: 2
     axis: 6
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: DPad_YAxis_2
     descriptiveName: 
@@ -995,7 +995,7 @@ InputManager:
     invert: 0
     type: 2
     axis: 6
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: DPad_YAxis_3
     descriptiveName: 
@@ -1043,7 +1043,7 @@ InputManager:
     invert: 0
     type: 2
     axis: 2
-    joyNum: 2
+    joyNum: 1
   - serializedVersion: 3
     m_Name: Triggers_2
     descriptiveName: 
@@ -1059,7 +1059,7 @@ InputManager:
     invert: 0
     type: 2
     axis: 2
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: Triggers_3
     descriptiveName: 

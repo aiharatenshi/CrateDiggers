@@ -43,7 +43,16 @@ MonoBehaviour:
   rightStick: {x: 0, y: 0}
   trigger: 0
   dpad: {x: 0, y: 0}
-  buttons: 00000000000000000000
+  button: 
+  buttonDown: 
+  buttonUp: 
+  triggerReleased: 0
+  leftTrigger: 0
+  rightTrigger: 0
+  leftTriggerDown: 0
+  rightTriggerDown: 0
+  leftTriggerUp: 0
+  rightTriggerUp: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

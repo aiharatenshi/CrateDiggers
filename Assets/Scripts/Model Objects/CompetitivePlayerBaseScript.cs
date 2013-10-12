@@ -34,14 +34,12 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
     public AudioClip walkClip;
 
     // Modules
-    public AbilitySlotBaseScript[] abilitySlot = new AbilitySlotBaseScript[3];
+    public AbilitySlotBaseScript[] abilitySlot = new AbilitySlotBaseScript[6];
 
     // Extras
     private enum walk { left, right }
     public bool touchingGround = true;
     public Vector3 aimDirection;
-    private bool holdingBall;
-
 
     public override void Start()
     {
@@ -62,15 +60,6 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
         Debug.DrawRay(gameObject.transform.position, aimDirection * 5, Color.red);
 
         HandleInput();
-
-        if (competitorModule.ball)
-        {
-            holdingBall = true;
-        }
-        else
-        {
-            holdingBall = false;
-        }
 
         if (competitorModule.flagForRespawn)
         {
@@ -226,12 +215,18 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
 
         if (gamepad.buttonDown[(int)CharacterConstants.buttons.RB])
         {
-            BettingManagerScript.IncreaseBet(purse);
+            //BettingManagerScript.IncreaseBet(purse);
+            UseAbilitySlotTwo();
         }
 
         if (gamepad.rightTriggerDown)
         {
             UseAbilitySlotOne();
+        }
+
+        if (gamepad.leftTrigger)
+        {
+            ChargeBall();
         }
 
         if (gamepad.buttonDown[(int)CharacterConstants.buttons.x])
@@ -242,7 +237,7 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
 
         if (gamepad.buttonDown[(int)CharacterConstants.buttons.y])
         {
-            competitorModule.DropBall();
+            //competitorModule.DropBall();
         }
     }
 
@@ -298,12 +293,12 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
 
     private void UseAbilitySlotOne()
     {
-        if (holdingBall == null)
+        if (competitorModule.ball == null)
         {
-            abilitySlot[0].Use(aimDirection);
+            GetComponentInChildren<ProjectileAbilityBaseScript>().Use(aimDirection);
         }
 
-        if (holdingBall)
+        if (competitorModule.ball)
         {
             GetComponentInChildren<PassBall>().Pass(aimDirection, competitorModule.ball, this);
             competitorModule.ball = null;
@@ -312,10 +307,17 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
 
     private void UseAbilitySlotTwo()
     {
+        Debug.Log("Using slot two");
+        GetComponentInChildren<ShieldAbilityScript>().Use(this);
     }
 
     private void UseAbilitySlotThree()
     {
+    }
+
+    private void ChargeBall()
+    {
+        competitorModule.possessionTimer.IncreaseTime();
     }
 
     private void Walk(walk leftOrRight)
@@ -368,7 +370,6 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
     {
         base.SetupDependencies();
         abilitySlot = GetComponentsInChildren<AbilitySlotBaseScript>() as AbilitySlotBaseScript[];
-        ProjectileAbilityBaseScript temp = abilitySlot[0] as ProjectileAbilityBaseScript;
         competitorModule.SetPlayer(this);
     }
 

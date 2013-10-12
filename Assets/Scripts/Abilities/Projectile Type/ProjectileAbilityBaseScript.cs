@@ -11,7 +11,7 @@ public class ProjectileAbilityBaseScript : AbilitySlotBaseScript
     /// </summary>
 
     public ProjectileBaseScript projectileType;
-    int cooldownTimerNumber;
+
 
     public override void Start()
     {

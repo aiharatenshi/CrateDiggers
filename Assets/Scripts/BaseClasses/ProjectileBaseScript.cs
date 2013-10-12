@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Constants;
 
 [RequireComponent(typeof(Rigidbody))]
 
-abstract public class ProjectileBaseScript : MonoBehaviour
+abstract public class ProjectileBaseScript : AbilityInstanceBaseScript
 {
     /// <summary>
     /// Basic projectile class.
@@ -16,21 +17,14 @@ abstract public class ProjectileBaseScript : MonoBehaviour
     
     [Range(1.0f, 50.0f)]
     public float projectileSpeed;
-    public int damage;
-    protected float size;
-    public float lifetime;
     protected Vector3 direction;
-    private float spawnTime;
     public bool physicsProjectile;
 
     public virtual void Start()
     {
-        spawnTime = Time.time;
-        rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
-        rigidbody.isKinematic = true;
-        collider.isTrigger = true;
-        gameObject.layer = LayerMask.NameToLayer("Hitboxes1");
+        base.Start();
         gameObject.tag = "Projectile";
+
         if (physicsProjectile)
         {
             rigidbody.isKinematic = false;
@@ -51,10 +45,7 @@ abstract public class ProjectileBaseScript : MonoBehaviour
 
     public virtual void Update()
     {
-        if (Time.time - spawnTime > lifetime)
-        {
-            Destroy(gameObject);
-        }
+        base.Update();
 
         if (physicsProjectile)
         {
@@ -70,7 +61,7 @@ abstract public class ProjectileBaseScript : MonoBehaviour
     {
     }
 
-    public void OnTriggerEnter(Collider other)
+    public override void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Hitbox"))
         {

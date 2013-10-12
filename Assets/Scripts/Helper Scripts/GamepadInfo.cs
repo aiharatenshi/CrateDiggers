@@ -15,7 +15,7 @@ public class GamepadInfo : MonoBehaviour
     // These member variables can be made private, but are set
     // public so we can debug the gamepads easily
 
-    // TODO: Does pressing both triggers work?
+    // TODO: Separate triggers in input manager
 
     public int gamepadNumber;
     public Vector2 leftStick;
@@ -79,6 +79,16 @@ public class GamepadInfo : MonoBehaviour
     public void GetTriggerStates()
     {
         // Up/Down resets
+        if (leftTrigger)
+        {
+            leftTrigger = false;
+        }
+
+        if (rightTrigger)
+        {
+            rightTrigger = false;
+        }
+
         if (leftTriggerDown)
         {
             leftTriggerDown = false;
