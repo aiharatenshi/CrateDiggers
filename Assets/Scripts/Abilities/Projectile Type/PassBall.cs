@@ -12,7 +12,7 @@ public class PassBall : AbilitySlotBaseScript
         cooldown = 0;
     }
 
-    public void Pass(Vector3 direction, BallBaseScript ball, CompetitorBaseScript player)
+    public void Pass(Vector3 direction, BallBaseScript ball, CompetitivePlayerBaseScript player)
     {
         ball.DetachFromPlayer();
         direction.Normalize();
@@ -30,7 +30,7 @@ public class PassBall : AbilitySlotBaseScript
         throw new System.NotImplementedException();
     }
 
-    public void Use(Vector3 direction, BallBaseScript ball, CompetitorBaseScript player)
+    public void Use(Vector3 direction, BallBaseScript ball, CompetitivePlayerBaseScript player)
     {
         ball.DetachFromPlayer();
         direction.Normalize();

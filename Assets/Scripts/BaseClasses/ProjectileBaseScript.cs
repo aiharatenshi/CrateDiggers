@@ -74,9 +74,14 @@ abstract public class ProjectileBaseScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Hitbox"))
         {
+<<<<<<< Updated upstream
             CompetitorBaseScript target = (CompetitorBaseScript)other.transform.parent.GetComponent<CompetitorBaseScript>();
             target.competitorModule.TakeDamage(damage);
             //TODO: Apply ability properties to the target if required.
+=======
+            CompetitivePlayerBaseScript target = (CompetitivePlayerBaseScript)other.transform.parent.GetComponent<CompetitivePlayerBaseScript>();
+            target.TakeDamage(damage);
+>>>>>>> Stashed changes
             Destroy(gameObject);
         }
         if (other.gameObject.CompareTag("Projectile"))
