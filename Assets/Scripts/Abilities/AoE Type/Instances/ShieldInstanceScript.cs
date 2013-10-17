@@ -5,12 +5,12 @@ using Constants;
 public class ShieldInstanceScript : AbilityInstanceBaseScript
 {
 
-    CompetitorBaseScript shieldedPlayer;
+    CompetitivePlayerBaseScript shieldedPlayer;
 
     public override void Start()
     {
         base.Start();
-        lifetime = AbilityConstants.ShieldDefaultLifetime;
+        lifetime = AbilityConstants.shieldDefaultLifetime;
         gameObject.tag = "Shield";
     }
 
@@ -28,7 +28,7 @@ public class ShieldInstanceScript : AbilityInstanceBaseScript
         }
     }
 
-    public void SetPlayer(CompetitorBaseScript target)
+    public void SetPlayer(CompetitivePlayerBaseScript target)
     {
         shieldedPlayer = target;
     }

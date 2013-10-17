@@ -12,9 +12,9 @@ abstract public class ProjectileBaseScript : AbilityInstanceBaseScript
     /// Changes to Rigidbody Trigger Collider if flagged as physics projectile (e.g. arrow)
     /// 
     /// NOTES: Projectiles collide with colliders tagged "Hitbox", but only affect
-    /// objects with CompetitorModules (any child of CompetitorBaseScript)
+    /// objects with CompetitorModules (any child of CompetitivePlayerBaseScript)
     /// </summary>
-    
+
     [Range(1.0f, 50.0f)]
     public float projectileSpeed;
     protected Vector3 direction;
@@ -61,6 +61,14 @@ abstract public class ProjectileBaseScript : AbilityInstanceBaseScript
     {
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Environment"))
+        {
+            Destroy(gameObject);
+        }
+    }
+
     public override void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Hitbox"))
@@ -74,7 +82,7 @@ abstract public class ProjectileBaseScript : AbilityInstanceBaseScript
             Destroy(gameObject);
         }
 
-        if (collider.gameObject.tag.StartsWith("Environment"))
+        if (other.gameObject.CompareTag("Environment"))
         {
             Destroy(gameObject);
         }

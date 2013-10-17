@@ -33,8 +33,9 @@ public class GamepadInputHandler : MonoBehaviour
 
             // TODO: Players shouldn't be instantiated here, but is convenient shortcut for setting their gamepads
             CompetitivePlayerBaseScript player;
-            player = (CompetitivePlayerBaseScript)Instantiate(Resources.Load(CharacterConstants.PREFAB_NAMES[CharacterConstants.type.Player], typeof(CompetitivePlayerBaseScript)), new Vector3(75, 25, 0), Quaternion.identity);
+            player = (CompetitivePlayerBaseScript)Instantiate(Resources.Load(CharacterConstants.PREFAB_NAMES[CharacterConstants.type.Player], typeof(CompetitivePlayerBaseScript)), GameObject.FindGameObjectWithTag("Respawn").transform.position, Quaternion.identity);
             player.SetGamepad(gamepadInfo[i]);
+            player.playerName = CharacterConstants.PLAYER_NAMES[i];
         }
 
     }

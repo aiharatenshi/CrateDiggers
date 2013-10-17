@@ -20,9 +20,9 @@ public class PossessionTimeScoreboard : ScoreboardBaseScript
         for (int i = 0; i < competitorList.Length; i++)
         {
             // BUG: Turrets are currently "competitors" -- causing null ref
-            //scoreboardText[i] = CompetitivePlayerBaseScript[i].nameTextMesh.shortName + ": " + Math.Round((double)competitorList[i].competitorModule.GetPossessionTime(), 1) + "s" + Environment.NewLine;
+            scoreboardText[i] = competitorList[i].playerName + ": " + Math.Round((double)competitorList[i].possessionTimer.GetPossessionTime(), 1) + "s" + Environment.NewLine;
         }
-        //textMesh.text = "Times" + Environment.NewLine + string.Concat(scoreboardText);
-        //textMesh.maxChars = textMesh.text.Length;
+        textMesh.text = "Times" + Environment.NewLine + string.Concat(scoreboardText);
+        textMesh.maxChars = textMesh.text.Length;
     }
 }

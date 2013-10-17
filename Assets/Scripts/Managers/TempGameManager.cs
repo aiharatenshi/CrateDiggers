@@ -68,9 +68,12 @@ public class TempGameManager : ManagerScript
 
         foreach (CompetitivePlayerBaseScript cPlayer in playerList)
         {
-            //TODO: IMPLEMENT DROP BALL METHOD FOR PLAYER
-            cPlayer.ball.DetachFromPlayer();
-            cPlayer.ball = null;
+            if (cPlayer.ball != null)
+            {
+                cPlayer.ball.DetachFromPlayer();
+                cPlayer.ball = null;
+            }
+
         }
     }
 

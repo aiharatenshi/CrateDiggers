@@ -12,7 +12,7 @@ public class ShieldAbilityScript : AreaEffectAbilityBaseScript
     public override void Start()
     {
         base.Start();
-        areaOfEffect = AbilityConstants.ShieldDefaultArea;
+        areaOfEffect = AbilityConstants.shieldDefaultArea;
 
     }
 
@@ -21,13 +21,13 @@ public class ShieldAbilityScript : AreaEffectAbilityBaseScript
         throw new System.NotImplementedException();
     }
 
-    public void Use(CompetitorBaseScript target)
+    public void Use(CompetitivePlayerBaseScript target)
     {
         if (!cooldownTimer.IsTimerActive(cooldownTimerNumber))
         {
             ShieldInstanceScript shield = (ShieldInstanceScript)Instantiate(Resources.Load(AbilityConstants.PREFAB_NAMES[AbilityConstants.type.Shield], typeof(ShieldInstanceScript)), transform.position, Quaternion.identity);
             shield.SetPlayer(target);
-            cooldownTimerNumber = cooldownTimer.StartTimer(AbilityConstants.ShieldDefaultCooldown);
+            cooldownTimerNumber = cooldownTimer.StartTimer(AbilityConstants.shieldDefaultCooldown);
         }
 
     }

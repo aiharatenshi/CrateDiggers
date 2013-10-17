@@ -20,10 +20,6 @@ public class PossessionTimer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (player.ball)
-        {
-            possessionTime += Time.deltaTime;
-        }
     }
 
     public float GetPossessionTime()
@@ -39,5 +35,13 @@ public class PossessionTimer : MonoBehaviour
     public void Reset()
     {
         possessionTime = 0;
+    }
+
+    public void IncreaseTime()
+    {
+        if (player.ball)
+        {
+            possessionTime += Time.deltaTime;
+        }
     }
 }

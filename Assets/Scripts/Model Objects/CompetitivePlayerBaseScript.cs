@@ -4,6 +4,7 @@ using System;
 using Constants;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(PossessionTimer))]
 
 public class CompetitivePlayerBaseScript : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
 
     public GamepadInfo gamepad;
 
+    public string playerName;
+
     public BallBaseScript ball;
 
     // Parameters
@@ -31,7 +34,10 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
     [Range(0.0f, 30.0f)]
     public int maxVelocity;
 
-    //TODO:ADD HEALTH AND DEATH CHECK INTO THIS CLASS
+    private bool flagForRespawn;
+    private int health;
+    public int startingHealth = 4;
+    public PossessionTimer possessionTimer;
 
 
     // Audio
@@ -44,7 +50,7 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
     public AbilitySlotBaseScript[] abilitySlot = new AbilitySlotBaseScript[3];
 
     // Extras
-    private enum walk { left, right }
+    private enum walk { left, right, up, down }
     public bool touchingGround = true;
     public Vector3 aimDirection;
     private bool holdingBall;
@@ -62,13 +68,13 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
 
         charProperties = new List<AbilityConstants.properties>();
         sprite.collider.enabled = false;    // Need to disable the sprite collider (we're not using the player sprite for collisions)
+
+        health = startingHealth;
     }
 
     // Update is called once per frame
     public void Update()
     {
-        //base.Update();
-
         aimDirection = new Vector3(gamepad.leftStick.x, gamepad.leftStick.y, 0);
         Debug.DrawRay(gameObject.transform.position, aimDirection * 5, Color.red);
 
@@ -82,26 +88,22 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
         {
             holdingBall = false;
         }
-            
-        //TODO:REIMPLEMENT RESPAWNING
-        /*
-        if (competitorModule.flagForRespawn)
+
+        if (health <= 0)
         {
-            Respawn();
+            flagForRespawn = true;
         }
-        */
     }
 
     //TODO:REIMPLEMENT RESPAWNING
     public virtual void FixedUpdate()
     {
         HandleFixedInput();
-        /*
-        if (competitorModule.flagForRespawn)
+
+        if (flagForRespawn)
         {
             Respawn();
         }
-        */
     }
 
     public virtual void OnCollisionEnter(Collision collision)
@@ -183,14 +185,20 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
            //
         }
 
-        if (gamepad.buttonDown[(int)CharacterConstants.buttons.RB])
-        {
-            
-        }
 
         if (gamepad.rightTriggerDown)
         {
             UseAbilitySlotOne();
+        }
+
+        if (gamepad.buttonDown[(int)CharacterConstants.buttons.RB])
+        {
+            UseAbilitySlotTwo();
+        }
+
+        if (gamepad.leftTrigger)
+        {
+            ChargeBall();
         }
 
         if (gamepad.buttonDown[(int)CharacterConstants.buttons.x])
@@ -200,9 +208,7 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
 
         if (gamepad.buttonDown[(int)CharacterConstants.buttons.y])
         {
-            //TODO: IMPLEMENT DROP BALL()
-            ball.DetachFromPlayer();
-            ball = null;
+            DropBall();
         }
     }
 
@@ -213,15 +219,23 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
             Jump();
         }
 
-        if (gamepad.leftStick.x < 0)
+        if (rigidbody.useGravity)
         {
-            Walk(walk.left);
+            if (gamepad.leftStick.x < 0)
+            {
+                Walk(walk.left);
+            }
+
+            if (gamepad.leftStick.x > 0)
+            {
+                Walk(walk.right);
+            }
+        }
+        else
+        {
+            WalkTopDown();
         }
 
-        if (gamepad.leftStick.x > 0)
-        {
-            Walk(walk.right);
-        }
     }
 
     public virtual void HandleInput(KeyCode key) { }
@@ -229,8 +243,8 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
     public void Respawn()
     {
         transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
-
-        //competitorModule.flagForRespawn = false;
+        health = startingHealth;
+        flagForRespawn = false;
         audio.clip = deathClip;
         audio.Play();
     }
@@ -238,26 +252,39 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
     // TODO: Move to CompetitorModule?
     public void TakeDamage(int amount)
     {
-        //competitorModule.TakeDamage(amount);
-        //competitorModule.DropBall();
+        health -= amount;
+        if (ball) DropBall();
+        particleSystem.Play();
+    }
+
+    public void DropBall()
+    {
+        ball.DetachFromPlayer();
+        ball = null;
+    }
+
+    private void ChargeBall()
+    {
+        possessionTimer.IncreaseTime();
     }
 
     private void UseAbilitySlotOne()
     {
         if (ball == null)
         {
-            abilitySlot[0].Use(aimDirection);
+            GetComponentInChildren<ProjectileAbilityBaseScript>().Use(aimDirection);
         }
 
         if (ball)
         {
-            ball.DetachFromPlayer();
+            GetComponentInChildren<PassBall>().Pass(aimDirection, ball, this);
             ball = null;
         }
     }
 
     private void UseAbilitySlotTwo()
     {
+        GetComponentInChildren<ShieldAbilityScript>().Use(this);
     }
 
     private void UseAbilitySlotThree()
@@ -288,6 +315,17 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
         audio.Play();
     }
 
+    /// <summary>
+    /// This is the walk method for ZeroGrav/TopDown style movement
+    /// </summary>
+    private void WalkTopDown()
+    {
+        if (rigidbody.velocity.sqrMagnitude < maxVelocity * maxVelocity)
+        {
+            rigidbody.AddForce(gamepad.leftStick.normalized * moveSpeed, ForceMode.VelocityChange);
+        }
+    }
+
     private void Jump()
     {
         if (touchingGround)
@@ -308,13 +346,17 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
         gamepad = _gamepad;
     }
 
-
-
     protected void SetupDependencies()
     {
-        
         abilitySlot = GetComponentsInChildren<AbilitySlotBaseScript>() as AbilitySlotBaseScript[];
         ProjectileAbilityBaseScript temp = abilitySlot[0] as ProjectileAbilityBaseScript;
+
+        if (gameObject.GetComponent<PossessionTimer>() == null)
+        {
+            gameObject.AddComponent("PossessionTimer");
+        }
+        possessionTimer = GetComponent<PossessionTimer>();
+        possessionTimer.SetPlayer(this);
     }
 
 }

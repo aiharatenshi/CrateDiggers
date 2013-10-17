@@ -18,12 +18,12 @@ public class RoundTime : ScoreboardBaseScript
     {
         if (manager.GetState() == CompWorldConstants.worldStates.intermission)
         {
-            textMesh.text = "Time Remaining" + Environment.NewLine + Math.Round((double)manager.GetIntermissionTime(), 1);
+            textMesh.text = "Intermission" + Environment.NewLine + Math.Round((double)manager.GetIntermissionTime(), 1);
  
         }
         if (manager.GetState() == CompWorldConstants.worldStates.matchInProgress)
         {
-            textMesh.text = "Time Remaining" + Environment.NewLine + Math.Round((double)manager.GetRoundTime(), 1);
+            textMesh.text = "GAME IN PROGRESS" + Environment.NewLine + Math.Round((double)manager.GetRoundTime(), 1);
         }
         textMesh.maxChars = textMesh.text.Length;
     }
