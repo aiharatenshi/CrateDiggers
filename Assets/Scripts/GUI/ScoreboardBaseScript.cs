@@ -13,7 +13,7 @@ abstract public class ScoreboardBaseScript : MonoBehaviour
     /// </summary>
 
     protected tk2dTextMesh textMesh;
-    protected CompetitorBaseScript[] player;
+    protected CompetitivePlayerBaseScript[] player;
 
     // Use this for initialization
     public virtual void Start()
@@ -22,7 +22,7 @@ abstract public class ScoreboardBaseScript : MonoBehaviour
         {
             gameObject.AddComponent("tk2dTextMesh");
         }
-        player = FindObjectsOfType(typeof(CompetitorBaseScript)) as CompetitorBaseScript[];
+        player = FindObjectsOfType(typeof(CompetitivePlayerBaseScript)) as CompetitivePlayerBaseScript[];
         textMesh = gameObject.GetComponent<tk2dTextMesh>();
         textMesh.text = "0";
     }
@@ -32,6 +32,9 @@ abstract public class ScoreboardBaseScript : MonoBehaviour
     /// </summary>
     public virtual void Update()
     {
+
+        //TODO:REIMPLEMENT PROPERLY BY ADDING NAMES TO PLAYER
+        /*
         string[] scoreboardText = new string[player.Length];
         for (int i = 0; i < player.Length; i++)
         {
@@ -40,5 +43,6 @@ abstract public class ScoreboardBaseScript : MonoBehaviour
         }
 
         textMesh.maxChars = textMesh.text.Length;
+        */
     }
 }

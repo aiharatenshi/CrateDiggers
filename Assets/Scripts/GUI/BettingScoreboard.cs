@@ -7,6 +7,8 @@ public class BettingScoreboard : ScoreboardBaseScript
 
     public override void Update()
     {
+        //TODO:REIMPLEMENT PLAYER NAME AND CHANGE HERE
+        /*
         string[] scoreboardText = new string[player.Length];
         int totalDollarz = 0;
         for (int i = 0; i < player.Length; i++)
@@ -17,5 +19,6 @@ public class BettingScoreboard : ScoreboardBaseScript
         }
 
         textMesh.maxChars = textMesh.text.Length;
+        */ 
     }
 }

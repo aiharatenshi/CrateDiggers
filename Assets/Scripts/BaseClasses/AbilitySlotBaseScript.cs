@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
+using Constants;
 using Constants;
 
 [RequireComponent(typeof(AudioSource))]
@@ -18,6 +19,7 @@ abstract public class AbilitySlotBaseScript : MonoBehaviour
     public AudioClip sound;
     public float cooldown;
     public TimerScript cooldownTimer;
+    public List<AbilityConstants.properties> abilityProps;
     protected int cooldownTimerNumber;
 
     public virtual void Start()
@@ -32,10 +34,13 @@ abstract public class AbilitySlotBaseScript : MonoBehaviour
         }
         cooldownTimer = GetComponent<TimerScript>();
         audio.clip = sound;
+
+        abilityProps = new List<AbilityConstants.properties>();
     }
 
     public virtual void Update()
     {
+
     }
 
     public abstract void Use();

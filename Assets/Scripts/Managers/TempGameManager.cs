@@ -48,7 +48,8 @@ public class TempGameManager : ManagerScript
 
         foreach (CompetitivePlayerBaseScript cPlayer in playerList)
         {
-            cPlayer.competitorModule.ResetPossessionTime();
+            //TODO:DROP BALL AND RESET POSESSION TIMER
+            //cPlayer.ResetPossessionTime();
         }
     }
 
@@ -67,7 +68,9 @@ public class TempGameManager : ManagerScript
 
         foreach (CompetitivePlayerBaseScript cPlayer in playerList)
         {
-            cPlayer.competitorModule.DropBall();
+            //TODO: IMPLEMENT DROP BALL METHOD FOR PLAYER
+            cPlayer.ball.DetachFromPlayer();
+            cPlayer.ball = null;
         }
     }
 

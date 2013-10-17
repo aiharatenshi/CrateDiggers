@@ -7,7 +7,7 @@ public class PossessionTimer : MonoBehaviour
     /// Simple script counts up if its associated player
     /// has possession of the ball
     /// </summary>
-    public CompetitorBaseScript player;
+    public CompetitivePlayerBaseScript player;
     private float possessionTime;
 
     // Use this for initialization
@@ -20,15 +20,7 @@ public class PossessionTimer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (player.competitorModule.ball)
-        //{
-        //    possessionTime += Time.deltaTime;
-        //}
-    }
-
-    public void IncreaseTime()
-    {
-        if (player.competitorModule.ball)
+        if (player.ball)
         {
             possessionTime += Time.deltaTime;
         }
@@ -39,7 +31,7 @@ public class PossessionTimer : MonoBehaviour
         return possessionTime;
     }
 
-    public void SetPlayer(CompetitorBaseScript _player)
+    public void SetPlayer(CompetitivePlayerBaseScript _player)
     {
         player = _player;
     }

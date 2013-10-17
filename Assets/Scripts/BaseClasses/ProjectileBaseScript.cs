@@ -65,8 +65,8 @@ abstract public class ProjectileBaseScript : AbilityInstanceBaseScript
     {
         if (other.gameObject.CompareTag("Hitbox"))
         {
-            CompetitorBaseScript target = (CompetitorBaseScript)other.transform.parent.GetComponent<CompetitorBaseScript>();
-            target.competitorModule.TakeDamage(damage);
+            CompetitivePlayerBaseScript target = (CompetitivePlayerBaseScript)other.transform.parent.GetComponent<CompetitivePlayerBaseScript>();
+            target.TakeDamage(damage);
             Destroy(gameObject);
         }
         if (other.gameObject.CompareTag("Projectile"))

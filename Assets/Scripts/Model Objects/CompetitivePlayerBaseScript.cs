@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System;
 using Constants;
 
 [RequireComponent(typeof(Rigidbody))]
 
-public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
+public class CompetitivePlayerBaseScript : MonoBehaviour
 {
 
     /// <summary>
@@ -15,6 +15,10 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
     /// NOTE: Don't set default values for movement until we find something
     /// we actually like.
     /// </summary> 
+
+    public GamepadInfo gamepad;
+
+    public BallBaseScript ball;
 
     // Parameters
     [Range(0.1f, 15.0f)]
@@ -27,6 +31,9 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
     [Range(0.0f, 30.0f)]
     public int maxVelocity;
 
+    //TODO:ADD HEALTH AND DEATH CHECK INTO THIS CLASS
+
+
     // Audio
     public AudioClip jumpClip;
     public AudioClip deathClip;
@@ -34,46 +41,67 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
     public AudioClip walkClip;
 
     // Modules
-    public AbilitySlotBaseScript[] abilitySlot = new AbilitySlotBaseScript[6];
+    public AbilitySlotBaseScript[] abilitySlot = new AbilitySlotBaseScript[3];
 
     // Extras
     private enum walk { left, right }
     public bool touchingGround = true;
     public Vector3 aimDirection;
+    private bool holdingBall;
 
-    public override void Start()
+
+    public List<AbilityConstants.properties> charProperties;
+
+    public void Start()
     {
-        base.Start();
+        //base.Start();
         SetupDependencies();
         moveSpeedDefault = moveSpeed;
 
         tk2dSprite sprite = GetComponentInChildren<tk2dSprite>();
+
+        charProperties = new List<AbilityConstants.properties>();
         sprite.collider.enabled = false;    // Need to disable the sprite collider (we're not using the player sprite for collisions)
     }
 
     // Update is called once per frame
-    public override void Update()
+    public void Update()
     {
-        base.Update();
+        //base.Update();
 
         aimDirection = new Vector3(gamepad.leftStick.x, gamepad.leftStick.y, 0);
         Debug.DrawRay(gameObject.transform.position, aimDirection * 5, Color.red);
 
         HandleInput();
 
+        if (ball != null)
+        {
+            holdingBall = true;
+        }
+        else
+        {
+            holdingBall = false;
+        }
+            
+        //TODO:REIMPLEMENT RESPAWNING
+        /*
         if (competitorModule.flagForRespawn)
         {
             Respawn();
         }
+        */
     }
 
+    //TODO:REIMPLEMENT RESPAWNING
     public virtual void FixedUpdate()
     {
         HandleFixedInput();
+        /*
         if (competitorModule.flagForRespawn)
         {
             Respawn();
         }
+        */
     }
 
     public virtual void OnCollisionEnter(Collision collision)
@@ -89,8 +117,8 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
             TempGameManager manager = (TempGameManager)FindObjectOfType(typeof(TempGameManager));
             if (manager.GetState() == CompWorldConstants.worldStates.matchInProgress)
             {
-                competitorModule.ball = collision.gameObject.GetComponent<BallBaseScript>();
-                competitorModule.ball.AttachToPlayer(this);
+                ball = collision.gameObject.GetComponent<BallBaseScript>();
+                ball.AttachToPlayer(this);
             }
 
         }
@@ -110,24 +138,6 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
 
     }
 
-    public virtual void OnTriggerEnter(Collider other)
-    {
-        // Interaction test
-        // NOTE: Use tags for these kinds of checks. This won't return null pointer errors of you mess up.
-        // REMEMBER TO SET THE TAGS.
-        if (other.gameObject.CompareTag("InteractiveObject"))
-        {
-            interactionTarget = other.gameObject.transform.parent.GetComponentInChildren<InteractiveObjectBaseScript>();
-            interactionTarget.ReceiveInteractionHandshake();
-        }
-
-        if (other.gameObject.CompareTag("WorldArea"))
-        {
-            Debug.Log("Entered area");
-            currentArea = other.gameObject.transform.parent.GetComponentInChildren<WorldAreaScript>();
-        }
-
-    }
 
     public virtual void OnTriggerStay(Collider other)
     {
@@ -136,55 +146,15 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
 
     public virtual void OnTriggerExit(Collider other)
     {
-        if (interactionTarget != null)
-        {
-            interactionTarget.InteractionClose();
-            interactionTarget = null;
-        }
-        if (other.gameObject.CompareTag("WorldArea"))
-        {
-            currentArea = null;
-        }
+        //TODO:REIMPLEMENT RESPAWNING
+        /*
         if (other.gameObject.CompareTag("OutOfBounds"))
         {
             competitorModule.FlagForRespawn();
         }
-    }
+        */
 
-    /// <summary>
-    /// This method should only be called as an escape during an Interact() attempt.
-    /// </summary>
-    /// <returns>True if in range to interact, false if not possible</returns>
-    public virtual bool InteractionPossible()
-    {
-        if (interactionTarget != null)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
 
-    /// <summary>
-    /// This method should be called when the player pressed "use"
-    /// </summary>
-    /// <param name="target">Requires a valid NamedObject otherwise does nothing</param>
-    public virtual void Interact(InteractiveObjectBaseScript target)
-    {
-        // TODO: This needs to be updated
-        
-        if (!InteractionPossible())
-        {
-            Debug.Log("Nothing to interact with!");
-        }
-        else
-        {
-            //Debug.Log("Interacting with " + target.objectName + ".");
-            target.OnInteract();
-            competitorModule.rpsGame.Play(gameObject.GetComponentInChildren<CompetitorBaseScript>(), (CompetitorBaseScript)target);
-        }
     }
 
     public virtual void HandleInput()
@@ -210,13 +180,12 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
 
         if (gamepad.buttonDown[(int)CharacterConstants.buttons.b])
         {
-            Interact(interactionTarget);
+           //
         }
 
         if (gamepad.buttonDown[(int)CharacterConstants.buttons.RB])
         {
-            //BettingManagerScript.IncreaseBet(purse);
-            UseAbilitySlotTwo();
+            
         }
 
         if (gamepad.rightTriggerDown)
@@ -224,20 +193,16 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
             UseAbilitySlotOne();
         }
 
-        if (gamepad.leftTrigger)
-        {
-            ChargeBall();
-        }
-
         if (gamepad.buttonDown[(int)CharacterConstants.buttons.x])
         {
-            BettingManagerScript.RotateRPSChoice(purse.choice);
-            GetComponentInChildren<PlayerRPSChoice>().UpdateText(Enum.GetName(typeof(RockPaperScissors.RPS), purse.choice));
+            
         }
 
         if (gamepad.buttonDown[(int)CharacterConstants.buttons.y])
         {
-            //competitorModule.DropBall();
+            //TODO: IMPLEMENT DROP BALL()
+            ball.DetachFromPlayer();
+            ball = null;
         }
     }
 
@@ -261,25 +226,11 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
 
     public virtual void HandleInput(KeyCode key) { }
 
-    public override void ReceiveInteractionHandshake()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void InteractionClose()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnInteract()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public void Respawn()
     {
         transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
-        competitorModule.flagForRespawn = false;
+
+        //competitorModule.flagForRespawn = false;
         audio.clip = deathClip;
         audio.Play();
     }
@@ -287,37 +238,30 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
     // TODO: Move to CompetitorModule?
     public void TakeDamage(int amount)
     {
-        competitorModule.TakeDamage(amount);
-        competitorModule.DropBall();
+        //competitorModule.TakeDamage(amount);
+        //competitorModule.DropBall();
     }
 
     private void UseAbilitySlotOne()
     {
-        if (competitorModule.ball == null)
+        if (ball == null)
         {
-            GetComponentInChildren<ProjectileAbilityBaseScript>().Use(aimDirection);
+            abilitySlot[0].Use(aimDirection);
         }
 
-        if (competitorModule.ball)
+        if (ball)
         {
-            GetComponentInChildren<PassBall>().Pass(aimDirection, competitorModule.ball, this);
-            competitorModule.ball = null;
+            ball.DetachFromPlayer();
+            ball = null;
         }
     }
 
     private void UseAbilitySlotTwo()
     {
-        Debug.Log("Using slot two");
-        GetComponentInChildren<ShieldAbilityScript>().Use(this);
     }
 
     private void UseAbilitySlotThree()
     {
-    }
-
-    private void ChargeBall()
-    {
-        competitorModule.possessionTimer.IncreaseTime();
     }
 
     private void Walk(walk leftOrRight)
@@ -366,11 +310,11 @@ public class CompetitivePlayerBaseScript : ControllableCompetitorBaseScript
 
 
 
-    protected override void SetupDependencies()
+    protected void SetupDependencies()
     {
-        base.SetupDependencies();
+        
         abilitySlot = GetComponentsInChildren<AbilitySlotBaseScript>() as AbilitySlotBaseScript[];
-        competitorModule.SetPlayer(this);
+        ProjectileAbilityBaseScript temp = abilitySlot[0] as ProjectileAbilityBaseScript;
     }
 
 }
