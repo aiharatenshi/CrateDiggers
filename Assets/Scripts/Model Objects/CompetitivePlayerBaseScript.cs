@@ -5,6 +5,7 @@ using Constants;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(PossessionTimer))]
+[RequireComponent(typeof(TimerScript))]
 
 public class CompetitivePlayerBaseScript : MonoBehaviour
 {
@@ -24,20 +25,26 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
     public BallBaseScript ball;
 
     // Parameters
-    [Range(0.1f, 15.0f)]
-    public int moveSpeed;
-    [Range(1.0f, 50.0f)]
+    [Range(0.1f, 8.0f)]
+    public float moveSpeed;
+    [Range(1.0f, 20.0f)]
     public int jumpMagnitude;
-    [Range(0.1f, 15.0f)]
-    public int moveSpeedAir;
-    public int moveSpeedDefault; // This should be private, but needs to be public to test movespeeds during play
+    [Range(0.1f, 1.0f)]
+    public float moveSpeedAir;
+    public float moveSpeedDefault; // This should be private, but needs to be public to test movespeeds during play
     [Range(0.0f, 30.0f)]
     public int maxVelocity;
 
     private bool flagForRespawn;
     private int health;
-    public int startingHealth = 4;
+    private int startingHealth = CharacterConstants.playerHealth;
     public PossessionTimer possessionTimer;
+
+    //State
+    private bool acceptingInput;
+    private bool startFrozen = false;
+    private CharacterConstants.state state;
+    private int freezeTimer;
 
 
     // Audio
@@ -48,6 +55,7 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
 
     // Modules
     public AbilitySlotBaseScript[] abilitySlot = new AbilitySlotBaseScript[3];
+    public TimerScript timer;
 
     // Extras
     private enum walk { left, right, up, down }
@@ -75,10 +83,17 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
-        aimDirection = new Vector3(gamepad.leftStick.x, gamepad.leftStick.y, 0);
+        if (Math.Abs(gamepad.rightStick.magnitude) > CharacterConstants.joystickDeadzone)
+        {
+            aimDirection = new Vector3(gamepad.rightStick.x, gamepad.rightStick.y, 0);
+        }
         Debug.DrawRay(gameObject.transform.position, aimDirection * 5, Color.red);
 
-        HandleInput();
+        if (state != CharacterConstants.state.frozen)
+        {
+            HandleInput();
+        }
+
 
         if (ball != null)
         {
@@ -89,16 +104,59 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
             holdingBall = false;
         }
 
-        if (health <= 0)
+
+
+        switch (state)
         {
-            flagForRespawn = true;
+            case CharacterConstants.state.normal:
+                if (particleSystem.isPlaying)
+                {
+                    particleSystem.Stop();
+                }
+                switch (health)
+                {
+                    case 0:
+                        state = CharacterConstants.state.frozen;
+                        startFrozen = true;
+                        //state = CharacterConstants.state.dead;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case CharacterConstants.state.frozen:
+                if (startFrozen) // First time state hits frozen
+                {
+                    freezeTimer = timer.StartTimer(CharacterConstants.freezeTime);
+                    startFrozen = false;
+                    acceptingInput = false;
+                    particleSystem.Play();
+                }
+                else // all other times (already frozen)
+                {
+                    if (!timer.IsTimerActive(freezeTimer)) // if timer is done
+                    {
+                        state = CharacterConstants.state.normal;
+                        health = startingHealth;
+                    }
+                }
+                break;
+            case CharacterConstants.state.dead:
+                flagForRespawn = true;
+                break;
+            default:
+                break;
         }
+
     }
 
-    //TODO:REIMPLEMENT RESPAWNING
     public virtual void FixedUpdate()
     {
-        HandleFixedInput();
+        if (state != CharacterConstants.state.frozen)
+        {
+            HandleFixedInput();
+        }
+
 
         if (flagForRespawn)
         {
@@ -161,7 +219,7 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
 
     public virtual void HandleInput()
     {
-        
+
         // We can change sprite transparencies as such:
         //if (Input.GetKeyDown(KeyCode.A))
         //{
@@ -182,7 +240,7 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
 
         if (gamepad.buttonDown[(int)CharacterConstants.buttons.b])
         {
-           //
+            //
         }
 
 
@@ -203,7 +261,7 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
 
         if (gamepad.buttonDown[(int)CharacterConstants.buttons.x])
         {
-            
+
         }
 
         if (gamepad.buttonDown[(int)CharacterConstants.buttons.y])
@@ -214,9 +272,13 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
 
     public virtual void HandleFixedInput()
     {
-        if (gamepad.button[(int)CharacterConstants.buttons.a])
+        if (gamepad.buttonDown[(int)CharacterConstants.buttons.a])
         {
             Jump();
+        }
+
+        if (gamepad.buttonUp[(int)CharacterConstants.buttons.a])
+        {
         }
 
         if (rigidbody.useGravity)
@@ -254,7 +316,7 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
     {
         health -= amount;
         if (ball) DropBall();
-        particleSystem.Play();
+        //particleSystem.Play();
     }
 
     public void DropBall()
@@ -294,7 +356,7 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
     private void Walk(walk leftOrRight)
     {
         // TODO: Modify walk speed by magnitude of joystick vector?
-        
+
         if (leftOrRight == walk.left)
         {
             if (rigidbody.velocity.x > -maxVelocity)
@@ -357,6 +419,14 @@ public class CompetitivePlayerBaseScript : MonoBehaviour
         }
         possessionTimer = GetComponent<PossessionTimer>();
         possessionTimer.SetPlayer(this);
+
+        if (gameObject.GetComponent<TimerScript>() == null)
+        {
+            gameObject.AddComponent<TimerScript>();
+        }
+        timer = GetComponent<TimerScript>();
+
+        gameObject.GetComponentInChildren<NameTextMesh>().fullName = playerName;
     }
 
 }

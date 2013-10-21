@@ -27,7 +27,7 @@ public class ShieldAbilityScript : AreaEffectAbilityBaseScript
         {
             ShieldInstanceScript shield = (ShieldInstanceScript)Instantiate(Resources.Load(AbilityConstants.PREFAB_NAMES[AbilityConstants.type.Shield], typeof(ShieldInstanceScript)), transform.position, Quaternion.identity);
             shield.SetPlayer(target);
-            cooldownTimerNumber = cooldownTimer.StartTimer(AbilityConstants.shieldDefaultCooldown);
+            cooldownTimerNumber = cooldownTimer.StartTimer(AbilityConstants.shieldDefaultCooldown + AbilityConstants.shieldDefaultLifetime);
         }
 
     }

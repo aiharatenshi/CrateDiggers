@@ -27,9 +27,13 @@ namespace Constants
 
     public class CharacterConstants
     {
+        public static int playerHealth = 1;
+        public static float freezeTime = 2.0f;
+        public static float joystickDeadzone = 0.5f;
+        
         public enum buttons { a, b, x, y, LeftJoy, RightJoy, back, start, LB, RB }
         public enum type { Player };
-        //public enum names { John, Bob, Sally, Betty };
+        public enum state { normal, frozen, dead };
 
         private static readonly IDictionary<int, string> playerNames = new Dictionary<int, string>
         {
@@ -57,9 +61,9 @@ namespace Constants
     public class AbilityConstants
     {
         public static float PlasmaGunCooldown = 0.25f;
-        public static float shieldDefaultArea = 4.0f;
-        public static float shieldDefaultCooldown = 1.0f;
-        public static float shieldDefaultLifetime = 4.0f;
+        public static float shieldDefaultArea = 5.0f;
+        public static float shieldDefaultCooldown = 0.25f;
+        public static float shieldDefaultLifetime = 0.50f;
 
         public enum properties { Knockback, OnFire, Frozen }
 

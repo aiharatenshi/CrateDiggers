@@ -108,7 +108,7 @@ public class GamepadInputHandler : MonoBehaviour
             buttonDown[8] = Input.GetButtonDown(LB);
             buttonDown[9] = Input.GetButtonDown(RB);
 
-            gamepadInfo[i-1].SetData(i, new Vector2(Input.GetAxis(leftX), Input.GetAxis(leftY)), new Vector2(Input.GetAxis(rightX), Input.GetAxis(rightY)), Input.GetAxis(triggerAxis), new Vector2(Input.GetAxis(dpadX), Input.GetAxis(dpadY)), button, buttonUp, buttonDown);
+            gamepadInfo[i-1].SetData(i, new Vector2(Input.GetAxis(leftX), Input.GetAxis(leftY)), new Vector2(Input.GetAxis(rightX), Input.GetAxis(rightY)), Input.GetAxis(triggerAxis), new Vector2(Input.GetAxis(dpadX), Input.GetAxis(dpadY)), button, buttonDown, buttonUp);
         }
     }
 }
